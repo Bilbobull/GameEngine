@@ -70,11 +70,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Systems\Graphics\Camera\Context.cpp" />
+    <ClCompile Include="Systems\Graphics\GraphicsSystem.cpp" />
     <ClCompile Include="Systems\main.cpp" />
+    <ClCompile Include="Systems\Systems.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\Graphics\Camera\Context.h" />
+    <ClInclude Include="Systems\Graphics\GraphicsSystem.h" />
     <ClInclude Include="Systems\Graphics\Graphics_Headers.h" />
+    <ClInclude Include="Systems\Systems.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

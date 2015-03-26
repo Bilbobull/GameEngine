@@ -1,15 +1,13 @@
 #include "Graphics\Camera\Context.h"
-
-int i = 0;
+#include "Graphics\GraphicsSystem.h"
 
 int main(int argc, char* argv[])
 {
-  Current_Window.Init();
+  GraphicsSystem gra_sys;
 
-  while (!Current_Window.WindowShouldClose())
-  {
-    ++i;
-  }
+  gra_sys.Init();
+ 
+  gra_sys.Update(0.16);
 
   return 0;
 }
