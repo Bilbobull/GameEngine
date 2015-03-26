@@ -3,6 +3,7 @@
 #pragma once
 
 #include "../Graphics_Headers.h"
+#include <string>
 
 class Window
 {
@@ -11,9 +12,11 @@ public:
   ~Window(){}
   void Init();
   bool WindowShouldClose();
+  void SetName(std::string title = "Graphics Engine");
 
 private:
   SDL_Window  *sdl_window;
+  std::string name;
   int major_;
   int minor_;
 };
