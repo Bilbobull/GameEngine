@@ -3,11 +3,12 @@
 #include "Context.h"
 #include <iostream>
 
-Window window;
+Window Current_Window;
+SDL_Event Event;
 
 Window::Window(void)
 {
-  Current_Window = 0;
+  sdl_window = 0;
   major_ = 0;
   minor_ = 0;
 }
@@ -23,12 +24,12 @@ void Window::Init(void)
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
   // create the sdl2 window
-  Current_Window = SDL_CreateWindow("Graphics Engine", SDL_WINDOWPOS_CENTERED,
+  sdl_window = SDL_CreateWindow("Graphics Engine", SDL_WINDOWPOS_CENTERED,
                                       SDL_WINDOWPOS_CENTERED, 512, 512,
                                       SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
   // create the opengl3 context
-  opengl3_context = SDL_GL_CreateContext(Current_Window);
+  opengl3_context = SDL_GL_CreateContext(sdl_window);
 
   SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &major_);
   SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minor_);
@@ -43,3 +44,13 @@ void Window::Init(void)
   }
 }
 
+bool Window::WindowShouldClose()
+{
+  if(SDL_PollEvent(&Event))
+  {
+    if (Event.type == SDL_QUIT)
+      return true;
+  }
+
+  return false;
+}

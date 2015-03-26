@@ -10,11 +10,12 @@ public:
   Window();
   ~Window(){}
   void Init();
+  bool WindowShouldClose();
 
 private:
-  SDL_Window  *Current_Window;
+  SDL_Window  *sdl_window;
   int major_;
   int minor_;
 };
 
-extern Window window;
+extern Window Current_Window;
