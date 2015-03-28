@@ -19,5 +19,3 @@ public:
 private:
 
 };
-
-extern bool Running;

@@ -8,13 +8,17 @@ SDL_Event Event;
 
 Window::Window(void)
 {
+  Desktop = nullptr;
+  glfw_window = nullptr;
+
   sdl_window = 0;
   major_ = 0;
   minor_ = 0;
+
   name = "Graphics Engine";
 }
 
-void Window::Init(void)
+void Window::sdl_Init(void)
 {
   SDL_GLContext opengl3_context;
 
@@ -45,7 +49,7 @@ void Window::Init(void)
   }
 }
 
-bool Window::WindowShouldClose()
+bool Window::sdl_WindowShouldClose()
 {
   if(SDL_PollEvent(&Event))
   {
@@ -54,4 +58,49 @@ bool Window::WindowShouldClose()
   }
 
   return false;
+}
+
+void Window::glfw_Init()
+{
+  if (!glfwInit())
+  {
+    std::cout << "Error initializing GLFW" << std::endl;
+    exit(-1);
+  }
+
+  glfwWindowHint(GLFW_RESIZABLE, 1);
+  glfwWindowHint(GLFW_SAMPLES, 4);
+ 
+  glEnable(GL_MULTISAMPLE);
+  
+  GLFWmonitor* Monitor = glfwGetPrimaryMonitor();
+  Desktop = glfwGetVideoMode(Monitor);
+
+
+
+  Width = Desktop->width;
+  Height = Desktop->height;
+
+ // glfw_window = glfwCreateWindow(Width, Height, name.c_str(), Monitor, nullptr);
+  glfw_window = glfwCreateWindow(Width, Height, name.c_str(), nullptr, nullptr);
+
+  if (!glfw_window)
+    throw std::string("Error Creating Window\n");
+
+  glfwMakeContextCurrent(glfw_window);
+  glewExperimental = true;
+
+  if (glewInit() != GLEW_OK)
+  {
+    std::cout << "Error initializing GLEW" << std::endl;
+    exit(-1);
+  }
+
+
+  glfwSetInputMode(glfw_window, GLFW_STICKY_KEYS, GL_TRUE);
+}
+
+GLFWwindow* Window::glfw_GetWindow()
+{
+  return glfw_window;
 }

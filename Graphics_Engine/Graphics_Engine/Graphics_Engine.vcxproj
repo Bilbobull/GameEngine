@@ -50,7 +50,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glew32s.lib;glfw3.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -71,6 +71,8 @@
   <ItemGroup>
     <ClCompile Include="Systems\Graphics\Camera\Context.cpp" />
     <ClCompile Include="Systems\Graphics\GraphicsSystem.cpp" />
+    <ClCompile Include="Systems\Graphics\LoadShader.cpp" />
+    <ClCompile Include="Systems\Input\InputSystem.cpp" />
     <ClCompile Include="Systems\main.cpp" />
     <ClCompile Include="Systems\Systems.cpp" />
   </ItemGroup>
@@ -78,7 +80,10 @@
     <ClInclude Include="Systems\Graphics\Camera\Context.h" />
     <ClInclude Include="Systems\Graphics\GraphicsSystem.h" />
     <ClInclude Include="Systems\Graphics\Graphics_Headers.h" />
+    <ClInclude Include="Systems\Graphics\LoadShader.h" />
+    <ClInclude Include="Systems\Input\InputSystem.h" />
     <ClInclude Include="Systems\Systems.h" />
+    <ClInclude Include="Systems\System_Headers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,21 +1,15 @@
 #include "GraphicsSystem.h"
 
-bool Running;
+extern bool Running;
 
 void GraphicsSystem::Init(void)
 {
-  Current_Window.Init();
-  Running = true;
+  Current_Window.glfw_Init();
 }
 
 void GraphicsSystem::Update(double dt)
 {
-  while(!Current_Window.WindowShouldClose())
-  {
-    continue;
-  }
 
-  Running = false;
 }
 
 void GraphicsSystem::Free(void)

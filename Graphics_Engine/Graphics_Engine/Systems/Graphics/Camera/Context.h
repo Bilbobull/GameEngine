@@ -10,15 +10,25 @@ class Window
 public:
   Window();
   ~Window(){}
-  void Init();
-  bool WindowShouldClose();
+  void sdl_Init();
+  bool sdl_WindowShouldClose();
+
+  void glfw_Init();
+  GLFWwindow* glfw_GetWindow();
+
   void SetName(std::string title = "Graphics Engine");
 
 private:
   SDL_Window  *sdl_window;
-  std::string name;
   int major_;
   int minor_;
+
+  const GLFWvidmode* Desktop;
+  GLFWwindow* glfw_window;
+
+  std::string name;
+  int Width;
+  int Height;
 };
 
 extern Window Current_Window;

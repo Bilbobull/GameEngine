@@ -1,13 +1,27 @@
 #include "Graphics\Camera\Context.h"
 #include "Graphics\GraphicsSystem.h"
+#include "Input\InputSystem.h"
+#include "Systems.h"
+
+extern std::vector <System*> Systems;
+extern bool Running;
 
 int main(int argc, char* argv[])
 {
-  GraphicsSystem gra_sys;
+  Running = true;
 
-  gra_sys.Init();
+  Systems.push_back(new GraphicsSystem());
+  Systems.push_back(new InputSystem());
+
+
+  for (auto it : Systems)
+    it->Init();
  
-  gra_sys.Update(0.16);
+  while (Running == true)
+  {
+    for (auto it : Systems)
+      it->Update(0);
+  }
 
   return 0;
 }
