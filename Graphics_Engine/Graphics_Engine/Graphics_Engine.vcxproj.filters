@@ -34,11 +34,11 @@
     <Filter Include="Systems\Input\Source">
       <UniqueIdentifier>{5112ba97-bef7-4ad2-9d56-ba628b9c442d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Graphics\Shaders">
+      <UniqueIdentifier>{e4d99e21-9f67-45d8-be04-307ae8dae21d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Systems\Graphics\Camera\Context.cpp">
-      <Filter>Systems\Graphics\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Systems\Systems.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
@@ -52,11 +52,17 @@
     <ClCompile Include="Systems\Graphics\GraphicsSystem.cpp">
       <Filter>Systems\Graphics\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Systems\Graphics\Context.cpp">
+      <Filter>Systems\Graphics\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Graphics\Buffer_Manager.cpp">
+      <Filter>Systems\Graphics\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Graphics\ShaderManager.cpp">
+      <Filter>Systems\Graphics\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Systems\Graphics\Camera\Context.h">
-      <Filter>Systems\Graphics\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Systems\Graphics\Graphics_Headers.h">
       <Filter>Systems\Graphics\Headers</Filter>
     </ClInclude>
@@ -75,5 +81,22 @@
     <ClInclude Include="Systems\System_Headers.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="Systems\Graphics\Context.h">
+      <Filter>Systems\Graphics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Graphics\Buffer_Manager.h">
+      <Filter>Systems\Graphics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Graphics\ShaderManager.h">
+      <Filter>Systems\Graphics\Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Systems\Graphics\Shaders\SimpleVertexShader.glsl">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </None>
+    <None Include="Systems\Graphics\Shaders\SimpleFragmentShader.glsl">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,0 +1,6 @@
+class Shader{
+public:
+
+private:
+
+};

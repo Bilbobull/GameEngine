@@ -1,10 +1,15 @@
 c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\vc120.pdb
 c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\vc120.idb
+c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\buffer_manager.obj
 c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\context.obj
-c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\main.obj
 c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\graphicssystem.obj
-c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\systems.obj
 c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\loadshader.obj
+c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\inputsystem.obj
+c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\main.obj
+c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\systems.obj
+c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\shadermanager.obj
+c:\users\gonzalo\desktop\gameengine\graphics_engine\debug\graphics_engine.ilk
+c:\users\gonzalo\desktop\gameengine\graphics_engine\debug\graphics_engine.exe
 c:\users\gonzalo\desktop\gameengine\graphics_engine\debug\graphics_engine.pdb
 c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\graphics_engine.tlog\cl.command.1.tlog
 c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\debug\graphics_engine.tlog\cl.read.1.tlog

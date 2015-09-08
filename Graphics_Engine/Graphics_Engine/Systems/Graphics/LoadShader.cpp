@@ -9,9 +9,12 @@
 
 
 
-std::string Read_Shader (const char* shaderSource)
+std::string Read_Shader (std::string shaderSource)
 {
-  std::ifstream t (shaderSource);
+  std::string path = "Systems/Graphics/Shaders/";
+  std::string file = path + shaderSource;
+  
+  std::ifstream t (file.c_str());
 
   if (!t.good ())
   {

@@ -1,4 +1,4 @@
-#include "Graphics\Camera\Context.h"
+#include "Graphics\Context.h"
 #include "Graphics\GraphicsSystem.h"
 #include "Input\InputSystem.h"
 #include "Systems.h"

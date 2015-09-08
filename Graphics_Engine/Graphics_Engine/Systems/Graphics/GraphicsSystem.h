@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Camera\Context.h"
+#include "Context.h"
 #include "Graphics_Headers.h"
 #include "../Systems.h"
 
@@ -16,6 +16,11 @@ public:
   void Update(double dt);
   void Free(void);
 
-private:
+  Window& GetCurrentWindow(void);
+  void SetBackgroundColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 
+private:
+  Window Current_Window;
 };
+
+extern GraphicsSystem* g_GraphicsSys;

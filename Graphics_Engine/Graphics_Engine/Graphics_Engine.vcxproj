@@ -69,21 +69,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Systems\Graphics\Camera\Context.cpp" />
+    <ClCompile Include="Systems\Graphics\Buffer_Manager.cpp" />
+    <ClCompile Include="Systems\Graphics\Context.cpp" />
     <ClCompile Include="Systems\Graphics\GraphicsSystem.cpp" />
     <ClCompile Include="Systems\Graphics\LoadShader.cpp" />
+    <ClCompile Include="Systems\Graphics\ShaderManager.cpp" />
     <ClCompile Include="Systems\Input\InputSystem.cpp" />
     <ClCompile Include="Systems\main.cpp" />
     <ClCompile Include="Systems\Systems.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Systems\Graphics\Camera\Context.h" />
+    <ClInclude Include="Systems\Graphics\Buffer_Manager.h" />
+    <ClInclude Include="Systems\Graphics\Context.h" />
     <ClInclude Include="Systems\Graphics\GraphicsSystem.h" />
     <ClInclude Include="Systems\Graphics\Graphics_Headers.h" />
     <ClInclude Include="Systems\Graphics\LoadShader.h" />
+    <ClInclude Include="Systems\Graphics\ShaderManager.h" />
     <ClInclude Include="Systems\Input\InputSystem.h" />
     <ClInclude Include="Systems\Systems.h" />
     <ClInclude Include="Systems\System_Headers.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Systems\Graphics\Shaders\SimpleFragmentShader.glsl" />
+    <None Include="Systems\Graphics\Shaders\SimpleVertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
