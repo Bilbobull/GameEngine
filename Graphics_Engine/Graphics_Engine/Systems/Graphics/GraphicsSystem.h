@@ -18,6 +18,7 @@ public:
 
   Window& GetCurrentWindow(void);
   void SetBackgroundColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
+  void Specify_Attributes_Simple(GLuint simpleProgram);
 
 private:
   Window Current_Window;

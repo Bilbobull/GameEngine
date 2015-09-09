@@ -19,10 +19,12 @@ public:
 
   void glfw_Init();
   GLFWwindow* glfw_GetWindow();
+  int GetWidth(){ return Width; }
+  int GetHeight(){ return Height; }
   static void glfw_WindowShouldClose();
 
   void SetName(std::string title = "Graphics Engine");
-
+ 
 private:
   SDL_Window  *sdl_window;
   int major_;
