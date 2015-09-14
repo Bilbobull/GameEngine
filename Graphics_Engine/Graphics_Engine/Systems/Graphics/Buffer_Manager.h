@@ -52,11 +52,11 @@ public:
     vbo = 0;
   }
 
-  VertexBufferObject(int size, GLfloat* data)
+  VertexBufferObject(int size, void* data)
   {
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, size, (const void*)data, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, size, data, GL_STREAM_DRAW);
 
     Num_Vertices = (size / 2) / sizeof(float);
   }
@@ -104,7 +104,7 @@ private:
 class ElementBufferObject
 {
 public:
-  ElementBufferObject(int size, GLuint* data)
+  ElementBufferObject(int size, GLushort* data)
   {
     glGenBuffers(1, &ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);

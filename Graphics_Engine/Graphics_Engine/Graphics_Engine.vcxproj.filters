@@ -55,10 +55,10 @@
     <ClCompile Include="Systems\Graphics\Context.cpp">
       <Filter>Systems\Graphics\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Systems\Graphics\Buffer_Manager.cpp">
+    <ClCompile Include="Systems\Graphics\ShaderManager.cpp">
       <Filter>Systems\Graphics\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Systems\Graphics\ShaderManager.cpp">
+    <ClCompile Include="Systems\Graphics\ShapeGenerator.cpp">
       <Filter>Systems\Graphics\Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -88,6 +88,12 @@
       <Filter>Systems\Graphics\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Systems\Graphics\ShaderManager.h">
+      <Filter>Systems\Graphics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Graphics\ShapeGenerator.h">
+      <Filter>Systems\Graphics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Graphics\Math_Headers.h">
       <Filter>Systems\Graphics\Headers</Filter>
     </ClInclude>
   </ItemGroup>

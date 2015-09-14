@@ -2,11 +2,14 @@
 
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 vertexColor;
+layout (location = 2) in mat4 FullTransformMatrix;
 
 out vec4 Color;
 
 void main ()
 {
-  gl_Position = vec4(position, 1.0);
+  vec4 v = vec4(position, 1.0);
+
+  gl_Position = FullTransformMatrix * v;
   Color = vec4(vertexColor, 1.0);
 }
