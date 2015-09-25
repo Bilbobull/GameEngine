@@ -18,8 +18,11 @@ public:
 
   static void Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mode);
   void CloseWindow(void);
+  static void mouseMoveEvent(GLFWwindow* window, double posX, double posY);
+  static void mousePressEvent(GLFWwindow* window, int button, int action, int mode);
 
 private:
+ 
 
 };
 

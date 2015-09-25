@@ -69,6 +69,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Systems\Graphics\Camera.cpp" />
     <ClCompile Include="Systems\Graphics\Context.cpp" />
     <ClCompile Include="Systems\Graphics\GraphicsSystem.cpp" />
     <ClCompile Include="Systems\Graphics\LoadShader.cpp" />
@@ -80,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\Graphics\Buffer_Manager.h" />
+    <ClInclude Include="Systems\Graphics\Camera.h" />
     <ClInclude Include="Systems\Graphics\Context.h" />
     <ClInclude Include="Systems\Graphics\GraphicsSystem.h" />
     <ClInclude Include="Systems\Graphics\Graphics_Headers.h" />

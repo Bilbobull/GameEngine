@@ -1,4 +1,5 @@
 #include "ShapeGenerator.h"
+#include "GraphicsSystem.h"
 #include <string>
 
 Shape ShapeGenerator::makeCube()
@@ -53,7 +54,7 @@ Shape ShapeGenerator::makeCube()
     -1.0f, -1.0f, -1.0f, // 14
     +0.4f, +0.7f, +0.7f, // Colour
 
-    -1.0f, -1.0f, -1.0f, // 15
+    -1.0f, -1.0f, +1.0f, // 15
     +0.2f, +0.5f, +1.0f, // Colour
     ////////////////////////////////////
 
@@ -81,9 +82,9 @@ Shape ShapeGenerator::makeCube()
     +1.0f, -1.0f, +1.0f, // 23
     +0.9f, +1.0f, +0.2f, // Colour
   };
-  cube.NumVertices = ARRAYSIZE(stackVerts);
-  cube.vertices = new GLfloat[cube.NumVertices];
-  memcpy(cube.vertices, stackVerts, sizeof(stackVerts));
+  int NumVertices = ARRAYSIZE(stackVerts) / 6;
+  cube.vertices = std::vector <Vertex> (NumVertices);
+  memcpy(cube.vertices.data(), stackVerts, sizeof(stackVerts));
 
   unsigned short stackIndices[] = {
     0, 1, 2, 0, 2, 3, // Top
@@ -94,14 +95,210 @@ Shape ShapeGenerator::makeCube()
     20, 22, 21, 20, 23, 22, // Bottom
   };
 
-  cube.NumIndices = ARRAYSIZE(stackIndices);
-  cube.indices = new GLushort[cube.NumIndices];
-  memcpy(cube.indices, stackIndices, sizeof(stackIndices));
+  int NumIndices = ARRAYSIZE(stackIndices);
+  cube.indices = std::vector <GLushort> (NumIndices);
+  memcpy(cube.indices.data (), stackIndices, sizeof(stackIndices));
 
-  cube.vbo = new VBO(cube.NumVertices * sizeof(cube.vertices[0]), cube.vertices);
-  cube.ebo = new EBO(cube.NumIndices * sizeof(cube.indices[0]), cube.indices);
+  cube.vao = new VAO();
+  cube.vbo = new VBO(cube.vertices.size() * sizeof(Vertex), cube.vertices.data());
+  cube.ebo = new EBO(cube.indices.size() * sizeof(cube.indices[0]), cube.indices.data());
 
   cube.vbo->unBind();
   cube.ebo->unBind();
+  cube.vao->unBind();
   return cube;
+}
+
+Shape ShapeGenerator::makeArrow(void)
+{
+  Shape arrow;
+  GLfloat stackVerts[] = {
+//top side of arrow head
+    +0.00f, +0.25f, -0.25f, //0
+    +1.00f, +0.00f, +0.00f, //Color
+    +0.50f, +0.25f, -0.25f, //1
+    +1.00f, +0.00f, +0.00f, //Color
+    +0.00f, +0.25f, -1.00f, //2
+    +1.00f, +0.00f, +0.00f, //Color
+    -0.50f, +0.25f, -0.25f, //3
+    +1.00f, +0.00f, +0.00f, //Color
+//bottom side of arrow head 		 
+    +0.00f, -0.25f, -0.25f, //4
+    +0.00f, +0.00f, +1.00f, //Color
+    +0.50f, -0.25f, -0.25f, //5
+    +0.00f, +0.00f, +1.00f, //Color
+    +0.00f, -0.25f, -1.00f, //6
+    +0.00f, +0.00f, +1.00f, //Color
+    -0.50f, -0.25f, -0.25f, //7
+    +0.00f, +0.00f, +1.00f, //Color
+ //right side of arrow tip
+    +0.50f, +0.25f, -0.25f, //8
+    +0.60f, +1.00f, +0.00f, //Color
+    +0.00f, +0.25f, -1.00f, //9
+    +0.60f, +1.00f, +0.00f, //Color
+    +0.00f, -0.25f, -1.00f, //10
+    +0.60f, +1.00f, +0.00f, //Color
+    +0.50f, -0.25f, -0.25f, //11
+    +0.60f, +1.00f, +0.00f, //Color
+ //left side of arrow tip
+    +0.00f, +0.25f, -1.00f, //12
+    +0.00f, +1.00f, +0.00f, //Color
+    -0.50f, +0.25f, -0.25f, //13
+    +0.00f, +1.00f, +0.00f, //Color
+    +0.00f, -0.25f, -1.00f, //14
+    +0.00f, +1.00f, +0.00f, //Color
+    -0.50f, -0.25f, -0.25f, //15
+    +0.00f, +1.00f, +0.00f, //Color
+ //back side of arrow tip
+    -0.50f, +0.25f, -0.25f, //16
+    +0.50f, +0.50f, +0.50f, //Color
+    +0.50f, +0.25f, -0.25f, //17
+    +0.50f, +0.50f, +0.50f, //Color
+    -0.50f, -0.25f, -0.25f, //18
+    +0.50f, +0.50f, +0.50f, //Color
+    +0.50f, -0.25f, -0.25f, //19
+    +0.50f, +0.50f, +0.50f, //Color
+//top side of arrow back
+    +0.25f, +0.25f, -0.25f, //20
+    +1.00f, +0.00f, +0.00f, //Color
+    +0.25f, +0.25f, +1.00f, //21
+    +1.00f, +0.00f, +0.00f, //Color
+    -0.25f, +0.25f, +1.00f, //22
+    +1.00f, +0.00f, +0.00f, //Color
+    -0.25f, +0.25f, -0.25f, //23
+    +1.00f, +0.00f, +0.00f, //Color
+//bottom side of arrow back
+    +0.25f, -0.25f, -0.25f, //24
+    +0.00f, +0.00f, +1.00f, //Color
+    +0.25f, -0.25f, +1.00f, //25
+    +0.00f, +0.00f, +1.00f, //Color
+    -0.25f, -0.25f, +1.00f, //26
+    +0.00f, +0.00f, +1.00f, //Color
+    -0.25f, -0.25f, -0.25f, //27
+    +0.00f, +0.00f, +1.00f, //Color
+   //right side of arrow bck
+    +0.25f, +0.25f, -0.25f, //28
+    +0.60f, +1.00f, +0.00f, //Color
+    +0.25f, -0.25f, -0.25f, //29
+    +0.60f, +1.00f, +0.00f, //Color
+    +0.25f, -0.25f, +1.00f, //30
+    +0.60f, +1.00f, +0.00f, //Color
+    +0.25f, +0.25f, +1.00f, //31
+    +0.60f, +1.00f, +0.00f, //Color
+ //left side of arrow back
+    -0.25f, +0.25f, -0.25f, //32
+    +0.00f, +1.00f, +0.00f, //Color
+    -0.25f, -0.25f, -0.25f, //33
+    +0.00f, +1.00f, +0.00f, //Color
+    -0.25f, -0.25f, +1.00f, //34
+    +0.00f, +1.00f, +0.00f, //Color
+    -0.25f, +0.25f, +1.00f, //35
+    +0.00f, +1.00f, +0.00f, //Color
+  //back side of arrow back
+    -0.25f, +0.25f, +1.00f, //36
+    +0.50f, +0.50f, +0.50f, //Color
+    +0.25f, +0.25f, +1.00f, //37
+    +0.50f, +0.50f, +0.50f, //Color
+    -0.25f, -0.25f, +1.00f, //38
+    +0.50f, +0.50f, +0.50f, //Color
+    +0.25f, -0.25f, +1.00f, //39
+    +0.50f, +0.50f, +0.50f, //Color
+  };
+
+  arrow.vertices = std::vector <Vertex>(ARRAYSIZE(stackVerts) / 6);
+  memcpy(arrow.vertices.data(), stackVerts, sizeof(stackVerts));
+
+  GLushort stackIndices[] =
+  {
+    0, 1, 2, // top
+    0, 2, 3,
+    4, 6, 5, //bottom
+    4, 7, 6,
+    8, 10, 9, //right side of arrow tip
+    8, 11, 10,
+    12, 15, 13, //left side of arrow tip
+    12, 14, 15,
+    16, 19, 17, //back side of arrow tip
+    16, 18, 19,
+    20, 22, 21, //top side of back of arrow
+    20, 23, 22,
+    24, 25, 26, //bottom side of back of arrow
+    24, 26, 27,
+    28, 30, 29, //right side of back of arrow
+    28, 31, 30,
+    32, 33, 34, //left side of back of arrow
+    32, 34, 35,
+    36, 39, 37, //back side of back of arrow
+    36, 38, 39,
+  };
+
+  arrow.indices = std::vector <GLushort>(ARRAYSIZE(stackIndices));
+  memcpy(arrow.indices.data(), stackIndices, sizeof(stackIndices));
+
+  arrow.vao = new VAO();
+  arrow.vbo = new VBO(arrow.vertices.size() * sizeof(Vertex), arrow.vertices.data());
+  arrow.ebo = new EBO(arrow.indices.size() * sizeof(arrow.indices[0]), arrow.indices.data());
+
+  arrow.vbo->unBind();
+  arrow.ebo->unBind();
+  arrow.vao->unBind();
+  return arrow;
+}
+
+Shape ShapeGenerator::makePlane(unsigned dimensions /* = 10 */)
+{
+  Shape plane;
+  SaveVertices(plane, dimensions);
+  SaveIndices(plane, dimensions);
+
+  plane.vao = new VAO();
+  plane.vbo = new VBO(plane.vertices.size() * sizeof (Vertex), plane.vertices.data());
+  plane.ebo = new EBO(plane.indices.size() * sizeof (GLushort), plane.indices.data());
+  return plane;
+}
+
+void ShapeGenerator::SaveVertices(Shape& shape, unsigned dimensions)
+{
+  int NumVertices = dimensions * dimensions;
+  int half = dimensions / 2;
+  shape.vertices = std::vector <Vertex> (NumVertices);
+  unsigned pos = 0;
+  for (unsigned i = 0; i < dimensions; ++i)
+  {
+    for (unsigned j = 0; j < dimensions; ++j)
+    {
+      Vertex v;
+      v.position = glm::vec3((float)j - (float)half,
+        ((float)i - (float)half),
+        0.0f);
+      
+      v.color = glm::vec3 (g_GraphicsSys->Random_Color());
+      shape.vertices[pos++] = v;
+    }
+  }
+  return;
+}
+
+void ShapeGenerator::SaveIndices(Shape& shape, unsigned dimensions)
+{
+  int NumIndices = (dimensions - 1) * (dimensions - 1) * 2 * 3; // 2 triangles per square, 3 indices per triangle
+  shape.indices = std::vector <GLushort> (NumIndices);
+  unsigned pos = 0;
+
+  for (unsigned row = 0; row < dimensions - 1; ++row)
+  {
+    for (unsigned column = 0; column < dimensions - 1; ++column)
+    {
+      shape.indices[pos++] = dimensions * row + column;
+      shape.indices[pos++] = dimensions * row + column + dimensions;
+      shape.indices[pos++] = dimensions * row + column + dimensions + 1;
+
+      shape.indices[pos++] = dimensions * row + column;
+      shape.indices[pos++] = dimensions * row + column + dimensions + 1;
+      shape.indices[pos++] = dimensions * row + column + 1;
+    }
+  }
+
+  assert(pos = shape.indices.size());
+  return;
 }

@@ -5,6 +5,7 @@
 #include "Context.h"
 #include "Graphics_Headers.h"
 #include "../Systems.h"
+#include "Camera.h"
 
 class GraphicsSystem : public System
 {
@@ -17,11 +18,16 @@ public:
   void Free(void);
 
   Window& GetCurrentWindow(void);
+  Camera& GetCurrentCamera(void);
   void SetBackgroundColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
   void Specify_Attributes_Simple(GLuint simpleProgram);
+  void DebugDraw(void){ Debug_Draw = !Debug_Draw; }
+  glm::vec3 Random_Color(void);
 
 private:
   Window Current_Window;
+  Camera My_Camera;
+  bool Debug_Draw;
 };
 
 extern GraphicsSystem* g_GraphicsSys;

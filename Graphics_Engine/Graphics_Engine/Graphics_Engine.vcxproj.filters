@@ -61,6 +61,9 @@
     <ClCompile Include="Systems\Graphics\ShapeGenerator.cpp">
       <Filter>Systems\Graphics\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Systems\Graphics\Camera.cpp">
+      <Filter>Systems\Graphics\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\Graphics\Graphics_Headers.h">
@@ -94,6 +97,9 @@
       <Filter>Systems\Graphics\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Systems\Graphics\Math_Headers.h">
+      <Filter>Systems\Graphics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Graphics\Camera.h">
       <Filter>Systems\Graphics\Headers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,0 +1,25 @@
+﻿Build started 9/25/2015 12:07:10 AM.
+     1>Project "C:\Users\Gonzalo\Desktop\GameEngine\Graphics_Engine\Graphics_Engine\Graphics_Engine.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Systems\Graphics\Camera.cpp Systems\Graphics\Context.cpp Systems\Graphics\GraphicsSystem.cpp Systems\Graphics\LoadShader.cpp Systems\Graphics\ShaderManager.cpp Systems\Graphics\ShapeGenerator.cpp Systems\Input\InputSystem.cpp Systems\main.cpp Systems\Systems.cpp
+         Camera.cpp
+     1>c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\systems\graphics\Math_Headers.h(5): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+         Context.cpp
+     1>c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\systems\graphics\Graphics_Headers.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         GraphicsSystem.cpp
+     1>c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\systems\graphics\Graphics_Headers.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         LoadShader.cpp
+     1>c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\systems\graphics\Graphics_Headers.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         ShaderManager.cpp
+         ShapeGenerator.cpp
+     1>c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\systems\graphics\Graphics_Headers.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         InputSystem.cpp
+     1>c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\systems\input\../Graphics/Graphics_Headers.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         main.cpp
+     1>c:\users\gonzalo\desktop\gameengine\graphics_engine\graphics_engine\systems\graphics\Graphics_Headers.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         Systems.cpp
+     1>Done Building Project "C:\Users\Gonzalo\Desktop\GameEngine\Graphics_Engine\Graphics_Engine\Graphics_Engine.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.47

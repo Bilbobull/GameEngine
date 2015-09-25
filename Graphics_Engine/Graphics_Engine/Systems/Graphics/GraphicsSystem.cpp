@@ -1,8 +1,10 @@
-#include "GraphicsSystem.h"
+ #include "GraphicsSystem.h"
 #include "Buffer_Manager.h"
 #include "LoadShader.h"
 #include "ShapeGenerator.h"
 #include "Math_Headers.h"
+#include "../Input/InputSystem.h"
+
 
 GraphicsSystem* g_GraphicsSys;
 
@@ -10,84 +12,126 @@ GraphicsSystem* g_GraphicsSys;
 GLuint SimpleProgram;
 GLuint FullTransformMatrixLocation;
 Shape cube;
+Shape arrow;
 VBO* TransformationMatrixVBO;
+GLuint MatUniform;
 
 
 void GraphicsSystem::Specify_Attributes_Simple(GLuint simpleProgram)
 {
+  cube.vao->Bind();
   cube.vbo->Bind();
+  cube.ebo->Bind();
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, 0);
-
   glEnableVertexAttribArray(1);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, 0);
+  //glVertexAttrib3f(1, 1, 0, 1); // U can disable the VertexAttribArray and set a static color
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, (char*)(sizeof(GL_FLOAT) * 3));
+  cube.vao->unBind();
+  cube.vbo->unBind();
+  cube.ebo->unBind();
 
-  TransformationMatrixVBO->Bind();
-  glEnableVertexAttribArray(2);
-  glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(float) * 0));
+  arrow.vao->Bind();
+  arrow.vbo->Bind();
+  arrow.ebo->Bind();
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, 0);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, (char*)(sizeof(GL_FLOAT) * 3));
+  arrow.vao->unBind();
+  arrow.vbo->unBind();
+  arrow.ebo->unBind();
 
-  glEnableVertexAttribArray(3);
-  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(float) * 4));
-
-  glEnableVertexAttribArray(4);
-  glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(float) * 8));
-
-  glEnableVertexAttribArray(5);
-  glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(float) * 12));
-
-  glVertexAttribDivisor(2, 1);
-  glVertexAttribDivisor(3, 1);
-  glVertexAttribDivisor(4, 1);
-  glVertexAttribDivisor(5, 1);
+  //TransformationMatrixVBO->Bind();
+  //for (unsigned i = 0; i < 4; ++i)
+  //{
+  //  glEnableVertexAttribArray(2 + i);
+  //  glVertexAttribPointer(2 + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(float) * (i * 4)));
+  //  glVertexAttribDivisor(2 + i, 1);
+  //}
+  //TransformationMatrixVBO->unBind();
 }
+
+
 
 void GraphicsSystem::Init(void)
 {
   Current_Window.glfw_Init();
+  glfwSetMouseButtonCallback(Current_Window.glfw_GetWindow(), g_InputSys->mousePressEvent);
+  glfwSetCursorPosCallback(Current_Window.glfw_GetWindow(), g_InputSys->mouseMoveEvent);
+
   g_GraphicsSys = this;
 
   glEnable(GL_DEPTH_TEST);
 
   SimpleProgram = LoadShaders("SimpleVertexShader.glsl", "SimpleFragmentShader.glsl");
-  cube = ShapeGenerator::makeCube();
-  cube.vbo->Bind();
-  cube.ebo->Bind();
+  cube = ShapeGenerator::makePlane();
+  arrow = ShapeGenerator::makeArrow();
 
-  // If u do translation before rotation then it rotates around the center of the world
-  // instead of around the center of the object
-
-  // projection * translation * rotation
-  glm::mat4 projectionMatrix = glm::perspective(90.0f, ((float)Current_Window.GetWidth()) / Current_Window.GetHeight(), 0.1f, 10.0f);
-  glm::mat4 fullTransforms[] =
-  {
-    projectionMatrix * glm::translate(glm::vec3(-1.0f, 0.0f, -3.0f)) * glm::rotate(21.0f, glm::vec3(1.0f, 0.0f, 0.0f)),
-    projectionMatrix * glm::translate(glm::vec3(1.0f, 0.0f, -3.75f)) * glm::rotate(30.5f, glm::vec3(0.0f, 1.0f, 0.0f)),
-
-  };
-  TransformationMatrixVBO = new VBO(sizeof(fullTransforms), fullTransforms);
+ // TransformationMatrixVBO = new VBO(sizeof(glm::mat4) * 2 , 0);
 
   Specify_Attributes_Simple(SimpleProgram);
+  MatUniform = glGetUniformLocation(SimpleProgram, "FullTransformMatrix");
 
+
+  Debug_Draw = false;
 }
 
 void GraphicsSystem::Update(double dt)
 {
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-  // SetBackgroundColor(0.5f, 0.1f, 0.1f);
+ // SetBackgroundColor(0.5f, 0.1f, 0.1f);
 
   glViewport(0, 0, Current_Window.GetWidth(), Current_Window.GetHeight()); // Still need to do it
 
   glUseProgram(SimpleProgram);
 
-  glDrawElementsInstanced(GL_TRIANGLES, cube.NumIndices, GL_UNSIGNED_SHORT, 0, 2 );
+  // If u do translation before rotation then it rotates around the center of the world
+  // instead of around the center of the object
+
+  // projection * translation * rotation
+  cube.vao->Bind();
+  glm::mat4 projectionMatrix = glm::perspective(90.0f, ((float)Current_Window.GetWidth()) / Current_Window.GetHeight(), 0.1f, 20.0f);
+
+  //Cube
+
+  glm::mat4 matrix = projectionMatrix * My_Camera.getWorldToViewMatrix() * glm::translate(glm::vec3(-2.0f, 0.0f, -3.0f)) * glm::rotate(21.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+  glUniformMatrix4fv(MatUniform, 1, GL_FALSE, &matrix[0][0]);
+  glDrawElements(GL_TRIANGLES, cube.indices.size(), GL_UNSIGNED_SHORT, 0);
+
+  matrix = projectionMatrix * My_Camera.getWorldToViewMatrix() * glm::translate(glm::vec3(2.0f, 0.0f, -3.75f)) * glm::rotate(30.5f, glm::vec3(0.0f, 1.0f, 0.0f));
+  glUniformMatrix4fv(MatUniform, 1, GL_FALSE, &matrix[0][0]);
+  glDrawElements(GL_TRIANGLES, cube.indices.size(), GL_UNSIGNED_SHORT, 0);
+
+  //Arrow
+  arrow.vao->Bind();
+  glm::mat4 arrowmatrix = glm::translate(0.0f, 0.0f, -3.0f);
+  matrix = projectionMatrix * My_Camera.getWorldToViewMatrix() * arrowmatrix;
+  glUniformMatrix4fv(MatUniform, 1, GL_FALSE, &matrix[0][0]);
+  glDrawElements(GL_TRIANGLES, arrow.indices.size(), GL_UNSIGNED_SHORT, 0);
+  //glm::mat4 fullTransforms[] =
+  //{
+  //  projectionMatrix * My_Camera.getWorldToViewMatrix() * glm::translate(glm::vec3(-1.0f, 0.0f, -3.0f)) * glm::rotate(21.0f, glm::vec3(1.0f, 0.0f, 0.0f)),
+  //  projectionMatrix * My_Camera.getWorldToViewMatrix() * glm::translate(glm::vec3(1.0f, 0.0f, -3.75f)) * glm::rotate(30.5f, glm::vec3(0.0f, 1.0f, 0.0f)),
+  //};
+
+  //TransformationMatrixVBO->Add_Buffer_Data(sizeof(fullTransforms), fullTransforms);
+  //TransformationMatrixVBO->Bind();
+
+  //MyObject.ebo->Bind();
+
+  //if (!Debug_Draw)
+  //  glDrawElementsInstanced(GL_TRIANGLES, MyObject.NumIndices, GL_UNSIGNED_SHORT, 0, 2);
+  //else
+  //  glDrawElementsInstanced(GL_LINE_STRIP, MyObject.NumIndices, GL_UNSIGNED_SHORT, 0, 2);
 
   glfwSwapBuffers(Current_Window.glfw_GetWindow());
 }
 
 void GraphicsSystem::Free(void)
 {
-  
+
 }
 
 Window& GraphicsSystem::GetCurrentWindow(void)
@@ -98,6 +142,20 @@ Window& GraphicsSystem::GetCurrentWindow(void)
 void GraphicsSystem::SetBackgroundColor(float r /*= 1.0f*/, float g /*= 1.0f*/, float b /*= 1.0f*/, float a /*= 1.0f*/)
 {
   glClearColor(r, g, b, a);
+}
+
+Camera& GraphicsSystem::GetCurrentCamera(void)
+{
+  return My_Camera;
+}
+
+glm::vec3 GraphicsSystem::Random_Color(void)
+{
+  glm::vec3 color;
+  color.x = rand() / (float)RAND_MAX;
+  color.y = rand() / (float)RAND_MAX;
+  color.z = rand() / (float)RAND_MAX;
+  return color;
 }
 
 

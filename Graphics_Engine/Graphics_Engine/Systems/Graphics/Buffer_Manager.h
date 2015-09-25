@@ -84,6 +84,11 @@ public:
     this->unBind();
   }
 
+  void Add_Buffer_Data(int size, void* data)
+  {
+    glBufferData(GL_ARRAY_BUFFER, size, data, GL_STREAM_DRAW);
+  }
+
   int Get_Data_Size(void)
   {
     return Data.size();
