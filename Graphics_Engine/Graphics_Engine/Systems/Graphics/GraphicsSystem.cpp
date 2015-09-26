@@ -1,9 +1,10 @@
  #include "GraphicsSystem.h"
 #include "Buffer_Manager.h"
 #include "LoadShader.h"
-#include "ShapeGenerator.h"
+//#include "ShapeGenerator.h"
 #include "Math_Headers.h"
 #include "../Input/InputSystem.h"
+#include "Object.h"
 
 
 GraphicsSystem* g_GraphicsSys;
@@ -11,36 +12,36 @@ GraphicsSystem* g_GraphicsSys;
 
 GLuint SimpleProgram;
 GLuint FullTransformMatrixLocation;
-Shape cube;
-Shape arrow;
+Object* cube;
+Object* arrow;
 VBO* TransformationMatrixVBO;
 GLuint MatUniform;
 
 
-void GraphicsSystem::Specify_Attributes_Simple(GLuint simpleProgram)
+void GraphicsSystem::Specify_Attributes_Simple(GLuint program)
 {
-  cube.vao->Bind();
-  cube.vbo->Bind();
-  cube.ebo->Bind();
+  cube->mesh->vao->Bind();
+  cube->mesh->vbo->Bind();
+  cube->mesh->ebo->Bind();
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, 0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT)* 6, 0);
   //glVertexAttrib3f(1, 1, 0, 1); // U can disable the VertexAttribArray and set a static color
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, (char*)(sizeof(GL_FLOAT) * 3));
-  cube.vao->unBind();
-  cube.vbo->unBind();
-  cube.ebo->unBind();
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT)* 6, (char*)(sizeof(GL_FLOAT)* 3));
+  cube->mesh->vao->unBind();
+  cube->mesh->vbo->unBind();
+  cube->mesh->ebo->unBind();
 
-  arrow.vao->Bind();
-  arrow.vbo->Bind();
-  arrow.ebo->Bind();
+  arrow->mesh->vao->Bind();
+  arrow->mesh->vbo->Bind();
+  arrow->mesh->ebo->Bind();
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, 0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, (char*)(sizeof(GL_FLOAT) * 3));
-  arrow.vao->unBind();
-  arrow.vbo->unBind();
-  arrow.ebo->unBind();
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT)* 6, 0);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT)* 6, (char*)(sizeof(GL_FLOAT)* 3));
+  arrow->mesh->vao->unBind();
+  arrow->mesh->vbo->unBind();
+  arrow->mesh->ebo->unBind();
 
   //TransformationMatrixVBO->Bind();
   //for (unsigned i = 0; i < 4; ++i)
@@ -65,8 +66,8 @@ void GraphicsSystem::Init(void)
   glEnable(GL_DEPTH_TEST);
 
   SimpleProgram = LoadShaders("SimpleVertexShader.glsl", "SimpleFragmentShader.glsl");
-  cube = ShapeGenerator::makePlane();
-  arrow = ShapeGenerator::makeArrow();
+  cube = new Object();
+  arrow = new Object(Plane_Mesh);
 
  // TransformationMatrixVBO = new VBO(sizeof(glm::mat4) * 2 , 0);
 
@@ -91,25 +92,25 @@ void GraphicsSystem::Update(double dt)
   // instead of around the center of the object
 
   // projection * translation * rotation
-  cube.vao->Bind();
+  cube->mesh->vao->Bind();
   glm::mat4 projectionMatrix = glm::perspective(90.0f, ((float)Current_Window.GetWidth()) / Current_Window.GetHeight(), 0.1f, 20.0f);
 
   //Cube
 
   glm::mat4 matrix = projectionMatrix * My_Camera.getWorldToViewMatrix() * glm::translate(glm::vec3(-2.0f, 0.0f, -3.0f)) * glm::rotate(21.0f, glm::vec3(1.0f, 0.0f, 0.0f));
   glUniformMatrix4fv(MatUniform, 1, GL_FALSE, &matrix[0][0]);
-  glDrawElements(GL_TRIANGLES, cube.indices.size(), GL_UNSIGNED_SHORT, 0);
+  glDrawElements(GL_TRIANGLES, cube->mesh->indices.size(), GL_UNSIGNED_SHORT, 0);
 
   matrix = projectionMatrix * My_Camera.getWorldToViewMatrix() * glm::translate(glm::vec3(2.0f, 0.0f, -3.75f)) * glm::rotate(30.5f, glm::vec3(0.0f, 1.0f, 0.0f));
   glUniformMatrix4fv(MatUniform, 1, GL_FALSE, &matrix[0][0]);
-  glDrawElements(GL_TRIANGLES, cube.indices.size(), GL_UNSIGNED_SHORT, 0);
+  glDrawElements(GL_TRIANGLES, cube->mesh->indices.size(), GL_UNSIGNED_SHORT, 0);
 
   //Arrow
-  arrow.vao->Bind();
+  arrow->mesh->vao->Bind();
   glm::mat4 arrowmatrix = glm::translate(0.0f, 0.0f, -3.0f);
   matrix = projectionMatrix * My_Camera.getWorldToViewMatrix() * arrowmatrix;
   glUniformMatrix4fv(MatUniform, 1, GL_FALSE, &matrix[0][0]);
-  glDrawElements(GL_TRIANGLES, arrow.indices.size(), GL_UNSIGNED_SHORT, 0);
+  glDrawElements(GL_TRIANGLES, arrow->mesh->indices.size(), GL_UNSIGNED_SHORT, 0);
   //glm::mat4 fullTransforms[] =
   //{
   //  projectionMatrix * My_Camera.getWorldToViewMatrix() * glm::translate(glm::vec3(-1.0f, 0.0f, -3.0f)) * glm::rotate(21.0f, glm::vec3(1.0f, 0.0f, 0.0f)),

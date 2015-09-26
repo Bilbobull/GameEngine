@@ -1,7 +1,13 @@
+#pragma once
 #include "Graphics_Headers.h"
 #include "Math_Headers.h"
 #include "Buffer_Manager.h"
 
+enum Meshes{
+  Cube_Mesh,
+  Arrow_Mesh,
+  Plane_Mesh
+};
 
 struct Vertex
 {
@@ -32,6 +38,8 @@ public:
   static Shape makePlane(unsigned dimensions = 10);
   static void SaveVertices(Shape& shape, unsigned dimensions);
   static void SaveIndices(Shape& shape, unsigned dimensions);
+
+  static Shape* Create_Shape(Meshes meshtype);
   
 private:
   

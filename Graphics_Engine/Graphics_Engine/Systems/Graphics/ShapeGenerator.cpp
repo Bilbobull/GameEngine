@@ -302,3 +302,25 @@ void ShapeGenerator::SaveIndices(Shape& shape, unsigned dimensions)
   assert(pos = shape.indices.size());
   return;
 }
+
+
+Shape* ShapeGenerator::Create_Shape(Meshes meshtype)
+{
+  Shape* mesh = new Shape();
+  switch (meshtype)
+  {
+  case Cube_Mesh:
+    *mesh = makeCube();
+    break;
+
+  case Arrow_Mesh:
+    *mesh = makeArrow();
+    break;
+
+  case Plane_Mesh:
+    *mesh = makePlane();
+    break;
+    
+  }
+  return mesh;
+}

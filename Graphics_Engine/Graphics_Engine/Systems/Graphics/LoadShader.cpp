@@ -80,6 +80,6 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
   glLinkProgram (program);
   glGetProgramInfoLog(program, 1000, 0, log);
   std::cout << "Link Status: " << log << "\n";
-  glUseProgram (program);
+  //glUseProgram (program);
   return program;
 }
