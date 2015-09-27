@@ -1,8 +1,9 @@
 #include "Camera.h"
+#include "GraphicsSystem.h"
 #define MOVEMENT_SPEED 0.1f
 
 
-Camera::Camera() : viewDirection(0.0f, 0.0f, -1.0f), up(0.0f, 1.0f, 0.0f) 
+Camera::Camera() : viewDirection(0.0f, 0.0f, -1.0f), up(0.0f, 1.0f, 0.0f), near(0.1f), far(20.0f)
 {
 }
 
@@ -64,6 +65,12 @@ void Camera::MoveDown()
 glm::mat4 Camera::getWorldToViewMatrix(void) const
 {
   return glm::lookAt(position, position + viewDirection, up);;
+}
+
+glm::mat4 Camera::getProjectionMatrix(void) 
+{
+  projectionMatrix = glm::perspective(90.0f, ((float)g_GraphicsSys->GetCurrentWindow().GetWidth()) / g_GraphicsSys->GetCurrentWindow().GetHeight(), near, far);
+  return projectionMatrix; 
 }
 
 

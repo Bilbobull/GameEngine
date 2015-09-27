@@ -73,9 +73,10 @@
     <ClCompile Include="Systems\Graphics\Context.cpp" />
     <ClCompile Include="Systems\Graphics\GraphicsSystem.cpp" />
     <ClCompile Include="Systems\Graphics\LoadShader.cpp" />
+    <ClCompile Include="Systems\Graphics\Mesh.cpp" />
     <ClCompile Include="Systems\Graphics\Object.cpp" />
     <ClCompile Include="Systems\Graphics\ShaderManager.cpp" />
-    <ClCompile Include="Systems\Graphics\ShapeGenerator.cpp" />
+    <ClCompile Include="Systems\Graphics\MeshGenerator.cpp" />
     <ClCompile Include="Systems\Input\InputSystem.cpp" />
     <ClCompile Include="Systems\main.cpp" />
     <ClCompile Include="Systems\Systems.cpp" />
@@ -88,9 +89,10 @@
     <ClInclude Include="Systems\Graphics\Graphics_Headers.h" />
     <ClInclude Include="Systems\Graphics\LoadShader.h" />
     <ClInclude Include="Systems\Graphics\Math_Headers.h" />
+    <ClInclude Include="Systems\Graphics\Mesh.h" />
     <ClInclude Include="Systems\Graphics\Object.h" />
     <ClInclude Include="Systems\Graphics\ShaderManager.h" />
-    <ClInclude Include="Systems\Graphics\ShapeGenerator.h" />
+    <ClInclude Include="Systems\Graphics\MeshGenerator.h" />
     <ClInclude Include="Systems\Input\InputSystem.h" />
     <ClInclude Include="Systems\Systems.h" />
     <ClInclude Include="Systems\System_Headers.h" />

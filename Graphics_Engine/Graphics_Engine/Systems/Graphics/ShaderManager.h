@@ -1,23 +1,19 @@
 #pragma once
 #include <map>
 #include "Graphics_Headers.h"
-typedef void(*callback)(void);
 
-class Shader_Manager{
+class ShaderManager{
 public:
-  Shader_Manager()
+  ShaderManager()
   {
     ShaderPath = "Shaders/";
   }
-  ~Shader_Manager()
+  ~ShaderManager()
   {
     Unload_Shaders();
   }
 
   void Upload_Shader(char* vertex, char* fragment, char* name);
-
-  void Specify_Atributes(char* name, callback );
-  void Specify_Attributes_Simple(void);
   void Unload_Shaders(void);
 private:
   std::map <std::string, GLuint> ShaderList;
