@@ -18,6 +18,9 @@ void Mesh::Draw(glm::mat4 matrix)
   vao->Bind();
   glUniformMatrix4fv(MatUniform, 1, GL_FALSE, &matrix[0][0]);
 
-  glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, 0);
+  //int size;
+  //glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
+  //glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, 0);
+  glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
 }

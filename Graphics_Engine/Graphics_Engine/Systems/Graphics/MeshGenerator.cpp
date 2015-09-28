@@ -1,5 +1,6 @@
 #include "MeshGenerator.h"
 #include "GraphicsSystem.h"
+#include "OBJLoader.h"
 
 
 void MeshGenerator::Specify_Attributes(void)
@@ -339,6 +340,20 @@ Mesh* MeshGenerator::Create_Shape(Meshes meshtype)
     break;
     
   }
+  return mesh;
+}
+
+Mesh* MeshGenerator::makeMeshFromObj(std::string filename)
+{
+  Mesh* mesh = new Mesh();
+  ObjLoader::loadOBJ(filename.c_str(), mesh);
+
+  mesh->vao = new VAO();
+  mesh->vbo = new VBO(mesh->vertices.size() * sizeof (Vertex), mesh->vertices.data());
+  mesh->ebo = new EBO(mesh->indices.size() * sizeof(GLushort), mesh->indices.data());
+
+  Specify_Attributes();
+  mesh->vao->unBind();
   return mesh;
 }
 
