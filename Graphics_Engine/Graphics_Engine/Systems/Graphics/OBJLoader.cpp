@@ -7,7 +7,7 @@ namespace ObjLoader
   {
     printf("Loading OBJ file %s...\n", path);
 
-    std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
+    std::vector<unsigned short> vertexIndices, uvIndices, normalIndices;
     std::vector<glm::vec3> temp_vertices;
     std::vector<glm::vec2> temp_uvs;
     std::vector<glm::vec3> temp_normals;
@@ -57,6 +57,7 @@ namespace ObjLoader
         vertexIndices.push_back(vertexIndex[0]);
         vertexIndices.push_back(vertexIndex[1]);
         vertexIndices.push_back(vertexIndex[2]);
+
         uvIndices.push_back(uvIndex[0]);
         uvIndices.push_back(uvIndex[1]);
         uvIndices.push_back(uvIndex[2]);
@@ -72,6 +73,39 @@ namespace ObjLoader
 
     }
 
+    //for (auto& it : vertexIndices)
+    //{
+    //  mesh->triangles.push_back(it - 1);
+    //}
+    ////mesh->indices = vertexIndices;
+
+    //glm::vec3 pervVertex;
+    //for (int i = 0; i < temp_vertices.size(); ++i)
+    //{
+    //  Vertex v;
+    //  v.position = temp_vertices.at(i);
+    //  v.color = v.position;
+
+    //  glm::vec3 normal = temp_normals [normalIndices[i]];
+    //  v.normal = normal;
+
+    //  //v.color = glm::vec3(1.0f);
+    //  mesh->vertices.push_back(v);
+
+    //  
+    //}
+
+    //for (int i = 0; i < temp_vertices.size(); ++i)
+    //{
+    //  unsigned normalIndex = normalIndices[i];
+    //  mesh->vertices[i].normal = glm::normalize(temp_normals [normalIndex]);
+    //}
+
+    //for (unsigned i = 0; i < vertexIndices.size(); ++i)
+    //{
+    //  unsigned int normalIndex = normalIndices[i];
+    //}
+
     // For each vertex of each triangle
     for (unsigned int i = 0; i < vertexIndices.size(); i++){
 
@@ -85,15 +119,20 @@ namespace ObjLoader
       glm::vec2 uv = temp_uvs[uvIndex - 1];
       glm::vec3 normal = temp_normals[normalIndex - 1];
 
-      // Put the attributes in buffers
       Vertex v;
       v.position = vertex;
-      v.color = normal;
-      mesh->vertices.emplace_back(v);
-      mesh->indices.emplace_back(vertexIndex);
+      v.normal = normal;
+      v.color = glm::vec3(1.0f);
+      mesh->vertices.push_back(v);
+      //// Put the attributes in buffers
+      //Vertex v;
+      //v.position = vertex;
+      //v.color = normal;
+      //mesh->vertices.emplace_back(v);
+      //mesh->indices.emplace_back(vertexIndex);
       //out_vertices.push_back(vertex);
       //out_uvs.push_back(uv);
-      //out_normals.push_back(normal);
+      //mesh.push_back(normal);
 
     }
 

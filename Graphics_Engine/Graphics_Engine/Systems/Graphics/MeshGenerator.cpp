@@ -7,8 +7,10 @@ void MeshGenerator::Specify_Attributes(void)
 {
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, 0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 6, (char*)(sizeof(GL_FLOAT) * 3));
+  glEnableVertexAttribArray(2);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 9, 0);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 9, (char*)(sizeof(GL_FLOAT) * 3));
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 9, (char*)(sizeof(GL_FLOAT) * 6));
 }
 
 Mesh* MeshGenerator::makeCube(void)
@@ -105,12 +107,12 @@ Mesh* MeshGenerator::makeCube(void)
   };
 
   int NumIndices = ARRAYSIZE(stackIndices);
-  cube->indices = std::vector <GLushort> (NumIndices);
-  memcpy(cube->indices.data (), stackIndices, sizeof(stackIndices));
+  cube->triangles = std::vector <GLushort> (NumIndices);
+  memcpy(cube->triangles.data (), stackIndices, sizeof(stackIndices));
 
   cube->vao = new VAO();
   cube->vbo = new VBO(cube->vertices.size() * sizeof(Vertex), cube->vertices.data());
-  cube->ebo = new EBO(cube->indices.size() * sizeof(cube->indices[0]), cube->indices.data());
+  cube->ebo = new EBO(cube->triangles.size() * sizeof(cube->triangles[0]), cube->triangles.data());
 
   Specify_Attributes();
 
@@ -244,12 +246,12 @@ Mesh* MeshGenerator::makeArrow(void)
     36, 38, 39,
   };
 
-  arrow->indices = std::vector <GLushort>(ARRAYSIZE(stackIndices));
-  memcpy(arrow->indices.data(), stackIndices, sizeof(stackIndices));
+  arrow->triangles = std::vector <GLushort>(ARRAYSIZE(stackIndices));
+  memcpy(arrow->triangles.data(), stackIndices, sizeof(stackIndices));
 
   arrow->vao = new VAO();
   arrow->vbo = new VBO(arrow->vertices.size() * sizeof(Vertex), arrow->vertices.data());
-  arrow->ebo = new EBO(arrow->indices.size() * sizeof(arrow->indices[0]), arrow->indices.data());
+  arrow->ebo = new EBO(arrow->triangles.size() * sizeof(arrow->triangles[0]), arrow->triangles.data());
 
   Specify_Attributes();
 
@@ -267,7 +269,7 @@ Mesh* MeshGenerator::makePlane(unsigned dimensions /* = 10 */)
 
   plane->vao = new VAO();
   plane->vbo = new VBO(plane->vertices.size() * sizeof(Vertex), plane->vertices.data());
-  plane->ebo = new EBO(plane->indices.size() * sizeof(GLushort), plane->indices.data());
+  plane->ebo = new EBO(plane->triangles.size() * sizeof(GLushort), plane->triangles.data());
 
   Specify_Attributes();
 
@@ -301,24 +303,24 @@ void MeshGenerator::SaveVertices(Mesh& shape, unsigned dimensions)
 void MeshGenerator::SaveIndices(Mesh& shape, unsigned dimensions)
 {
   int NumIndices = (dimensions - 1) * (dimensions - 1) * 2 * 3; // 2 triangles per square, 3 indices per triangle
-  shape.indices = std::vector <GLushort> (NumIndices);
+  shape.triangles = std::vector <GLushort> (NumIndices);
   unsigned pos = 0;
 
   for (unsigned row = 0; row < dimensions - 1; ++row)
   {
     for (unsigned column = 0; column < dimensions - 1; ++column)
     {
-      shape.indices[pos++] = dimensions * row + column;
-      shape.indices[pos++] = dimensions * row + column + dimensions;
-      shape.indices[pos++] = dimensions * row + column + dimensions + 1;
+      shape.triangles[pos++] = dimensions * row + column;
+      shape.triangles[pos++] = dimensions * row + column + dimensions;
+      shape.triangles[pos++] = dimensions * row + column + dimensions + 1;
 
-      shape.indices[pos++] = dimensions * row + column;
-      shape.indices[pos++] = dimensions * row + column + dimensions + 1;
-      shape.indices[pos++] = dimensions * row + column + 1;
+      shape.triangles[pos++] = dimensions * row + column;
+      shape.triangles[pos++] = dimensions * row + column + dimensions + 1;
+      shape.triangles[pos++] = dimensions * row + column + 1;
     }
   }
 
-  assert(pos = shape.indices.size());
+  assert(pos = shape.triangles.size());
   return;
 }
 
@@ -350,7 +352,7 @@ Mesh* MeshGenerator::makeMeshFromObj(std::string filename)
 
   mesh->vao = new VAO();
   mesh->vbo = new VBO(mesh->vertices.size() * sizeof (Vertex), mesh->vertices.data());
-  mesh->ebo = new EBO(mesh->indices.size() * sizeof(GLushort), mesh->indices.data());
+  mesh->ebo = new EBO(mesh->triangles.size() * sizeof(GLushort), mesh->triangles.data());
 
   Specify_Attributes();
   mesh->vao->unBind();

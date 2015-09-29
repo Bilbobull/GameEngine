@@ -11,20 +11,22 @@ struct Vertex
     color(col)
   {}
   glm::vec3 position;
-  //glm::vec3 normal;
+  glm::vec3 normal;
   glm::vec3 color;
 };
 
 class Mesh
 {
 public:
+
   Mesh(){}
   ~Mesh(){}
   void Draw(glm::mat4 matrix);
   static void Init_Mesh_Shader(void);
 
   std::vector <Vertex> vertices;
-  std::vector <GLushort> indices;
+  std::vector <GLushort> triangles;
+  //std::vector <GLushort> normalIndices;
 
   VAO* vao;
   VBO* vbo;

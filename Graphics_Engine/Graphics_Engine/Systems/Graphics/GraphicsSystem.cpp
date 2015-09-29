@@ -25,7 +25,9 @@ void GraphicsSystem::Init(void)
 
   //Object* cube = ObjectManager::CreateObject(Arrow_Mesh, glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 21.0f, glm::vec3(1.0f, 0.0f, 0.0f));
   //Object* arrow = ObjectManager::CreateObject(Plane_Mesh, glm::vec3(2.0f, 0.0f, -3.75f), glm::vec3(-2.0f, 0.0f, -3.0f), 30.5f, glm::vec3(0.0f, 1.0f, 0.0f));
-  Object* sphere = ObjectManager::CreateMeshObject("Models/Pyro.obj", glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 21.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+  Object* sphere = ObjectManager::CreateMeshObject("Models/Drone.obj", glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+  Object* im = ObjectManager::CreateMeshObject("Models/Ironman.obj", glm::vec3(-1.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+  Object* pyro = ObjectManager::CreateMeshObject("Models/Pyro.obj", glm::vec3(-3.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 90.0f, glm::vec3(1.0f, 1.0f, 0.0f));
 
   Debug_Draw = false;
 }
