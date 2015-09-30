@@ -25,17 +25,14 @@ void GraphicsSystem::Init(void)
   Object* arrow = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f), " ", Arrow_Mesh );
   Object* cube = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -10.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 
-  Object* ironman = ObjectManager::CreateObject(glm::vec3(2.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "Drone.obj");
-  Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f), "Ironman.obj");
+  Object* ironman = ObjectManager::CreateObject(glm::vec3(2.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "Pyro");
+  Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f), "Ironman");
 
-  Debug_Draw = false;
 }
 
 void GraphicsSystem::Update(double dt)
 {
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
- // SetBackgroundColor(0.5f, 0.1f, 0.1f);
 
   glViewport(0, 0, Current_Window.GetWidth(), Current_Window.GetHeight()); // Still need to do it
 
@@ -50,7 +47,7 @@ void GraphicsSystem::Update(double dt)
 
 void GraphicsSystem::Free(void)
 {
-
+  ObjectManager::Free();
 }
 
 Window& GraphicsSystem::GetCurrentWindow(void)

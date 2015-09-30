@@ -21,6 +21,7 @@ public:
   Camera& GetCurrentCamera(void);
   void SetBackgroundColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
   void DebugDraw(void){ Debug_Draw = !Debug_Draw; }
+  bool GetDebugDraw(void){ return Debug_Draw; }
   glm::vec3 Random_Color(void);
 
 private:

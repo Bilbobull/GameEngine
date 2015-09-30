@@ -1,10 +1,13 @@
 #version 330
 
-in vec4 Color;
 in vec3 Normal;
 out vec4 outColor;
+in vec4 Color;
+in vec2 Texcoord;
+
+uniform sampler2D Texture;
 
 void main()
 {
-	outColor = vec4 (Normal, 1.0);
+	outColor = texture2D (Texture, Texcoord) * Color;
 }

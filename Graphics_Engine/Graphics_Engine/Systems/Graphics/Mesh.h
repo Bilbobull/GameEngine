@@ -2,6 +2,7 @@
 #include "Graphics_Headers.h"
 #include "Math_Headers.h"
 #include "Buffer_Manager.h"
+#include "Texture.h"
 
 enum Draw_Mode{
   Models,
@@ -43,5 +44,6 @@ public:
   VBO* vbo;
   EBO* ebo;
   Draw_Mode type;
+  Texture* texture;
   
 };

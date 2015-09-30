@@ -3,7 +3,7 @@
 #define MOVEMENT_SPEED 0.1f
 
 
-Camera::Camera() : viewDirection(0.0f, 0.0f, -1.0f), up(0.0f, 1.0f, 0.0f), near(0.1f), far(20.0f)
+Camera::Camera() : position(0.0f,2.0f,2.0f), viewDirection(0.0f, 0.0f, -1.0f), up(0.0f, 1.0f, 0.0f), near(0.1f), far(20.0f)
 {
 }
 

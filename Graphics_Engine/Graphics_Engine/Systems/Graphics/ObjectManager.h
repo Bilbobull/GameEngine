@@ -9,6 +9,7 @@ public:
                                std::string filename = " ", Meshes meshtype = Meshes::Cube_Mesh);
 
   static std::vector <Object*>& GetObjectList(){ return Object_List; }
+  static void Free(void);
 private:
   static std::vector <Object*> Object_List;
 };

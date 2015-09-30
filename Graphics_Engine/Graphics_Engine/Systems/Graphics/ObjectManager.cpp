@@ -8,6 +8,14 @@ Object* ObjectManager::CreateObject(glm::vec3 pos, glm::vec3 sca, float angle, g
   return object;
 }
 
+void ObjectManager::Free(void)
+{
+  for (auto it : Object_List)
+  {
+    delete it;
+  }
+}
+
 
 std::vector <Object*> ObjectManager::Object_List;
 

@@ -51,7 +51,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glew32s.lib;glfw3.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>STB.lib;opengl32.lib;glew32.lib;glew32s.lib;glfw3.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -82,11 +82,13 @@
     <ClCompile Include="Systems\Graphics\OBJLoader.cpp" />
     <ClCompile Include="Systems\Graphics\ShaderManager.cpp" />
     <ClCompile Include="Systems\Graphics\MeshGenerator.cpp" />
+    <ClCompile Include="Systems\Graphics\Texture.cpp" />
     <ClCompile Include="Systems\Input\InputSystem.cpp" />
     <ClCompile Include="Systems\main.cpp" />
     <ClCompile Include="Systems\Systems.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="stb_image.h" />
     <ClInclude Include="Systems\Graphics\Buffer_Manager.h" />
     <ClInclude Include="Systems\Graphics\Camera.h" />
     <ClInclude Include="Systems\Graphics\Context.h" />
@@ -100,6 +102,7 @@
     <ClInclude Include="Systems\Graphics\OBJLoader.h" />
     <ClInclude Include="Systems\Graphics\ShaderManager.h" />
     <ClInclude Include="Systems\Graphics\MeshGenerator.h" />
+    <ClInclude Include="Systems\Graphics\Texture.h" />
     <ClInclude Include="Systems\Input\InputSystem.h" />
     <ClInclude Include="Systems\Systems.h" />
     <ClInclude Include="Systems\System_Headers.h" />

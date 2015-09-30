@@ -8,9 +8,11 @@ void MeshGenerator::Specify_Attributes(void)
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
   glEnableVertexAttribArray(2);
+  glEnableVertexAttribArray(3);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (char*)(sizeof(glm::vec3)));
   glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (char*)(2 * sizeof(glm::vec3)));
+  glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (char*)(3 * sizeof(glm::vec3)));
 }
 
 void MeshGenerator::Specify_Simple_Attributes(void)
@@ -510,6 +512,7 @@ Mesh* MeshGenerator::makeMeshFromObj(std::string filename)
 {
   std::string path = "Models\\";
   path += filename;
+  path += ".obj";
   Mesh* mesh = new Mesh();
   ObjLoader load;
   load.Load(path.c_str(), mesh);
@@ -519,6 +522,9 @@ Mesh* MeshGenerator::makeMeshFromObj(std::string filename)
   mesh->ebo = new EBO(mesh->triangles.size() * sizeof(GLushort), mesh->triangles.data());
   Specify_Attributes();
   mesh->vao->unBind();
+
+  mesh->texture = new Texture(filename);
+
   return mesh;
 }
 
