@@ -128,10 +128,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Systems\Graphics\Shaders\SimpleVertexShader.glsl">
+    <None Include="Systems\Graphics\Shaders\ModelFragmentShader.glsl">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </None>
+    <None Include="Systems\Graphics\Shaders\ModelVertexShader.glsl">
       <Filter>Systems\Graphics\Shaders</Filter>
     </None>
     <None Include="Systems\Graphics\Shaders\SimpleFragmentShader.glsl">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </None>
+    <None Include="Systems\Graphics\Shaders\SimpleVertexShader.glsl">
       <Filter>Systems\Graphics\Shaders</Filter>
     </None>
   </ItemGroup>

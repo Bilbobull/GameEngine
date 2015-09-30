@@ -22,9 +22,10 @@ public:
   static void SaveVertices(Mesh& shape, unsigned dimensions);
   static void SaveIndices(Mesh& shape, unsigned dimensions);
   static void Specify_Attributes(void);
+  static void Specify_Simple_Attributes(void);
   static Mesh* makeMeshFromObj(std::string filename);;
 
-  static Mesh* Create_Shape(Meshes meshtype);
+  static Mesh* Create_Shape(std::string filename = " ", Meshes meshtype = Cube_Mesh);
   
 private:
   

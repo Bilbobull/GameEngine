@@ -1,7 +1,6 @@
  #include "GraphicsSystem.h"
 #include "Buffer_Manager.h"
 #include "LoadShader.h"
-//#include "ShapeGenerator.h"
 #include "Math_Headers.h"
 #include "../Input/InputSystem.h"
 #include "Object.h"
@@ -23,11 +22,11 @@ void GraphicsSystem::Init(void)
  
   Mesh::Init_Mesh_Shader();
 
-  //Object* cube = ObjectManager::CreateObject(Arrow_Mesh, glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 21.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-  //Object* arrow = ObjectManager::CreateObject(Plane_Mesh, glm::vec3(2.0f, 0.0f, -3.75f), glm::vec3(-2.0f, 0.0f, -3.0f), 30.5f, glm::vec3(0.0f, 1.0f, 0.0f));
-  Object* sphere = ObjectManager::CreateMeshObject("Models/Drone.obj", glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-  Object* im = ObjectManager::CreateMeshObject("Models/Ironman.obj", glm::vec3(-1.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-  Object* pyro = ObjectManager::CreateMeshObject("Models/Pyro.obj", glm::vec3(-3.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 90.0f, glm::vec3(1.0f, 1.0f, 0.0f));
+  Object* arrow = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f), " ", Arrow_Mesh );
+  Object* cube = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -10.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+
+  Object* ironman = ObjectManager::CreateObject(glm::vec3(2.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "Drone.obj");
+  Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f), "Ironman.obj");
 
   Debug_Draw = false;
 }

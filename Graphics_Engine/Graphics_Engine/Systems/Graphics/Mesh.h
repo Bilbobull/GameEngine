@@ -3,16 +3,27 @@
 #include "Math_Headers.h"
 #include "Buffer_Manager.h"
 
+enum Draw_Mode{
+  Models,
+  Shape
+};
+
 struct Vertex
 {
   Vertex(){}
   Vertex(glm::vec3 pos, glm::vec3 col = glm::vec3(1.0f)) :
     position(pos),
+    normal(glm::vec3(1.0f)),
+    tex_coord(glm::vec2(1.0f)),
     color(col)
   {}
+
+  bool operator<(const Vertex& rhs) const;
+
   glm::vec3 position;
-  glm::vec3 normal;
   glm::vec3 color;
+  glm::vec3 normal;
+  glm::vec2 tex_coord;
 };
 
 class Mesh
@@ -31,4 +42,6 @@ public:
   VAO* vao;
   VBO* vbo;
   EBO* ebo;
+  Draw_Mode type;
+  
 };
