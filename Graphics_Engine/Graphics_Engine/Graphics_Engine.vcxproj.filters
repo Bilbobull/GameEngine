@@ -37,6 +37,15 @@
     <Filter Include="Systems\Graphics\Shaders">
       <UniqueIdentifier>{e4d99e21-9f67-45d8-be04-307ae8dae21d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Particles">
+      <UniqueIdentifier>{218e4880-19d5-4ade-98d5-6dc4bea60d98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Particles\Source">
+      <UniqueIdentifier>{ad2f23d0-2c94-4135-abc3-0c8e9659829a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Particles\Headers">
+      <UniqueIdentifier>{5500b1f2-7ecc-452e-9f2a-65d715a74d9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Systems\Systems.cpp">
@@ -78,6 +87,21 @@
     </ClCompile>
     <ClCompile Include="Systems\Graphics\Texture.cpp">
       <Filter>Systems\Graphics\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Graphics\Particles\ParticleSystem.cpp">
+      <Filter>Systems\Particles\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Graphics\Particles\ParticleEmiter.cpp">
+      <Filter>Systems\Particles\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Graphics\Particles\ParticleGenerator.cpp">
+      <Filter>Systems\Particles\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Graphics\Particles\ParticleUpdater.cpp">
+      <Filter>Systems\Particles\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Graphics\Particles\ParticleRenderer.cpp">
+      <Filter>Systems\Particles\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +158,21 @@
     </ClInclude>
     <ClInclude Include="Systems\Graphics\Texture.h">
       <Filter>Systems\Graphics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Graphics\Particles\ParticleEmiter.h">
+      <Filter>Systems\Particles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Graphics\Particles\ParticleSystem.h">
+      <Filter>Systems\Particles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Graphics\Particles\ParticleGenerator.h">
+      <Filter>Systems\Particles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Graphics\Particles\ParticleUpdater.h">
+      <Filter>Systems\Particles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Graphics\Particles\ParticleRenderer.h">
+      <Filter>Systems\Particles\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

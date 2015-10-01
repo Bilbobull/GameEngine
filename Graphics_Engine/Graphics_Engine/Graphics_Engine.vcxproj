@@ -80,6 +80,11 @@
     <ClCompile Include="Systems\Graphics\Object.cpp" />
     <ClCompile Include="Systems\Graphics\ObjectManager.cpp" />
     <ClCompile Include="Systems\Graphics\OBJLoader.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\ParticleEmiter.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\ParticleGenerator.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\ParticleRenderer.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\ParticleSystem.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\ParticleUpdater.cpp" />
     <ClCompile Include="Systems\Graphics\ShaderManager.cpp" />
     <ClCompile Include="Systems\Graphics\MeshGenerator.cpp" />
     <ClCompile Include="Systems\Graphics\Texture.cpp" />
@@ -100,6 +105,11 @@
     <ClInclude Include="Systems\Graphics\Object.h" />
     <ClInclude Include="Systems\Graphics\ObjectManager.h" />
     <ClInclude Include="Systems\Graphics\OBJLoader.h" />
+    <ClInclude Include="Systems\Graphics\Particles\ParticleEmiter.h" />
+    <ClInclude Include="Systems\Graphics\Particles\ParticleGenerator.h" />
+    <ClInclude Include="Systems\Graphics\Particles\ParticleRenderer.h" />
+    <ClInclude Include="Systems\Graphics\Particles\ParticleSystem.h" />
+    <ClInclude Include="Systems\Graphics\Particles\ParticleUpdater.h" />
     <ClInclude Include="Systems\Graphics\ShaderManager.h" />
     <ClInclude Include="Systems\Graphics\MeshGenerator.h" />
     <ClInclude Include="Systems\Graphics\Texture.h" />
