@@ -35,7 +35,6 @@ private:
 };
 
 
-
 class VertexBufferObject
 {
 public:

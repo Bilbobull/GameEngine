@@ -28,7 +28,7 @@ void Mesh::Draw(glm::mat4 matrix)
   {
   case Models:
   {
-    if (g_GraphicsSys->GetDebugDraw() == true)
+    if (g_GraphicsSys->GetDebugDraw() == true || texture == nullptr)
     {
       glUseProgram(SimpleProgram);
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -45,6 +45,7 @@ void Mesh::Draw(glm::mat4 matrix)
     vao->Bind();
     glUniformMatrix4fv(ModelMatUniform, 1, GL_FALSE, &matrix[0][0]);
     glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, 0);
+    texture->unBind();
     break;
   }
   case Shape:
