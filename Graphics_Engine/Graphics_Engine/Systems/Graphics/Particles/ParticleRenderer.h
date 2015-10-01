@@ -1,4 +1,5 @@
 #pragma once
+#include "../Buffer_Manager.h"
 //#include "ParticleSystem.h" // may not work, in that case comment
 
 class ParticleSystem;  //in case it doenst work, uncomment
@@ -13,5 +14,8 @@ public:
   void Specify_Attributes();
 
 private:
-
+  ParticleSystem* p_sys;
+  VAO vao;
+  VBO vbo_pos;
+  VBO vbo_col;
 };
