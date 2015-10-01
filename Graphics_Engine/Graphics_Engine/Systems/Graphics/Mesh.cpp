@@ -7,14 +7,16 @@ GLuint SimpleMatUniform;
 
 GLuint ModelProgram;
 GLuint ModelMatUniform;
-GLuint ModelTextureUniform;
+GLuint DiffuseTextureUniform;
+GLuint NormalTextureUniform;
 
 
 void Mesh::Init_Mesh_Shader(void)
 {
   ModelProgram = LoadShaders("ModelVertexShader.glsl", "ModelFragmentShader.glsl");
   ModelMatUniform = glGetUniformLocation(ModelProgram, "FullTransformMatrix");
-  ModelTextureUniform = glGetUniformLocation(ModelProgram, "Texture");
+  DiffuseTextureUniform = glGetUniformLocation(ModelProgram, "Texture");
+  NormalTextureUniform = glGetUniformLocation(ModelProgram, "normalTexture");
 
   SimpleProgram = LoadShaders("SimpleVertexShader.glsl", "SimpleFragmentShader.glsl");
   SimpleMatUniform = glGetUniformLocation(SimpleProgram, "FullTransformMatrix");
@@ -38,8 +40,16 @@ void Mesh::Draw(glm::mat4 matrix)
     {
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
       glUseProgram(ModelProgram);
-      texture->Bind();
-      glUniform1i(ModelTextureUniform, 0);
+
+      glActiveTexture(GL_TEXTURE0);
+      texture->TexBind();
+      glUniform1i(DiffuseTextureUniform, 0);
+
+      glActiveTexture(GL_TEXTURE1);
+      texture->NorBind();
+      glUniform1i(NormalTextureUniform, 1);
+
+      glActiveTexture(GL_TEXTURE0);
     }
 
     vao->Bind();

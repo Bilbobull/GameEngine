@@ -524,7 +524,7 @@ Mesh* MeshGenerator::makeMeshFromObj(std::string filename)
   mesh->vao->unBind();
 
   mesh->texture = new Texture(filename);
-  if (!mesh->texture->YesorNo())
+  if (!mesh->texture->TextureYesorNo())
     mesh->texture = nullptr;
 
   return mesh;
