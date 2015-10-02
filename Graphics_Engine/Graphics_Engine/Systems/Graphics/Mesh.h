@@ -34,6 +34,7 @@ public:
   Mesh(){}
   ~Mesh(){}
   void Draw(glm::mat4 matrix);
+  void Debug_Draw(glm::mat4 matrix);
   static void Init_Mesh_Shader(void);
 
   std::vector <Vertex> vertices;

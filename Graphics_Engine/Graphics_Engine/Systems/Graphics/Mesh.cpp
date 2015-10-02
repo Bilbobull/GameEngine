@@ -23,6 +23,7 @@ void Mesh::Init_Mesh_Shader(void)
 }
 
 
+
 void Mesh::Draw(glm::mat4 matrix)
 {
 
@@ -32,53 +33,7 @@ void Mesh::Draw(glm::mat4 matrix)
   {
     if (g_GraphicsSys->GetDebugDraw() == true || texture == nullptr)
     {
-
-      glClearColor(0.4, 0.4, 0.4, 0.4);
-
-
-      glUseProgram(SimpleProgram);
-      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-      vao->Bind();
-      glUniformMatrix4fv(ModelMatUniform, 1, GL_FALSE, &matrix[0][0]);
-      glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, 0);
-
-      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-      if (g_GraphicsSys->GetVertexNormalDraw())
-      {
-        glm::vec3 pos, nor;
-
-        for (unsigned i = 0; i < vertices.size(); ++i){
-
-          pos = glm::vec3(vertices.at(i).position.x, vertices.at(i).position.y, vertices.at(i).position.z);
-          nor = glm::vec3(vertices.at(i).normal.x / 5.0f, vertices.at(i).normal.y / 5.0f, vertices.at(i).normal.z / 5.0f);
-          glLineWidth(2.5);
-
-          glBegin(GL_LINES);
-          glVertex3f(pos.x, pos.y, pos.z);
-          glVertex3f(pos.x + nor.x, pos.y + nor.y, pos.z + nor.z);
-          glEnd();
-        }
-      }
-
-      if (g_GraphicsSys->GetFaceNormalDraw())
-      {
-        for (unsigned i = 0; i < triangles.size(); i += 3)
-        {
-          glm::vec3 nor = glm::cross((vertices.at(triangles.at(i + 1)).position - vertices.at(triangles.at(i)).position), 
-                                     (vertices.at(triangles.at(i + 2)).position - vertices.at(triangles.at(i)).position));
-
-          glm::vec3 pos = glm::vec3(vertices.at(triangles.at(i)).position + vertices.at(triangles.at(i + 1)).position + vertices.at(triangles.at(i + 2)).position);
-          pos.x /= 3.0f;
-          pos.y /= 3.0f;
-          pos.z /= 3.0f;
-
-          glBegin(GL_LINES);
-          glVertex3f(pos.x, pos.y, pos.z);
-          glVertex3f(pos.x + nor.x, pos.y + nor.y, pos.z + nor.z);
-          glEnd();
-        }
-      }
+      Debug_Draw(matrix);
     }
 
     else
@@ -122,4 +77,58 @@ void Mesh::Draw(glm::mat4 matrix)
     glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, 0);
   }
 
+}
+
+void Mesh::Debug_Draw(glm::mat4 matrix)
+{
+  glClearColor(0.4, 0.4, 0.4, 0.4);
+
+
+  glUseProgram(SimpleProgram);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  vao->Bind();
+  glUniformMatrix4fv(ModelMatUniform, 1, GL_FALSE, &matrix[0][0]);
+  glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, 0);
+
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+  if (g_GraphicsSys->GetVertexNormalDraw())
+  {
+    glm::vec3 pos, nor;
+
+    for (unsigned i = 0; i < vertices.size(); ++i){
+
+      pos = glm::vec3(vertices.at(i).position.x, vertices.at(i).position.y, vertices.at(i).position.z);
+      nor = glm::vec3(vertices.at(i).normal.x / 5.0f, vertices.at(i).normal.y / 5.0f, vertices.at(i).normal.z / 5.0f);
+      glLineWidth(2.5);
+
+      glBegin(GL_LINES);
+      glVertex3f(pos.x, pos.y, pos.z);
+      glVertex3f(pos.x + nor.x, pos.y + nor.y, pos.z + nor.z);
+      glEnd();
+    }
+  }
+
+  if (g_GraphicsSys->GetFaceNormalDraw())
+  {
+    for (unsigned i = 0; i < triangles.size(); i += 3)
+    {
+      glm::vec3 nor = glm::cross((vertices.at(triangles.at(i + 1)).position - vertices.at(triangles.at(i)).position),
+                                 (vertices.at(triangles.at(i + 2)).position - vertices.at(triangles.at(i)).position));
+
+      nor.x *= 10.0f;
+      nor.y *= 10.0f;
+      nor.z *= 10.0f;
+
+      glm::vec3 pos = glm::vec3(vertices.at(triangles.at(i)).position + vertices.at(triangles.at(i + 1)).position + vertices.at(triangles.at(i + 2)).position);
+      pos.x /= 3.0f;
+      pos.y /= 3.0f;
+      pos.z /= 3.0f;
+
+      glBegin(GL_LINES);
+      glVertex3f(pos.x, pos.y, pos.z);
+      glVertex3f(pos.x + nor.x, pos.y + nor.y, pos.z + nor.z);
+      glEnd();
+    }
+  }
 }

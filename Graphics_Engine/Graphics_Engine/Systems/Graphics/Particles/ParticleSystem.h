@@ -33,6 +33,12 @@ public:
   void AddEmitter(ParticleEmitter* emitter);
   void AddUpdater(ParticleUpdater* updater);
 
+  int GetMaxParticles(void){ return max_Particles; }
+  int GetAlivePartCount(void) { return particle_array->alive_Particles; }
+
+  glm::vec3* GetPositionData(void){ return particle_array->position.data(); }
+  glm::vec4* GetColorData(void){ return particle_array->color.data(); }
+
   void Init(void);
   void Update(float dt);
   void Draw(void);

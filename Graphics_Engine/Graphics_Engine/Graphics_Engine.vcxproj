@@ -120,6 +120,8 @@
   <ItemGroup>
     <None Include="Systems\Graphics\Shaders\ModelFragmentShader.glsl" />
     <None Include="Systems\Graphics\Shaders\ModelVertexShader.glsl" />
+    <None Include="Systems\Graphics\Shaders\ParticleFragmentShader.glsl" />
+    <None Include="Systems\Graphics\Shaders\ParticleVertexShader.glsl" />
     <None Include="Systems\Graphics\Shaders\SimpleFragmentShader.glsl" />
     <None Include="Systems\Graphics\Shaders\SimpleVertexShader.glsl" />
   </ItemGroup>

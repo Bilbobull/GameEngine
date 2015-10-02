@@ -188,5 +188,11 @@
     <None Include="Systems\Graphics\Shaders\SimpleVertexShader.glsl">
       <Filter>Systems\Graphics\Shaders</Filter>
     </None>
+    <None Include="Systems\Graphics\Shaders\ParticleVertexShader.glsl">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </None>
+    <None Include="Systems\Graphics\Shaders\ParticleFragmentShader.glsl">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -16,6 +16,6 @@ public:
 private:
   ParticleSystem* p_sys;
   VAO vao;
-  VBO vbo_pos;
-  VBO vbo_col;
+  GLuint vbo_pos;
+  GLuint vbo_col;
 };
