@@ -24,3 +24,30 @@ struct CircleGenerator : ParticleGenerator{
   glm::vec3 center;
 };
 // Add different generators for different effects here
+
+struct LifeGenerator : ParticleGenerator
+{
+  LifeGenerator(float min = 0.1f, float max = 1.0f) : minLife(min), maxLife(max)
+  {}
+  virtual void Generate(int startIndex, int endIndex, ParticleArray *p);
+  float minLife;
+  float maxLife;
+};
+
+struct ColorGenerator : ParticleGenerator
+{
+  ColorGenerator(glm::vec4 minstartcolor = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f),
+    glm::vec4 maxstartcolor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+    glm::vec4 minendcolor = glm::vec4(0.5f, 0.0f, 0.3f, 0.5f),
+    glm::vec4 maxendcolor = glm::vec4(0.5f, 0.0f, 0.3f, 0.0f)
+    )
+    : m_minstartcolor(minstartcolor), m_maxstartcolor(maxstartcolor),
+    m_minendcolor(minendcolor), m_maxendcolor(maxendcolor)
+  {}
+  virtual void Generate(int startIndex, int endIndex, ParticleArray *p);
+
+  glm::vec4 m_minstartcolor;
+  glm::vec4 m_maxstartcolor;
+  glm::vec4 m_minendcolor;
+  glm::vec4 m_maxendcolor;
+};

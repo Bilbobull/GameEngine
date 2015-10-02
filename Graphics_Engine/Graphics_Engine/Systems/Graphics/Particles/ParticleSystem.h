@@ -5,6 +5,7 @@
 #include "ParticleEmiter.h"
 #include "ParticleUpdater.h"
 #include "ParticleGenerator.h"
+#include "ParticleRenderer.h"
 
 // Everything public, wanna be able to access these elements
 struct ParticleArray{
@@ -32,6 +33,7 @@ public:
 
   void AddEmitter(ParticleEmitter* emitter);
   void AddUpdater(ParticleUpdater* updater);
+  void AddRenderer(ParticleRenderer* render);
 
   int GetMaxParticles(void){ return max_Particles; }
   int GetAlivePartCount(void) { return particle_array->alive_Particles; }
@@ -49,6 +51,7 @@ private:
   ParticleArray* particle_array;
   const int max_Particles;
   
+  ParticleRenderer* renderer;
   std::vector <ParticleEmitter*> emitters;
   std::vector <ParticleUpdater*> updaters;
 };

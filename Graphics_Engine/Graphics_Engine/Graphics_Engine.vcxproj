@@ -80,6 +80,7 @@
     <ClCompile Include="Systems\Graphics\Object.cpp" />
     <ClCompile Include="Systems\Graphics\ObjectManager.cpp" />
     <ClCompile Include="Systems\Graphics\OBJLoader.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\ParticleEffect.cpp" />
     <ClCompile Include="Systems\Graphics\Particles\ParticleEmiter.cpp" />
     <ClCompile Include="Systems\Graphics\Particles\ParticleGenerator.cpp" />
     <ClCompile Include="Systems\Graphics\Particles\ParticleRenderer.cpp" />
@@ -105,6 +106,7 @@
     <ClInclude Include="Systems\Graphics\Object.h" />
     <ClInclude Include="Systems\Graphics\ObjectManager.h" />
     <ClInclude Include="Systems\Graphics\OBJLoader.h" />
+    <ClInclude Include="Systems\Graphics\Particles\ParticleEffect.h" />
     <ClInclude Include="Systems\Graphics\Particles\ParticleEmiter.h" />
     <ClInclude Include="Systems\Graphics\Particles\ParticleGenerator.h" />
     <ClInclude Include="Systems\Graphics\Particles\ParticleRenderer.h" />

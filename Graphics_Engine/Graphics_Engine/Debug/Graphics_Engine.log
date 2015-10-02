@@ -1,10 +1,10 @@
-﻿Build started 02/10/2015 1:02:00.
-     1>Project "C:\Users\Gonzalo Rojo\Desktop\GameEngine\Graphics_Engine\Graphics_Engine\Graphics_Engine.vcxproj" on node 2 (Build target(s)).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(381,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (My_Project.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿Build started 10/2/2015 1:46:48 AM.
+     1>Project "C:\Users\Gonzalo\Desktop\GameEngine\Graphics_Engine\Graphics_Engine\Graphics_Engine.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (My_Project.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>Link:
-         Graphics_Engine.vcxproj -> C:\Users\Gonzalo Rojo\Desktop\GameEngine\Graphics_Engine\Debug\Graphics_Engine.exe
-     1>Done Building Project "C:\Users\Gonzalo Rojo\Desktop\GameEngine\Graphics_Engine\Graphics_Engine\Graphics_Engine.vcxproj" (Build target(s)).
+         Graphics_Engine.vcxproj -> C:\Users\Gonzalo\Desktop\GameEngine\Graphics_Engine\Debug\Graphics_Engine.exe
+     1>Done Building Project "C:\Users\Gonzalo\Desktop\GameEngine\Graphics_Engine\Graphics_Engine\Graphics_Engine.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.16
+Time Elapsed 00:00:00.05

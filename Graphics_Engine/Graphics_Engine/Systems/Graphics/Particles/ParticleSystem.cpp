@@ -49,3 +49,42 @@ void ParticleSystem::AddUpdater(ParticleUpdater* updater)
 {
   updaters.push_back(updater);
 }
+
+void ParticleSystem::AddRenderer(ParticleRenderer* render)
+{
+  renderer = render;
+}
+
+void ParticleSystem::Init(void)
+{
+  renderer->Init(this);
+}
+
+void ParticleSystem::Update(float dt)
+{
+  for (auto& i : emitters)
+  {
+    i->Emit(particle_array);
+  }
+
+  for (auto& i : updaters)
+  {
+    i->Update(particle_array, dt);
+  }
+
+  if (particle_array->alive_Particles == 0)
+    Free();
+}
+
+
+void ParticleSystem::Draw(void)
+{
+  renderer->Render();
+}
+
+
+void ParticleSystem::Free(void)
+{
+  emitters.clear();
+  updaters.clear();
+}

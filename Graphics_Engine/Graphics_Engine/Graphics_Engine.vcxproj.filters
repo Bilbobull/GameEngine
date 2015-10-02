@@ -103,6 +103,9 @@
     <ClCompile Include="Systems\Graphics\Particles\ParticleRenderer.cpp">
       <Filter>Systems\Particles\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Systems\Graphics\Particles\ParticleEffect.cpp">
+      <Filter>Systems\Particles\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\Graphics\Graphics_Headers.h">
@@ -172,6 +175,9 @@
       <Filter>Systems\Particles\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Systems\Graphics\Particles\ParticleRenderer.h">
+      <Filter>Systems\Particles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Graphics\Particles\ParticleEffect.h">
       <Filter>Systems\Particles\Headers</Filter>
     </ClInclude>
   </ItemGroup>

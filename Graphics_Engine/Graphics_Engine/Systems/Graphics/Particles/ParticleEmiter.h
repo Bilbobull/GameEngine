@@ -9,7 +9,8 @@ public:
   ParticleEmitter();
   void AddGenerator(ParticleGenerator* generator);
   void Emit(ParticleArray* p_array);
-private:
   int min_Particles;
+
+private:
   std::vector <ParticleGenerator*> generators;
 };

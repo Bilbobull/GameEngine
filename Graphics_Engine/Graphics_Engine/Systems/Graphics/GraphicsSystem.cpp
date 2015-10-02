@@ -5,9 +5,10 @@
 #include "../Input/InputSystem.h"
 #include "Object.h"
 #include "ObjectManager.h"
+#include "Particles\ParticleEffect.h"
 
 
-
+ParticleEffect* effect;
 GraphicsSystem* g_GraphicsSys;
 
 void GraphicsSystem::Init(void)
@@ -28,6 +29,9 @@ void GraphicsSystem::Init(void)
   Object* ironman = ObjectManager::CreateObject(glm::vec3(2.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "Pyro");
   Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f), "Ironman");
 
+  effect = new CircleEffect(glm::vec3(0, 0, 0));
+  effect->Init();
+
 }
 
 void GraphicsSystem::Update(double dt)
@@ -36,12 +40,15 @@ void GraphicsSystem::Update(double dt)
 
   glViewport(0, 0, Current_Window.GetWidth(), Current_Window.GetHeight()); // Still need to do it
 
-  auto objectList = ObjectManager::GetObjectList();
-  for (auto it : objectList)
-  {
-    it->Draw();
-  }
-  
+  effect->Update(0.016f);
+  effect->Draw();
+
+  //auto objectList = ObjectManager::GetObjectList();
+  //for (auto it : objectList)
+  //{
+  //  it->Draw();
+  //}
+  //
   glfwSwapBuffers(Current_Window.glfw_GetWindow());
 }
 
