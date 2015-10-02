@@ -60,7 +60,37 @@ void InputSystem::Key_Callback(GLFWwindow* window, int key, int scancode, int ac
 
     case GLFW_KEY_5:
       if (action == GLFW_PRESS)
-         g_GraphicsSys->DebugDraw();
+      {
+        g_GraphicsSys->DebugDraw();
+        if (!g_GraphicsSys->GetDebugDraw())
+        {
+          if (g_GraphicsSys->GetFaceNormalDraw())
+            g_GraphicsSys->FaceNormalDraw();
+
+          if (g_GraphicsSys->GetVertexNormalDraw())
+            g_GraphicsSys->VertexNormalDraw();
+        }
+      }
+    
+      break;
+
+    case GLFW_KEY_4:
+      if (action == GLFW_PRESS && g_GraphicsSys->GetDebugDraw())
+      {
+        g_GraphicsSys->VertexNormalDraw();
+        if (g_GraphicsSys->GetFaceNormalDraw())
+          g_GraphicsSys->FaceNormalDraw();
+      }
+      
+      break;
+
+    case GLFW_KEY_3:
+      if (action == GLFW_PRESS && g_GraphicsSys->GetDebugDraw())
+      {
+        g_GraphicsSys->FaceNormalDraw();
+        if (g_GraphicsSys->GetVertexNormalDraw())
+          g_GraphicsSys->VertexNormalDraw();
+      }
       break;
 
     }
