@@ -23,6 +23,7 @@ void CircleEffect::Init()
   emitter->AddGenerator(rpg);
   emitter->AddGenerator(lg);
   emitter->AddGenerator(cg);
+  emitter->AddGenerator(vg);
 
   p_sys->AddEmitter(emitter);
 

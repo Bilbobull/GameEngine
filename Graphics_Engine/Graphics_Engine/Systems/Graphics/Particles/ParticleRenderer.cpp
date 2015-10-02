@@ -61,7 +61,7 @@ void ParticleRenderer::Render(void)
   if (p_sys->GetAlivePartCount() > 0)
   {
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     texture->TexBind();
     matrix = g_GraphicsSys->GetCurrentCamera().getProjectionMatrix() * g_GraphicsSys->GetCurrentCamera().getWorldToViewMatrix();
     glEnable(GL_POINT_SPRITE);
@@ -81,5 +81,6 @@ void ParticleRenderer::Render(void)
     glUseProgram(0);
     vao.unBind();
     texture->unBind();
+    glDisable(GL_BLEND);
   }
 }
