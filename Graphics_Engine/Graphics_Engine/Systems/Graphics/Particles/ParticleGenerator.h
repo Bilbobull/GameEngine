@@ -51,3 +51,13 @@ struct ColorGenerator : ParticleGenerator
   glm::vec4 m_minendcolor;
   glm::vec4 m_maxendcolor;
 };
+
+struct VelocityGenerator : ParticleGenerator
+{
+
+  VelocityGenerator(glm::vec3 minVel = glm::vec3(-0.1f, -0.1f, 0.0f), glm::vec3 maxVel = glm::vec3(0.1f, 0.1f, 0.0f)) : m_minVel(minVel), m_maxVel(maxVel)
+  {}
+  virtual void Generate(int startIndex, int endIndex, ParticleArray *p);
+  glm::vec3 m_minVel;
+  glm::vec3 m_maxVel;
+};

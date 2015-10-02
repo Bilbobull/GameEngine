@@ -11,4 +11,5 @@ void main(void)
 {
 	vec4 eyePos = vec4(position , 1.0);
 	gl_Position = eyePos * matrix;
+	Color = color;
 }

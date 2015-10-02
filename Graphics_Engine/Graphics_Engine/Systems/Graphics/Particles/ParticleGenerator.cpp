@@ -33,3 +33,11 @@ void LifeGenerator::Generate(int startIndex, int endIndex, ParticleArray *p)
     p->timeleft[i] = glm::linearRand(minLife, maxLife);
   }
 }
+
+void VelocityGenerator::Generate(int startIndex, int endIndex, ParticleArray *p)
+{
+  for (int i = startIndex; i < endIndex; ++i)
+  {
+    p->velocity[i] = glm::linearRand(m_minVel, m_maxVel);
+  }
+}
