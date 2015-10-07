@@ -81,7 +81,7 @@ void Mesh::Draw(glm::mat4 matrix)
 
 void Mesh::Debug_Draw(glm::mat4 matrix)
 {
-  glClearColor(0.4, 0.4, 0.4, 0.4);
+  glClearColor(0.4f, 0.4f, 0.4f, 0.4f);
 
 
   glUseProgram(SimpleProgram);

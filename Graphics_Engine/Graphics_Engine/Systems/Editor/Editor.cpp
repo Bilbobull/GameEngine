@@ -228,7 +228,10 @@ struct
 
 static int debugMode = 0;
 float rotationX = 0.f, rotationY = 0.f, rotationZ = 0.f;
-glm::vec3 position(-2.f, 2.f, 2.f);
+glm::vec3 pos(-2.f, 2.f, 2.f);
+glm::vec3 prevpos(-2.f, 2.f, 2.f);
+glm::vec3 lookat(0.0f, 0.0f, -1.0f);
+glm::vec3 prevlookat(0.0f, 0.0f, -1.0f);
 
 void ImGuiImpl::UpdateGuiButtons(void)
 {
@@ -287,12 +290,23 @@ void ImGuiImpl::UpdateGuiButtons(void)
 
     // TODO(student): implement Euler-angles rotation and translation
 
-    ImGui::InputFloat3("Model Position", (float*) &position);
+    ImGui::InputFloat3("Camera Position", (float*) &pos);
+    ImGui::InputFloat3("Look At Vector", (float*)&lookat);
     ImGui::SliderAngle("Rotation X", &rotationX);
     ImGui::SliderAngle("Rotation Y", &rotationY);
     ImGui::SliderAngle("Rotation Z", &rotationZ);
 
-    g_GraphicsSys->GetCurrentCamera().position = position;
+    if (pos != prevpos)
+    {
+      g_GraphicsSys->GetCurrentCamera().position = pos;
+      prevpos = pos;
+    }
+
+    if (lookat != prevlookat)
+    {
+      g_GraphicsSys->GetCurrentCamera().viewDirection = lookat;
+      prevlookat = lookat;
+    }
 
     if (ImGui::CollapsingHeader("Material"))
     {

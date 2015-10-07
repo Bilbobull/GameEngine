@@ -98,11 +98,11 @@ void InputSystem::Key_Callback(GLFWwindow* window, int key, int scancode, int ac
 
     if (action == GLFW_RELEASE)
     {
-      ImGuiImpl::KeyboardUp(key, _mousePosition.x, _mousePosition.y);
+      ImGuiImpl::KeyboardUp(key, (int)_mousePosition.x, (int)_mousePosition.y);
     }
     else
     {
-      ImGuiImpl::KeyboardDown(key, _mousePosition.x, _mousePosition.y);
+      ImGuiImpl::KeyboardDown(key, (int)_mousePosition.x, (int)_mousePosition.y);
     }
 }
 
