@@ -46,6 +46,12 @@
     <Filter Include="Systems\Particles\Headers">
       <UniqueIdentifier>{5500b1f2-7ecc-452e-9f2a-65d715a74d9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Editor">
+      <UniqueIdentifier>{ff9f6d25-427c-4229-a582-ba66c04c10d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\ImGui">
+      <UniqueIdentifier>{0606a453-8609-43e5-8ffb-649d94a6b172}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Systems\Systems.cpp">
@@ -105,6 +111,9 @@
     </ClCompile>
     <ClCompile Include="Systems\Graphics\Particles\ParticleEffect.cpp">
       <Filter>Systems\Particles\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Editor\Editor.cpp">
+      <Filter>Systems\Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="Systems\Graphics\Particles\ParticleEffect.h">
       <Filter>Systems\Particles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Editor\Editor.h">
+      <Filter>Systems\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

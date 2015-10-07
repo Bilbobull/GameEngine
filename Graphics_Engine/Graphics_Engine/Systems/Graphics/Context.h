@@ -36,4 +36,5 @@ private:
   std::string name;
   int Width;
   int Height;
+  bool FullScreen = false;
 };

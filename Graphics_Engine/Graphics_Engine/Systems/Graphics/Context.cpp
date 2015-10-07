@@ -68,7 +68,7 @@ void Window::glfw_Init()
     exit(-1);
   }
 
-  glfwWindowHint(GLFW_RESIZABLE, 1);
+  glfwWindowHint(GLFW_RESIZABLE, 0);
   glfwWindowHint(GLFW_SAMPLES, 4);
  
   glEnable(GL_MULTISAMPLE);
@@ -77,9 +77,16 @@ void Window::glfw_Init()
   Desktop = glfwGetVideoMode(Monitor);
 
 
-
-  Width = Desktop->width;
-  Height = Desktop->height;
+  if (FullScreen)
+  {
+    Width = Desktop->width;
+    Height = Desktop->height;
+  }
+  else
+  {
+    Width = 1920;
+    Height = 1052;
+  }
 
  // glfw_window = glfwCreateWindow(Width, Height, name.c_str(), Monitor, nullptr);
   glfw_window = glfwCreateWindow(Width, Height, name.c_str(), nullptr, nullptr);

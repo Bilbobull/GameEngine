@@ -5,6 +5,7 @@
 #include "../Graphics/Graphics_Headers.h"
 #include "../Graphics/Context.h"
 #include "../Systems.h"
+#include "../Graphics/Math_Headers.h"
 
 class InputSystem : public System
 {
@@ -22,7 +23,7 @@ public:
   static void mousePressEvent(GLFWwindow* window, int button, int action, int mode);
 
 private:
- 
+  static glm::vec2 _mousePosition;
 
 };
 

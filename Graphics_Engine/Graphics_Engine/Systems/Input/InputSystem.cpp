@@ -2,6 +2,7 @@
 
 #include "InputSystem.h"
 #include "../Graphics/GraphicsSystem.h"
+#include "../Editor/Editor.h"
 
 extern bool Running;
 InputSystem* g_InputSys;
@@ -94,6 +95,15 @@ void InputSystem::Key_Callback(GLFWwindow* window, int key, int scancode, int ac
       break;
 
     }
+
+    if (action == GLFW_RELEASE)
+    {
+      ImGuiImpl::KeyboardUp(key, _mousePosition.x, _mousePosition.y);
+    }
+    else
+    {
+      ImGuiImpl::KeyboardDown(key, _mousePosition.x, _mousePosition.y);
+    }
 }
 
 void InputSystem::CloseWindow(void)
@@ -103,8 +113,12 @@ void InputSystem::CloseWindow(void)
 
 void InputSystem::mouseMoveEvent(GLFWwindow* window, double x, double y)
 {
+  if (!ImGui::IsMouseHoveringAnyWindow())
   if (moving)
     g_GraphicsSys->GetCurrentCamera().MouseUpdate(glm::vec2(x, y));
+
+  _mousePosition = glm::vec2(x, y);
+  ImGuiImpl::Motion(_mousePosition.x, _mousePosition.y);
 }
 
 void InputSystem::mousePressEvent(GLFWwindow* window, int button, int action, int mode)
@@ -114,5 +128,9 @@ void InputSystem::mousePressEvent(GLFWwindow* window, int button, int action, in
 
   else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
     moving = false;
+
+  ImGuiImpl::Mouse(button, action, _mousePosition.x, _mousePosition.y);
 }
+
+glm::vec2 InputSystem::_mousePosition;
 

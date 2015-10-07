@@ -116,9 +116,9 @@ void Mesh::Debug_Draw(glm::mat4 matrix)
       glm::vec3 nor = glm::cross((vertices.at(triangles.at(i + 1)).position - vertices.at(triangles.at(i)).position),
                                  (vertices.at(triangles.at(i + 2)).position - vertices.at(triangles.at(i)).position));
 
-      nor.x *= 10.0f;
-      nor.y *= 10.0f;
-      nor.z *= 10.0f;
+      //nor.x *= 10.0f;
+      //nor.y *= 10.0f;
+      //nor.z *= 10.0f;
 
       glm::vec3 pos = glm::vec3(vertices.at(triangles.at(i)).position + vertices.at(triangles.at(i + 1)).position + vertices.at(triangles.at(i + 2)).position);
       pos.x /= 3.0f;
