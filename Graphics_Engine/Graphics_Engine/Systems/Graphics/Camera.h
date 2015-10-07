@@ -17,7 +17,6 @@ public:
   void MoveDown();
 
 
-private:
   glm::vec3 position;
   glm::vec3 viewDirection; //always one unit long
   const glm::vec3 up;

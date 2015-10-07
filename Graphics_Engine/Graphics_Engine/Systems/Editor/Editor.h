@@ -31,7 +31,7 @@ public:
   static void MouseWheel(int button, int state, int x, int y);
   static void Motion(float x, float y);
   static void PassiveMotion(float x, float y);
-  static void AddGuiButtons(void);
+  static void UpdateGuiButtons(void);
 
 private:
   static void SpecialUpDown(int key, int x, int y, bool down);

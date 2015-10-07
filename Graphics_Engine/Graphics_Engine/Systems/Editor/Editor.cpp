@@ -227,8 +227,10 @@ struct
 } Material;
 
 static int debugMode = 0;
+float rotationX = 0.f, rotationY = 0.f, rotationZ = 0.f;
+glm::vec3 position(-2.f, 2.f, 2.f);
 
-void ImGuiImpl::AddGuiButtons(void)
+void ImGuiImpl::UpdateGuiButtons(void)
 {
   {
     // this code is already setup to copy the model file name into a local C
@@ -284,12 +286,13 @@ void ImGuiImpl::AddGuiButtons(void)
     ImGui::PushID("ModelOptions");
 
     // TODO(student): implement Euler-angles rotation and translation
-    float rotationX = 0.f, rotationY = 0.f, rotationZ = 0.f;
-    glm::vec3 position(0.f, 0.f, 0.f);
+
     ImGui::InputFloat3("Model Position", (float*) &position);
     ImGui::SliderAngle("Rotation X", &rotationX);
     ImGui::SliderAngle("Rotation Y", &rotationY);
     ImGui::SliderAngle("Rotation Z", &rotationZ);
+
+    g_GraphicsSys->GetCurrentCamera().position = position;
 
     if (ImGui::CollapsingHeader("Material"))
     {

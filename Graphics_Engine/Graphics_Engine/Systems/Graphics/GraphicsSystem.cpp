@@ -30,7 +30,7 @@ void GraphicsSystem::Init(void)
   //Object* cube = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -10.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f));
   modelFile = "Cube";
   Object* ironman = ObjectManager::CreateObject(glm::vec3(2.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "Cube");
-  //Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f), "Ironman");
+  Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f), "Ironman");
 
   //effect = new CircleEffect(glm::vec3(0, 0, 0), 10000);
   //effect->Init();
@@ -43,7 +43,7 @@ void GraphicsSystem::Update(double dt)
 {
   ImGui::NewFrame();
   ImGui::Begin("Editor");
-  ImGuiImpl::AddGuiButtons();
+  ImGuiImpl::UpdateGuiButtons();
 
 
   glClearColor(0.3f, 0.3f, 0.3f, 0.3f);
