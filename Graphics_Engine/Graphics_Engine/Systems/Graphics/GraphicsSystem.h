@@ -34,9 +34,6 @@ public:
   glm::vec3 Random_Color(void);
 
 private:
-  static void windowResizeEvent(GLFWwindow* wnd, int w, int h);
-  static void mouseEnterEvent(GLFWwindow* wnd, int enter);
-
   Window Current_Window;
   Camera My_Camera;
   bool Debug_Draw;

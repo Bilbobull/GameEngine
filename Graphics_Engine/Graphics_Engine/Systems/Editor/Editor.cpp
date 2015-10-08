@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 #include "../Graphics/GraphicsSystem.h"
+#include "../Graphics/Object.h"
+#include "../Graphics/ObjectManager.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "STB/stb_image.h"
@@ -228,10 +230,12 @@ struct
 
 static int debugMode = 0;
 float rotationX = 0.f, rotationY = 0.f, rotationZ = 0.f;
-glm::vec3 pos(-2.f, 2.f, 2.f);
-glm::vec3 prevpos(-2.f, 2.f, 2.f);
-glm::vec3 lookat(0.0f, 0.0f, -1.0f);
-glm::vec3 prevlookat(0.0f, 0.0f, -1.0f);
+glm::vec3 pos(0.f, 0.f, 0.f);
+glm::vec3 prevpos(0.f, 0.f, 0.f);
+glm::vec3 lookat(0.0f, 0.0f, 0.0f);
+glm::vec3 prevlookat(0.0f, 0.0f, 0.0f);
+std::string filename = "cube";
+std::string prevfilename = "cube";
 
 void ImGuiImpl::UpdateGuiButtons(void)
 {
@@ -239,17 +243,26 @@ void ImGuiImpl::UpdateGuiButtons(void)
     // this code is already setup to copy the model file name into a local C
     // buffer, allow ImGui to alter it, and then immediately update the file
     // name based on the changes; feel free to change this logic as you see fit
-    std::string modelFile = "cube.obj";
+
     char fileNameBuffer[140] = { '\0' };
-    std::strcat(fileNameBuffer, modelFile.c_str());
+    std::strcat(fileNameBuffer, filename.c_str());
     if (ImGui::InputText("Model", fileNameBuffer, sizeof(fileNameBuffer)))
     {
       // text was changed; copy back over to C++ string
-      modelFile = fileNameBuffer;
+      filename = fileNameBuffer;
     }
 
     if (ImGui::Button("Load Model"))
-    {
+    { 
+      if (filename != prevfilename)
+      {
+        Object* myObj = ObjectManager::CreateObject(glm::linearRand(glm::vec3(-5.0f, -5.0f, -6.0f), glm::vec3(5.0f, 5.0f, 6.0f)),
+                                                    glm::vec3(-2.0f, 0.0f, -3.0f),
+                                                    glm::linearRand(0.0f,360.0f), 
+                                                    glm::linearRand(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)), filename.c_str());
+        prevfilename = filename;
+      }
+       
       // TODO(student): implement loading models from a file; you can use the
       // string 'modelFile' which should store the updated file name from ImGui
     }
@@ -288,23 +301,22 @@ void ImGuiImpl::UpdateGuiButtons(void)
   {
     ImGui::PushID("ModelOptions");
 
-    // TODO(student): implement Euler-angles rotation and translation
-
-    ImGui::InputFloat3("Camera Position", (float*) &pos);
-    ImGui::InputFloat3("Look At Vector", (float*)&lookat);
-    ImGui::SliderAngle("Rotation X", &rotationX);
-    ImGui::SliderAngle("Rotation Y", &rotationY);
-    ImGui::SliderAngle("Rotation Z", &rotationZ);
+    ImGui::SliderFloat3("Camera Position", (float*)&pos, -10.0f, 10.0f);
+    ImGui::SliderFloat3("Lookat Vector", (float*)&lookat, -2.0f,2.0f);
 
     if (pos != prevpos)
     {
-      g_GraphicsSys->GetCurrentCamera().position = pos;
+      glm::vec3 vect = pos - prevpos;
+      g_GraphicsSys->GetCurrentCamera().position += vect;
       prevpos = pos;
     }
 
     if (lookat != prevlookat)
     {
-      g_GraphicsSys->GetCurrentCamera().viewDirection = lookat;
+      glm::vec3 vect = lookat - prevlookat;
+      glm::normalize(vect);
+      g_GraphicsSys->GetCurrentCamera().viewDirection += vect;
+      glm::normalize(g_GraphicsSys->GetCurrentCamera().viewDirection);
       prevlookat = lookat;
     }
 

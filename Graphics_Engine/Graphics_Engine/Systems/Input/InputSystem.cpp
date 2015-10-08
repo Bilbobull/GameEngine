@@ -132,5 +132,24 @@ void InputSystem::mousePressEvent(GLFWwindow* window, int button, int action, in
   ImGuiImpl::Mouse(button, action, _mousePosition.x, _mousePosition.y);
 }
 
+void InputSystem::windowResizeEvent(GLFWwindow* wnd, int w, int h)
+{
+  ImGuiImpl::Reshape(w, h);
+}
+
+void InputSystem::mouseEnterEvent(GLFWwindow* wnd, int state)
+{
+  ImGuiImpl::Entry(state);
+}
+
+void InputSystem::windowIconifyEvent(GLFWwindow* window, int iconified)
+{
+  if (iconified)
+    g_GraphicsSys->GetCurrentWindow().SetMinimize(true);
+
+  else
+    g_GraphicsSys->GetCurrentWindow().SetMinimize(false);
+}
+
 glm::vec2 InputSystem::_mousePosition;
 

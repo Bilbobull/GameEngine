@@ -84,8 +84,8 @@ void Window::glfw_Init()
   }
   else
   {
-    Width = 1920;
-    Height = 1052;
+    Width = Desktop->width;
+    Height = Desktop->height - 100;
   }
 
  // glfw_window = glfwCreateWindow(Width, Height, name.c_str(), Monitor, nullptr);

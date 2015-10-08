@@ -21,6 +21,9 @@ public:
   void CloseWindow(void);
   static void mouseMoveEvent(GLFWwindow* window, double posX, double posY);
   static void mousePressEvent(GLFWwindow* window, int button, int action, int mode);
+  static void windowResizeEvent(GLFWwindow* wnd, int w, int h);
+  static void mouseEnterEvent(GLFWwindow* wnd, int state);
+  static void windowIconifyEvent(GLFWwindow* window, int iconified);
 
 private:
   static glm::vec2 _mousePosition;

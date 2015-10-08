@@ -23,6 +23,10 @@ public:
   int GetHeight(){ return Height; }
   static void glfw_WindowShouldClose();
 
+  void Minimize(void){ Minimized = !Minimized; }
+  void SetMinimize(bool yesorno){ Minimized = yesorno; }
+  bool GetMinimized(void){ return Minimized; }
+
   void SetName(std::string title = "Graphics Engine");
  
 private:
@@ -37,4 +41,5 @@ private:
   int Width;
   int Height;
   bool FullScreen = false;
+  bool Minimized = false;
 };
