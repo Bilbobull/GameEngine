@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 
   for (auto it : Systems)
     it->Init();
- 
+
   while (Running == true)
   {
     for (auto it : Systems)

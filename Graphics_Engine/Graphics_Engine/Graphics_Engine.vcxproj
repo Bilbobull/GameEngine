@@ -51,7 +51,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ImGuid.lib;STB.lib;opengl32.lib;glew32.lib;glew32s.lib;glfw3.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ImGuid.lib;STB.lib;opengl32.lib;glew32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -82,12 +82,16 @@
     <ClCompile Include="Systems\Graphics\Object.cpp" />
     <ClCompile Include="Systems\Graphics\ObjectManager.cpp" />
     <ClCompile Include="Systems\Graphics\OBJLoader.cpp" />
-    <ClCompile Include="Systems\Graphics\Particles\ParticleEffect.cpp" />
-    <ClCompile Include="Systems\Graphics\Particles\ParticleEmiter.cpp" />
-    <ClCompile Include="Systems\Graphics\Particles\ParticleGenerator.cpp" />
-    <ClCompile Include="Systems\Graphics\Particles\ParticleRenderer.cpp" />
-    <ClCompile Include="Systems\Graphics\Particles\ParticleSystem.cpp" />
-    <ClCompile Include="Systems\Graphics\Particles\ParticleUpdater.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\ComputeParticleRenderer.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\ComputeShader.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\Shader.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\ShaderStorageBufferObject.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\NormalParticles\ParticleEffect.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\NormalParticles\ParticleEmiter.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\NormalParticles\ParticleGenerator.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\NormalParticles\ParticleRenderer.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\NormalParticles\ParticleSystem.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\NormalParticles\ParticleUpdater.cpp" />
     <ClCompile Include="Systems\Graphics\ShaderManager.cpp" />
     <ClCompile Include="Systems\Graphics\MeshGenerator.cpp" />
     <ClCompile Include="Systems\Graphics\Texture.cpp" />
@@ -109,12 +113,16 @@
     <ClInclude Include="Systems\Graphics\Object.h" />
     <ClInclude Include="Systems\Graphics\ObjectManager.h" />
     <ClInclude Include="Systems\Graphics\OBJLoader.h" />
-    <ClInclude Include="Systems\Graphics\Particles\ParticleEffect.h" />
-    <ClInclude Include="Systems\Graphics\Particles\ParticleEmiter.h" />
-    <ClInclude Include="Systems\Graphics\Particles\ParticleGenerator.h" />
-    <ClInclude Include="Systems\Graphics\Particles\ParticleRenderer.h" />
-    <ClInclude Include="Systems\Graphics\Particles\ParticleSystem.h" />
-    <ClInclude Include="Systems\Graphics\Particles\ParticleUpdater.h" />
+    <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\ComputeParticleRenderer.h" />
+    <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\ComputeShader.h" />
+    <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\Shader.h" />
+    <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\ShaderStorageBufferObject.h" />
+    <ClInclude Include="Systems\Graphics\Particles\NormalParticles\ParticleEffect.h" />
+    <ClInclude Include="Systems\Graphics\Particles\NormalParticles\ParticleEmiter.h" />
+    <ClInclude Include="Systems\Graphics\Particles\NormalParticles\ParticleGenerator.h" />
+    <ClInclude Include="Systems\Graphics\Particles\NormalParticles\ParticleRenderer.h" />
+    <ClInclude Include="Systems\Graphics\Particles\NormalParticles\ParticleSystem.h" />
+    <ClInclude Include="Systems\Graphics\Particles\NormalParticles\ParticleUpdater.h" />
     <ClInclude Include="Systems\Graphics\ShaderManager.h" />
     <ClInclude Include="Systems\Graphics\MeshGenerator.h" />
     <ClInclude Include="Systems\Graphics\Texture.h" />
@@ -123,12 +131,15 @@
     <ClInclude Include="Systems\System_Headers.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Systems\Graphics\Shaders\MouseParticleEffect.cs.glsl" />
+    <None Include="Systems\Graphics\Shaders\Fragment.frag.glsl" />
     <None Include="Systems\Graphics\Shaders\ModelFragmentShader.glsl" />
     <None Include="Systems\Graphics\Shaders\ModelVertexShader.glsl" />
     <None Include="Systems\Graphics\Shaders\ParticleFragmentShader.glsl" />
     <None Include="Systems\Graphics\Shaders\ParticleVertexShader.glsl" />
     <None Include="Systems\Graphics\Shaders\SimpleFragmentShader.glsl" />
     <None Include="Systems\Graphics\Shaders\SimpleVertexShader.glsl" />
+    <None Include="Systems\Graphics\Shaders\Vertex.vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

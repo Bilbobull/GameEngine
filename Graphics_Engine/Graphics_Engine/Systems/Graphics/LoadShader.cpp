@@ -6,7 +6,7 @@
 #include <fstream>
 #include <algorithm>
 #include "LoadShader.h"
-
+#include "Particles/ComputeParticles/ComputeShader.h"
 
 
 std::string Read_Shader (std::string shaderSource)
@@ -82,4 +82,10 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
   std::cout << "Link Status: " << log << "\n";
   //glUseProgram (program);
   return program;
+}
+
+ComputeShaders::ComputeShader* LoadComputeShader(const char* comp_file_path)
+{
+  ComputeShaders::ComputeShader* cShader = new ComputeShaders::ComputeShader(comp_file_path);
+  return cShader;
 }

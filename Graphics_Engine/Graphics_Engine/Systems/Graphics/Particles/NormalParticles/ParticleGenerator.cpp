@@ -1,6 +1,8 @@
 #include "ParticleGenerator.h"
 #include "ParticleSystem.h"
 
+#define M_PI 3.1415f
+
 CircleGenerator::CircleGenerator(glm::vec3 _center, glm::vec3 _radius /*= Default_Value()*/)
 {
   center = _center;

@@ -30,7 +30,7 @@ public:
   void SetName(std::string title = "Graphics Engine");
  
 private:
-  SDL_Window  *sdl_window;
+  //SDL_Window  *sdl_window;
   int major_;
   int minor_;
 

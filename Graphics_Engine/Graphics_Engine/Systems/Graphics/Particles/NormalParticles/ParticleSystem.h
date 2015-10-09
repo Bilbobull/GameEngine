@@ -1,6 +1,6 @@
 #pragma once
-#include "../Graphics_Headers.h"
-#include "../Math_Headers.h"
+#include "../../Graphics_Headers.h"
+#include "../../Math_Headers.h"
 #include <vector>
 #include "ParticleEmiter.h"
 #include "ParticleUpdater.h"

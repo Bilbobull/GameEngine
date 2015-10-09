@@ -5,12 +5,14 @@
 #include "../Input/InputSystem.h"
 #include "Object.h"
 #include "ObjectManager.h"
-#include "Particles\ParticleEffect.h"
+#include "Particles/NormalParticles/ParticleEffect.h"
 #include "../Editor/Editor.h"
+#include "Particles/ComputeParticles/ComputeParticleRenderer.h"
 
 ParticleEffect* effect;
 GraphicsSystem* g_GraphicsSys;
 std::string modelFile;
+ComputeShaders::CS_Renderer* c;
 
 void GraphicsSystem::Init(void)
 {
@@ -29,12 +31,14 @@ void GraphicsSystem::Init(void)
 
   //Object* arrow = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f), " ", Arrow_Mesh );
   //Object* cube = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -10.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-  modelFile = "Cube";
+  //modelFile = "Cube";
   Object* ironman = ObjectManager::CreateObject(glm::vec3(2.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "Cube");
   Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f), "Ironman");
 
   effect = new CircleEffect(glm::vec3(0, 0, -3), 100);
   effect->Init();
+  c = new ComputeShaders::CS_Renderer();
+  c->Initialize();
 
   ImGuiImpl::Initialize(Current_Window.GetWidth(), Current_Window.GetHeight());
 
@@ -53,17 +57,18 @@ void GraphicsSystem::Update(double dt)
   glClearColor(0.3f, 0.3f, 0.3f, 0.3f);
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-  //glViewport(0, 0, Current_Window.GetWidth(), Current_Window.GetHeight()); // Still need to do it
-
-
-  effect->Update(0.016f);
-  effect->Draw();
+  ////glViewport(0, 0, Current_Window.GetWidth(), Current_Window.GetHeight()); // Still need to do it
 
   auto objectList = ObjectManager::GetObjectList();
   for (auto it : objectList)
   {
     it->Draw();
   }
+
+  effect->Update(0.016f);
+  effect->Draw();
+  c->Draw();
+
 
   if (!(GetCurrentWindow().GetMinimized()))
   {
