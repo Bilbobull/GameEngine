@@ -6,9 +6,15 @@
 #include "../Graphics/GraphicsSystem.h"
 #include "../Graphics/Object.h"
 #include "../Graphics/ObjectManager.h"
+#include <string>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "STB/stb_image.h"
+
+#include "../Graphics/Light.h"
+
+static int NumLightGUI = 0;
+std::string Lightstr = "Light";
 
 // NOTE: This file contains the code needed to render ImGui within an OpenGL 3
 // context. This is very handy to have around, so feel free to reuse it in any
@@ -326,37 +332,62 @@ void ImGuiImpl::UpdateGuiButtons(void)
       // change how materials are being handled; that's completely fine; this
       // is fully implemented just to demonstrate how to use ImGui, since none
       // of the other inputs are saved (minus the model file path input).
-      ImGui::ColorEdit3("Ambient", (float*)&Material.ambient);
-      ImGui::ColorEdit3("Diffuse", (float*)&Material.diffuse);
+      //glm::vec3 tempamb;
+      //glm::vec3 tempdiff;
+      ImGui::ColorEdit3("Ambient", (float*)&MaterialVal.ambient);
+      ImGui::ColorEdit3("Diffuse", (float*)&MaterialVal.diffuse);
+      ImGui::ColorEdit3("Specular", (float*)&MaterialVal.specular);
+   //   MaterialVal.ambient = glm::vec4(tempamb, 0.0f);
+     // MaterialVal.diffuse = glm::vec4(tempdiff, 0.0f);;
     }
 
     ImGui::PopID();
   }
 
+  if (ImGui::Button("New Light") && LightNum < MAX_LIGHTS)
+  {
+    ++LightNum;
+    Lightdirection[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+    Lightambient[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+    Lightdiffuse[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+    Lightspecular[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+
+  }
+
+  if (ImGui::Button("Remove Light") && LightNum > 0)
+  {
+    Lightdirection[LightNum - 1] = glm::vec4(0);
+    Lightambient[LightNum - 1] = glm::vec4(0);
+    Lightdiffuse[LightNum - 1] = glm::vec4(0);
+    Lightspecular[LightNum - 1] = glm::vec4(0);
+    --LightNum;
+  }
+
+
+    // TODO(student): implement loading models from a file; you can use the
+    // string 'modelFile' which should store the updated file name from ImGui
 
   // light options
   ImGui::Separator();
   {
-    // PushID/PopID ensures that each of the inputs for lights do not conflict
-    // with each other; 'Position' below stores temporary state based on that
-    // name, so each element in this window by name 'Position' could potentially
-    // conflict; this stack of IDs helps prevent that
-
-    // Light 0
-    ImGui::PushID("Light 0");
-    if (ImGui::CollapsingHeader("Light 0"))
+    std::string numb;
+    std::string temp;
+    for (unsigned i = 0; i < LightNum; ++i)
     {
-      // TODO(student): implement handling inputs for lights
-      float dummy1[3] = { 0.f }, dummy2[3] = { 0.f }, dummy3[3] = { 0.f };
-      ImGui::InputFloat3("Direction", dummy1);
-      ImGui::ColorEdit3("Ambient", dummy2);
-      ImGui::ColorEdit3("Diffuse", dummy3);
+   
+      numb = std::to_string(i);
+      temp = Lightstr + numb;
+      ImGui::PushID(temp.c_str());
+      if (ImGui::CollapsingHeader(temp.c_str()))
+      {
+        ImGui::InputFloat3("Direction", (float*)&Lightdirection[i]);
+        ImGui::ColorEdit3("Ambient",    (float*)&Lightambient[i]);
+        ImGui::ColorEdit3("Diffuse",    (float*)&Lightdiffuse[i]);
+        ImGui::ColorEdit3("Specular",   (float*)&Lightspecular[i]);
+      }
+      ImGui::PopID();
     }
-    ImGui::PopID();
   }
-
-
-
 }
 
 

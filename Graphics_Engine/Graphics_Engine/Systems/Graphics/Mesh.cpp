@@ -3,9 +3,6 @@
 #include "GraphicsSystem.h"
 #include "Light.h"
 
-
-#define MAX_LIGHTS 8
-
 GLuint SimpleProgram;
 GLuint SimpleMatUniform;
 
@@ -21,11 +18,6 @@ GLuint LightAmbientArrayUniform;
 GLuint LightDiffuseArrayUniform;
 GLuint LightSpecularArrayUniform;
 GLuint CamPosUniform;
-static glm::vec4 Lightdirection[MAX_LIGHTS];
-static glm::vec4 Lightambient[MAX_LIGHTS];
-static glm::vec4 Lightdiffuse[MAX_LIGHTS];
-static glm::vec4 Lightspecular[MAX_LIGHTS];
-
 
 GLuint MaterialAmbientUniform;
 GLuint MaterialDiffuseUniform;
@@ -34,8 +26,6 @@ GLuint ShininessUniform;
 
 GLuint LightCountUniform;
 
-static int LightNum = 1;
-static Material MaterialVal;
 static int Shininess = 0.8;
 
 
@@ -64,24 +54,14 @@ void Mesh::Init_Mesh_Shader(void)
   ModelViewToProjectionUniform = glGetUniformLocation(ModelProgram, "ViewToProjectionMatrix");
   CamPosUniform = glGetUniformLocation(ModelProgram, "CameraPosition");
   ShininessUniform = glGetUniformLocation(ModelProgram, "Shininess");
-
-
-
 }
 
 
 
 void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToProjection)
 {
-  MaterialVal.ambient = glm::vec4(0.0f, 0.f, 0.0f, 0.f);
-  MaterialVal.diffuse = glm::vec4(0.6f, 0.6f, 0.6f, 0.f);
-  MaterialVal.specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-  Lightdirection[0] = glm::vec4(-0.3f, -0.4f, -1.f, 0.f);
-  Lightambient[0] = glm::vec4(0.6f, 0.6f, 0.6f, 0.f);
-  Lightdiffuse[0] = glm::vec4(0.6f, 0.6f, 0.6f, 0.f);
-  Lightspecular[0] = glm::vec4(1.f, 1.f, 1.f, 0.f);
-  LightNum = 1;
+
 
   glm::mat4 fullmatrix = ViewToProjection  * WorldToView * ModelToWorld;
 
