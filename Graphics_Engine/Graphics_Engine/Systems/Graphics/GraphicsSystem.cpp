@@ -14,6 +14,8 @@ GraphicsSystem* g_GraphicsSys;
 std::string modelFile;
 ComputeShaders::CS_Renderer* c;
 
+Object* ironman;
+
 void GraphicsSystem::Init(void)
 {
   Current_Window.glfw_Init();
@@ -32,13 +34,13 @@ void GraphicsSystem::Init(void)
   //Object* arrow = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f), " ", Arrow_Mesh );
   //Object* cube = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -10.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f));
   //modelFile = "Cube";
-  Object* ironman = ObjectManager::CreateObject(glm::vec3(2.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "Cube");
-  Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f), "Ironman");
+  ironman = ObjectManager::CreateObject(glm::vec3(0.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "ironman");
+  //Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f), "Ironman");
 
-  effect = new CircleEffect(glm::vec3(0, 0, -3), 100);
-  effect->Init();
-  c = new ComputeShaders::CS_Renderer();
-  c->Initialize();
+ // effect = new CircleEffect(glm::vec3(0, 0, -3), 100);
+ // effect->Init();
+ // c = new ComputeShaders::CS_Renderer();
+ // c->Initialize();
 
   ImGuiImpl::Initialize(Current_Window.GetWidth(), Current_Window.GetHeight());
 
@@ -59,15 +61,24 @@ void GraphicsSystem::Update(double dt)
 
   ////glViewport(0, 0, Current_Window.GetWidth(), Current_Window.GetHeight()); // Still need to do it
 
-  auto objectList = ObjectManager::GetObjectList();
-  for (auto it : objectList)
+  //auto objectList = ObjectManager::GetObjectList();
+  //for (auto it : objectList)
+  //{
+  //  it->Draw();
+  //}
+
+
+  if (glfwGetKey(GetCurrentWindow().glfw_GetWindow(), GLFW_KEY_P) == GLFW_PRESS)
   {
-    it->Draw();
+    ironman->rotation = glm::vec3(0.0f, 1.0f, 0.0f);
+    ironman->rotAngle += 0.5f;
   }
 
-  effect->Update(0.016f);
-  effect->Draw();
-  c->Draw();
+  ironman->Draw();
+  //
+  //effect->Update(0.016f);
+  //effect->Draw();
+ // c->Draw();
 
 
   if (!(GetCurrentWindow().GetMinimized()))

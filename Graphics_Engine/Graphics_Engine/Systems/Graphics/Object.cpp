@@ -50,8 +50,10 @@ void Object::Draw(void)
   // instead of around the center of the object
 
   // projection * translation * rotation
-  glm::mat4 matrix = g_GraphicsSys->GetCurrentCamera().getProjectionMatrix() * g_GraphicsSys->GetCurrentCamera().getWorldToViewMatrix()  * glm::translate(position) * RotateEuler(rotAngle, rotation);
-  mesh->Draw(matrix);
+  glm::mat4 ModelToWorld =  glm::translate(position) * RotateEuler(rotAngle, rotation); 
+  glm::mat4 WorldToView = g_GraphicsSys->GetCurrentCamera().getWorldToViewMatrix();
+  glm::mat4  ViewToProjection = g_GraphicsSys->GetCurrentCamera().getProjectionMatrix();
+  mesh->Draw(ModelToWorld, WorldToView, ViewToProjection);
 }
 
 Object::~Object()

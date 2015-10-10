@@ -1,31 +1,89 @@
 #include "Mesh.h"
 #include "LoadShader.h"
 #include "GraphicsSystem.h"
+#include "Light.h"
+
+
+#define MAX_LIGHTS 8
 
 GLuint SimpleProgram;
 GLuint SimpleMatUniform;
 
 GLuint ModelProgram;
-GLuint ModelMatUniform;
+GLuint ModelModelToWorldUniform;
+GLuint ModelWorldToViewUniform;
+GLuint ModelViewToProjectionUniform;
 GLuint DiffuseTextureUniform;
 GLuint NormalTextureUniform;
+
+GLuint LightDirectionArrayUniform;
+GLuint LightAmbientArrayUniform;
+GLuint LightDiffuseArrayUniform;
+GLuint LightSpecularArrayUniform;
+GLuint CamPosUniform;
+static glm::vec4 Lightdirection[MAX_LIGHTS];
+static glm::vec4 Lightambient[MAX_LIGHTS];
+static glm::vec4 Lightdiffuse[MAX_LIGHTS];
+static glm::vec4 Lightspecular[MAX_LIGHTS];
+
+
+GLuint MaterialAmbientUniform;
+GLuint MaterialDiffuseUniform;
+GLuint MaterialSpecularUniform;
+GLuint ShininessUniform;
+
+GLuint LightCountUniform;
+
+static int LightNum = 1;
+static Material MaterialVal;
+static int Shininess = 0.8;
 
 
 void Mesh::Init_Mesh_Shader(void)
 {
+  SimpleProgram = LoadShaders("SimpleVertexShader.glsl", "SimpleFragmentShader.glsl");
+  SimpleMatUniform = glGetUniformLocation(SimpleProgram, "FullTransformMatrix");
+
+
+
   ModelProgram = LoadShaders("ModelVertexShader.glsl", "ModelFragmentShader.glsl");
-  ModelMatUniform = glGetUniformLocation(ModelProgram, "FullTransformMatrix");
+
   DiffuseTextureUniform = glGetUniformLocation(ModelProgram, "Texture");
   NormalTextureUniform = glGetUniformLocation(ModelProgram, "normalTexture");
 
-  SimpleProgram = LoadShaders("SimpleVertexShader.glsl", "SimpleFragmentShader.glsl");
-  SimpleMatUniform = glGetUniformLocation(SimpleProgram, "FullTransformMatrix");
+  LightDirectionArrayUniform = glGetUniformLocation(ModelProgram, "lightDirections");
+  LightAmbientArrayUniform = glGetUniformLocation(ModelProgram, "lightAmbients");
+  LightDiffuseArrayUniform = glGetUniformLocation(ModelProgram, "lightDifuses");
+  LightSpecularArrayUniform = glGetUniformLocation(ModelProgram, "lightSpeculars");
+  LightCountUniform = glGetUniformLocation(ModelProgram, "LightCount");
+  MaterialDiffuseUniform = glGetUniformLocation(ModelProgram, "MaterialValues.diffuse");
+  MaterialAmbientUniform = glGetUniformLocation(ModelProgram, "MaterialValues.ambient");
+  MaterialSpecularUniform = glGetUniformLocation(ModelProgram, "MaterialValues.specular");
+  ModelModelToWorldUniform = glGetUniformLocation(ModelProgram, "ModelToWorldMatrix");
+  ModelWorldToViewUniform = glGetUniformLocation(ModelProgram, "WorldToViewMatrix");
+  ModelViewToProjectionUniform = glGetUniformLocation(ModelProgram, "ViewToProjectionMatrix");
+  CamPosUniform = glGetUniformLocation(ModelProgram, "CameraPosition");
+  ShininessUniform = glGetUniformLocation(ModelProgram, "Shininess");
+
+
+
 }
 
 
 
-void Mesh::Draw(glm::mat4 matrix)
+void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToProjection)
 {
+  MaterialVal.ambient = glm::vec4(0.0f, 0.f, 0.0f, 0.f);
+  MaterialVal.diffuse = glm::vec4(0.6f, 0.6f, 0.6f, 0.f);
+  MaterialVal.specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+  Lightdirection[0] = glm::vec4(-0.3f, -0.4f, -1.f, 0.f);
+  Lightambient[0] = glm::vec4(0.6f, 0.6f, 0.6f, 0.f);
+  Lightdiffuse[0] = glm::vec4(0.6f, 0.6f, 0.6f, 0.f);
+  Lightspecular[0] = glm::vec4(1.f, 1.f, 1.f, 0.f);
+  LightNum = 1;
+
+  glm::mat4 fullmatrix = ViewToProjection  * WorldToView * ModelToWorld;
 
   switch (type)
   {
@@ -33,7 +91,7 @@ void Mesh::Draw(glm::mat4 matrix)
   {
     if (g_GraphicsSys->GetDebugDraw() == true || texture == nullptr)
     {
-      Debug_Draw(matrix);
+      Debug_Draw(fullmatrix);
     }
 
     else
@@ -53,7 +111,20 @@ void Mesh::Draw(glm::mat4 matrix)
       glActiveTexture(GL_TEXTURE0);
 
       vao->Bind();
-      glUniformMatrix4fv(ModelMatUniform, 1, GL_FALSE, &matrix[0][0]);
+      glUniform4fv(LightDirectionArrayUniform, ARRAYSIZE(Lightdirection), glm::value_ptr(Lightdirection[0]));
+      glUniform4fv(LightAmbientArrayUniform, ARRAYSIZE(Lightambient), glm::value_ptr(Lightambient[0]));
+      glUniform4fv(LightDiffuseArrayUniform, ARRAYSIZE(Lightdiffuse), glm::value_ptr(Lightdiffuse[0]));
+      glUniform4fv(LightSpecularArrayUniform, ARRAYSIZE(Lightspecular), glm::value_ptr(Lightspecular[0]));
+      glUniform4fv(MaterialDiffuseUniform, 1, glm::value_ptr(MaterialVal.diffuse));
+      glUniform4fv(MaterialAmbientUniform, 1, glm::value_ptr(MaterialVal.ambient));
+      glUniform4fv(MaterialSpecularUniform, 1, glm::value_ptr(MaterialVal.specular));
+      glUniform1i(LightCountUniform, LightNum);
+      glUniform3fv(CamPosUniform, 1, glm::value_ptr(g_GraphicsSys->GetCurrentCamera().GetPosition()));
+      glUniform1i(ShininessUniform, Shininess);
+
+      glUniformMatrix4fv(ModelModelToWorldUniform, 1, GL_FALSE, &ModelToWorld[0][0]);
+      glUniformMatrix4fv(ModelWorldToViewUniform, 1, GL_FALSE, &WorldToView[0][0]);
+      glUniformMatrix4fv(ModelViewToProjectionUniform, 1, GL_FALSE, &ViewToProjection[0][0]);
       glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, 0);
       texture->unBind();
     }
@@ -73,7 +144,7 @@ void Mesh::Draw(glm::mat4 matrix)
 
     glUseProgram(SimpleProgram);
     vao->Bind();
-    glUniformMatrix4fv(SimpleMatUniform, 1, GL_FALSE, &matrix[0][0]);
+    glUniformMatrix4fv(SimpleMatUniform, 1, GL_FALSE, &fullmatrix[0][0]);
     glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, 0);
   }
 
@@ -87,7 +158,7 @@ void Mesh::Debug_Draw(glm::mat4 matrix)
   glUseProgram(SimpleProgram);
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   vao->Bind();
-  glUniformMatrix4fv(ModelMatUniform, 1, GL_FALSE, &matrix[0][0]);
+  glUniformMatrix4fv(SimpleMatUniform, 1, GL_FALSE, &matrix[0][0]);
   glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, 0);
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

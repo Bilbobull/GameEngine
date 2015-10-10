@@ -11,6 +11,7 @@ public:
 
   glm::mat4 getWorldToViewMatrix(void);
   glm::mat4 getProjectionMatrix(void);
+  glm::vec3 GetPosition(void){ return position; }
 
   void MouseUpdate(const glm::vec2& newMousePos);
   void MoveForward();

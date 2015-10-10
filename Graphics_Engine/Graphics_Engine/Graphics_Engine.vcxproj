@@ -77,6 +77,7 @@
     <ClCompile Include="Systems\Graphics\Camera.cpp" />
     <ClCompile Include="Systems\Graphics\Context.cpp" />
     <ClCompile Include="Systems\Graphics\GraphicsSystem.cpp" />
+    <ClCompile Include="Systems\Graphics\Light.cpp" />
     <ClCompile Include="Systems\Graphics\LoadShader.cpp" />
     <ClCompile Include="Systems\Graphics\Mesh.cpp" />
     <ClCompile Include="Systems\Graphics\Object.cpp" />
@@ -85,7 +86,7 @@
     <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\ComputeParticleRenderer.cpp" />
     <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\ComputeShader.cpp" />
     <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\Shader.cpp" />
-    <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\ShaderStorageBufferObject.cpp" />
+    <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\ShaderBufferManager.cpp" />
     <ClCompile Include="Systems\Graphics\Particles\NormalParticles\ParticleEffect.cpp" />
     <ClCompile Include="Systems\Graphics\Particles\NormalParticles\ParticleEmiter.cpp" />
     <ClCompile Include="Systems\Graphics\Particles\NormalParticles\ParticleGenerator.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="Systems\Graphics\Context.h" />
     <ClInclude Include="Systems\Graphics\GraphicsSystem.h" />
     <ClInclude Include="Systems\Graphics\Graphics_Headers.h" />
+    <ClInclude Include="Systems\Graphics\Light.h" />
     <ClInclude Include="Systems\Graphics\LoadShader.h" />
     <ClInclude Include="Systems\Graphics\Math_Headers.h" />
     <ClInclude Include="Systems\Graphics\Mesh.h" />
@@ -116,7 +118,7 @@
     <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\ComputeParticleRenderer.h" />
     <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\ComputeShader.h" />
     <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\Shader.h" />
-    <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\ShaderStorageBufferObject.h" />
+    <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\ShaderBufferManager.h" />
     <ClInclude Include="Systems\Graphics\Particles\NormalParticles\ParticleEffect.h" />
     <ClInclude Include="Systems\Graphics\Particles\NormalParticles\ParticleEmiter.h" />
     <ClInclude Include="Systems\Graphics\Particles\NormalParticles\ParticleGenerator.h" />

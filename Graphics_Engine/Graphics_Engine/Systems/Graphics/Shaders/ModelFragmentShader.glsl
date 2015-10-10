@@ -12,6 +12,6 @@ uniform sampler2D normalTexture;
 
 void main()
 {
-	outColor = texture2D (Texture, Texcoord) * Color;
-	outColorNormal = texture2D(normalTexture, Texcoord);
+	outColor = texture2D (Texture, Texcoord) * Color; 
+	outColorNormal = texture2D (Texture, Texcoord) * Color; 
 }

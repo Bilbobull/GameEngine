@@ -25,7 +25,7 @@ glm::mat4 Camera::LookAt(glm::vec3 eye, glm::vec3 center, glm::vec3 up)
   return Result;
 }
 
-Camera::Camera() : position(0.0f,2.0f,2.0f), viewDirection(0.0f, 0.0f, -1.0f), up(0.0f, 1.0f, 0.0f), near(0.1f), far(20.0f)
+Camera::Camera() : position(0.0f,0.0f,0.0f), viewDirection(0.0f, 0.0f, -1.0f), up(0.0f, 1.0f, 0.0f), near(0.1f), far(20.0f)
 {
 }
 
