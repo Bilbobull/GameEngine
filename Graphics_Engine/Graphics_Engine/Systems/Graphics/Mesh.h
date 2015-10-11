@@ -35,7 +35,7 @@ public:
 
   Mesh(){}
   ~Mesh(){}
-  void Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToProjection);
+  void Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToProjection, glm::mat4 scale);
   void Debug_Draw(glm::mat4 matrix);
   static void Init_Mesh_Shader(void);
 

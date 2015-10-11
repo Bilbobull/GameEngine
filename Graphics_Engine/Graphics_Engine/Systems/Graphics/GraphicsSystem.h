@@ -32,6 +32,9 @@ public:
   void FaceNormalDraw(bool yesorno){ Face_Normal_Draw = yesorno; }
   bool GetFaceNormalDraw(void){ return Face_Normal_Draw; }
   glm::vec3 Random_Color(void);
+  void Particle_Draw(void){ 
+    ResetParticles = true;
+    Particles = !Particles; }
 
 private:
   Window Current_Window;
@@ -39,6 +42,8 @@ private:
   bool Debug_Draw;
   bool Vertex_Normal_Draw;
   bool Face_Normal_Draw;
+  bool Particles;
+  bool ResetParticles;
 };
 
 extern GraphicsSystem* g_GraphicsSys;

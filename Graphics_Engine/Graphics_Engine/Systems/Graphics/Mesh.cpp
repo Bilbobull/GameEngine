@@ -12,6 +12,8 @@ GLuint ModelWorldToViewUniform;
 GLuint ModelViewToProjectionUniform;
 GLuint DiffuseTextureUniform;
 GLuint NormalTextureUniform;
+GLuint  LightTypeArrayUniform;
+GLuint LightPositionArrayUniform;
 
 GLuint LightDirectionArrayUniform;
 GLuint LightAmbientArrayUniform;
@@ -26,7 +28,7 @@ GLuint ShininessUniform;
 
 GLuint LightCountUniform;
 
-static int Shininess = 0.8;
+
 
 
 void Mesh::Init_Mesh_Shader(void)
@@ -41,6 +43,8 @@ void Mesh::Init_Mesh_Shader(void)
   DiffuseTextureUniform = glGetUniformLocation(ModelProgram, "Texture");
   NormalTextureUniform = glGetUniformLocation(ModelProgram, "normalTexture");
 
+  LightTypeArrayUniform = glGetUniformLocation(ModelProgram, "lightTypes");
+  LightPositionArrayUniform = glGetUniformLocation(ModelProgram, "lightPositions");
   LightDirectionArrayUniform = glGetUniformLocation(ModelProgram, "lightDirections");
   LightAmbientArrayUniform = glGetUniformLocation(ModelProgram, "lightAmbients");
   LightDiffuseArrayUniform = glGetUniformLocation(ModelProgram, "lightDifuses");
@@ -58,7 +62,7 @@ void Mesh::Init_Mesh_Shader(void)
 
 
 
-void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToProjection)
+void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToProjection, glm::mat4 scale)
 {
 
 
@@ -91,6 +95,8 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
       glActiveTexture(GL_TEXTURE0);
 
       vao->Bind();
+      glUniform1iv(LightTypeArrayUniform, ARRAYSIZE(Lighttype), &Lighttype[0]);
+      glUniform4fv(LightPositionArrayUniform, ARRAYSIZE(Lightposition), glm::value_ptr(Lightposition[0]));
       glUniform4fv(LightDirectionArrayUniform, ARRAYSIZE(Lightdirection), glm::value_ptr(Lightdirection[0]));
       glUniform4fv(LightAmbientArrayUniform, ARRAYSIZE(Lightambient), glm::value_ptr(Lightambient[0]));
       glUniform4fv(LightDiffuseArrayUniform, ARRAYSIZE(Lightdiffuse), glm::value_ptr(Lightdiffuse[0]));
@@ -100,7 +106,7 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
       glUniform4fv(MaterialSpecularUniform, 1, glm::value_ptr(MaterialVal.specular));
       glUniform1i(LightCountUniform, LightNum);
       glUniform3fv(CamPosUniform, 1, glm::value_ptr(g_GraphicsSys->GetCurrentCamera().GetPosition()));
-      glUniform1i(ShininessUniform, Shininess);
+      glUniform1f(ShininessUniform, Shininess);
 
       glUniformMatrix4fv(ModelModelToWorldUniform, 1, GL_FALSE, &ModelToWorld[0][0]);
       glUniformMatrix4fv(ModelWorldToViewUniform, 1, GL_FALSE, &WorldToView[0][0]);
@@ -121,7 +127,7 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
     {
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
-
+    fullmatrix = ViewToProjection  * WorldToView * ModelToWorld * scale;
     glUseProgram(SimpleProgram);
     vao->Bind();
     glUniformMatrix4fv(SimpleMatUniform, 1, GL_FALSE, &fullmatrix[0][0]);

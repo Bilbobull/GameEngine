@@ -15,7 +15,8 @@ struct Material
   vec4 specular;
 };
 
-
+uniform int lightTypes[MaxLights]; // support UP TO 8 lights
+uniform vec4 lightPositions[MaxLights]; // support UP TO 8 lights
 uniform vec4 lightDirections[MaxLights]; // support UP TO 8 lights
 uniform vec4 lightAmbients[MaxLights]; // support UP TO 8 lights
 uniform vec4 lightDiffuses[MaxLights]; // support UP TO 8 lights
@@ -28,7 +29,7 @@ uniform mat4 WorldToViewMatrix;
 uniform mat4 ViewToProjectionMatrix;
 
 uniform vec3 CameraPosition = vec3(0.0);
-uniform int Shininess;
+uniform float Shininess;
 
 uniform sampler2D Texture;
 uniform sampler2D normalTexture;
@@ -39,13 +40,23 @@ layout (location = 1) out vec4 outColorNormal;
 
 vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
 {
-  vec4 lightdir = lightDirections[lightIdx];
+  vec4 lightdir;
+  if(lightTypes[lightIdx] == 0)
+    lightdir = lightDirections[lightIdx];
+  else
+    lightdir = lightPositions[lightIdx];
+
   vec4 lightdif = lightDiffuses[lightIdx];
   vec4 lightamb = lightAmbients[lightIdx];
   vec4 lightspe = lightSpeculars[lightIdx];
   vec4 newpos = WorldToViewMatrix * ModelToWorldMatrix * vec4(Position, 1.0);
   vec4 newCampos = vec4(0,0,0, 1.0);
-  vec4 newlightdir = WorldToViewMatrix * lightdir;
+
+  vec4 newlightdir = vec4(0);
+  if(lightTypes[lightIdx] == 0)
+	newlightdir = WorldToViewMatrix * lightdir;
+  else
+    newlightdir = newpos - WorldToViewMatrix * lightdir;
 
   // AMBIENT
   vec4 ambient = lightamb * MaterialValues.ambient;

@@ -341,26 +341,75 @@ void ImGuiImpl::UpdateGuiButtons(void)
      // MaterialVal.diffuse = glm::vec4(tempdiff, 0.0f);;
     }
 
+    if (ImGui::CollapsingHeader("Shininess"))
+    {
+      // TODO: feel free to alter this code as you see fit; perhaps you wish to
+      // change how materials are being handled; that's completely fine; this
+      // is fully implemented just to demonstrate how to use ImGui, since none
+      // of the other inputs are saved (minus the model file path input).
+      //glm::vec3 tempamb;
+      //glm::vec3 tempdiff;
+      ImGui::SliderFloat("Shininess", &Shininess, 0.1f, 14.0f);
+      //   MaterialVal.ambient = glm::vec4(tempamb, 0.0f);
+      // MaterialVal.diffuse = glm::vec4(tempdiff, 0.0f);;
+    }
+
     ImGui::PopID();
   }
 
   if (ImGui::Button("New Light") && LightNum < MAX_LIGHTS)
   {
     ++LightNum;
-    Lightdirection[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+    Lighttype[LightNum - 1] = (int)(glm::linearRand(glm::vec4(1), glm::vec4(3)).x);
+
+    glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
+    float angle = 2* PI / (float)LightNum;
+    float radius = 2.0f;
+    for (int i = 0; i < LightNum; ++i)
+    {
+      float rotate = i * angle;
+      Lightposition[i] = glm::vec4( center.x + cos(rotate), center.y, center.z + sin(rotate), 1);
+    }
+
+    Lightdirection[LightNum - 1] = glm::linearRand(glm::vec4(-1), glm::vec4(1));
     Lightambient[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
     Lightdiffuse[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
     Lightspecular[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+    glm::vec3 temppos = glm::vec3(Lightposition[LightNum - 1].x, Lightposition[LightNum - 1].y, Lightposition[LightNum - 1].z);
+
+    Object* obj = new Object(temppos, glm::vec3(0.25f));
+    LightObjects.push_back(obj);
+    for (int i = 0; i < LightNum; ++i)
+    {
+      LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+    }
 
   }
 
   if (ImGui::Button("Remove Light") && LightNum > 0)
   {
+    Lighttype[LightNum - 1] = 0;
+    Lightposition[LightNum - 1] = glm::vec4(0);
     Lightdirection[LightNum - 1] = glm::vec4(0);
     Lightambient[LightNum - 1] = glm::vec4(0);
     Lightdiffuse[LightNum - 1] = glm::vec4(0);
     Lightspecular[LightNum - 1] = glm::vec4(0);
+    LightObjects.pop_back();
+
     --LightNum;
+    glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
+    float angle = 2 * PI / (float)LightNum;
+    float radius = 2.0f;
+    for (int i = 0; i < LightNum; ++i)
+    {
+      float rotate = i * angle;
+      Lightposition[i] = glm::vec4(center.x + cos(rotate), center.y, center.z + sin(rotate), 1);
+    }
+    for (int i = 0; i < LightNum; ++i)
+    {
+      LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+    }
+
   }
 
 
@@ -380,6 +429,12 @@ void ImGuiImpl::UpdateGuiButtons(void)
       ImGui::PushID(temp.c_str());
       if (ImGui::CollapsingHeader(temp.c_str()))
       {
+        std::vector<char const *> lighttypes = {
+          "Directional", "Spot", "Point" };
+        ImGui::Combo("Debug Mode", &Lighttype[i], lighttypes.data(), 3);
+        ImGui::InputFloat3("Position", (float*)&Lightposition[i]);
+        glm::vec3 temppos = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+        LightObjects[i]->position = temppos;
         ImGui::InputFloat3("Direction", (float*)&Lightdirection[i]);
         ImGui::ColorEdit3("Ambient",    (float*)&Lightambient[i]);
         ImGui::ColorEdit3("Diffuse",    (float*)&Lightdiffuse[i]);
@@ -388,6 +443,15 @@ void ImGuiImpl::UpdateGuiButtons(void)
       ImGui::PopID();
     }
   }
+
+  ImGui::Separator();
+  {
+    if (ImGui::Button("Particles"))
+    {
+      g_GraphicsSys->Particle_Draw();
+    }
+  }
+
 }
 
 

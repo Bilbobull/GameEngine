@@ -498,7 +498,7 @@ Mesh* MeshGenerator::Create_Shape(std::string filename, Meshes meshtype)
       break;
 
     case Plane_Mesh:
-      mesh = makePlane();
+      mesh = makePlane(10);
       mesh->type = Shape;
       break;
 

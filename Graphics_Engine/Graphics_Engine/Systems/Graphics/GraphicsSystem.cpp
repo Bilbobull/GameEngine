@@ -8,6 +8,7 @@
 #include "Particles/NormalParticles/ParticleEffect.h"
 #include "../Editor/Editor.h"
 #include "Particles/ComputeParticles/ComputeParticleRenderer.h"
+#include "Light.h"
 
 ParticleEffect* effect;
 GraphicsSystem* g_GraphicsSys;
@@ -18,6 +19,8 @@ Object* ironman;
 
 void GraphicsSystem::Init(void)
 {
+  Particles = false;
+
   Current_Window.glfw_Init();
   glfwSetMouseButtonCallback(Current_Window.glfw_GetWindow(), g_InputSys->mousePressEvent);
   glfwSetCursorPosCallback(Current_Window.glfw_GetWindow(), g_InputSys->mouseMoveEvent);
@@ -39,8 +42,8 @@ void GraphicsSystem::Init(void)
 
  // effect = new CircleEffect(glm::vec3(0, 0, -3), 100);
  // effect->Init();
- // c = new ComputeShaders::CS_Renderer();
- // c->Initialize();
+  c = new ComputeShaders::CS_Renderer();
+  c->Initialize();
 
   ImGuiImpl::Initialize(Current_Window.GetWidth(), Current_Window.GetHeight());
 
@@ -61,24 +64,38 @@ void GraphicsSystem::Update(double dt)
 
   ////glViewport(0, 0, Current_Window.GetWidth(), Current_Window.GetHeight()); // Still need to do it
 
-  //auto objectList = ObjectManager::GetObjectList();
-  //for (auto it : objectList)
-  //{
-  //  it->Draw();
-  //}
-
-
   if (glfwGetKey(GetCurrentWindow().glfw_GetWindow(), GLFW_KEY_P) == GLFW_PRESS)
   {
     ironman->rotation = glm::vec3(0.0f, 1.0f, 0.0f);
     ironman->rotAngle += 0.5f;
   }
 
+  auto objectList = ObjectManager::GetObjectList();
+  for (auto it : objectList)
+  {
+    it->Draw();
+  }
+
+  for (auto it : LightObjects)
+  {
+    it->Draw();
+  }
+
+
   ironman->Draw();
-  //
-  //effect->Update(0.016f);
-  //effect->Draw();
- // c->Draw();
+  if (Particles)
+  {
+    //effect->Update(0.016f);
+    //effect->Draw();
+    if (ResetParticles)
+    {
+      ResetParticles = false;
+      delete c;
+      c = new ComputeShaders::CS_Renderer();
+      c->Initialize();
+    }
+    c->Draw();
+  }
 
 
   if (!(GetCurrentWindow().GetMinimized()))

@@ -30,8 +30,11 @@ namespace ComputeShaders
   void CS_Renderer::Initialize()
   {
     CreateBuffers();
-    InitShaders();
-    LoadTexture();
+    if (!shader && !computeshader && !texture)
+    {
+      InitShaders();
+      LoadTexture();
+    }
   }
 
   void CS_Renderer::Draw()
@@ -116,7 +119,6 @@ namespace ComputeShaders
 
     vao->unBind();
   }
-
   void CS_Renderer::LoadTexture()
   {
     texture = new Texture("Particle");
