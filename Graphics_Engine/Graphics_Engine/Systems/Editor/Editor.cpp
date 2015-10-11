@@ -465,7 +465,7 @@ void ImGuiImpl::UpdateGuiButtons(void)
           std::vector<char const *> lighttypes = {
             "Directional", "Spot", "Point" };
           ImGui::Combo("Debug Mode", &Lighttype[i], lighttypes.data(), 3);
-          ImGui::InputFloat3("Position", (float*)&Lightposition[i]);
+          ImGui::SliderFloat3("Position", (float*)&Lightposition[i], -10.0f, 10.0f);
           glm::vec3 temppos = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
           LightObjects[i]->position = temppos;
           ImGui::SliderFloat3("Direction", (float*)&Lightdirection[i], -1.0f, 1.0f);
@@ -487,9 +487,9 @@ void ImGuiImpl::UpdateGuiButtons(void)
   {
     if (ImGui::CollapsingHeader("Distance Attenuation"))
     {
-      ImGui::SliderFloat("c1", &DistanceAttConstants[0], 0.0f, 2.0f);
-      ImGui::SliderFloat("c2", &DistanceAttConstants[1], 0.0f, 2.0f);
-      ImGui::SliderFloat("c3", &DistanceAttConstants[2], 0.0f, 2.0f);
+      ImGui::SliderFloat("c1", &DistanceAttConstants[0], 0.0f, 1.0f);
+      ImGui::SliderFloat("c2", &DistanceAttConstants[1], 0.0f, 1.0f);
+      ImGui::SliderFloat("c3", &DistanceAttConstants[2], 0.0f, 1.0f);
       std::vector<char const *> DistAttYesOrNo = {
         "No", "Yes"};
       ImGui::Combo("Enabled", &DistanceAtt, DistAttYesOrNo.data(), 2);
