@@ -31,6 +31,9 @@ uniform mat4 ViewToProjectionMatrix;
 uniform vec3 CameraPosition = vec3(0.0);
 uniform float Shininess;
 
+uniform float DistanceAttConstants[3];
+uniform int DistanceAttBool;
+
 uniform sampler2D Texture;
 uniform sampler2D normalTexture;
 
@@ -84,12 +87,44 @@ vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
   return ambient + diffuse + specular; // total contribution from this light
 }
 
+float computeDistanceAttenuation(in int lightIdx)
+{
+  float c1 = DistanceAttConstants[0];
+  float c2 = DistanceAttConstants[1];
+  float c3 = DistanceAttConstants[2];
+  vec4 newpos = WorldToViewMatrix * ModelToWorldMatrix * vec4(Position, 1.0);
+  vec4 lightvec;
+  if(lightTypes[lightIdx] == 0)
+  {
+    lightvec = lightDirections[lightIdx];
+	lightvec = WorldToViewMatrix * lightvec;
+  }
+  else
+  {
+    lightvec = lightPositions[lightIdx];
+	lightvec = newpos - WorldToViewMatrix * lightvec;
+  }
+  float Lightdist = length(lightvec);
+
+  float Att = min(1/(c1+c2*Lightdist+c3*pow(Lightdist,2.0)), 1.0);
+
+  return Att;
+
+}
+
 vec4 computeSurfaceColor(in vec4 worldNormal)
 {
   // Phong: total contribution of light is sum of all individual light contribs.
   vec4 color = vec4(0, 0, 0, 0); // no light = black
   for (int i = 0; i < LightCount; ++i)
     color += computeLightingTerm(i, worldNormal); // contribution of light i
+
+  if(DistanceAttBool != 0)
+  {
+    for (int i = 0; i < LightCount; ++i)
+      color *= computeDistanceAttenuation(i);
+  }
+
   return color; // contribution from all lights onto surface
 }
 

@@ -36,6 +36,8 @@ public:
     ResetParticles = true;
     Particles = !Particles; }
 
+  void Light_Rotation(void){ LightRotation = !LightRotation; }
+
 private:
   Window Current_Window;
   Camera My_Camera;
@@ -44,6 +46,7 @@ private:
   bool Face_Normal_Draw;
   bool Particles;
   bool ResetParticles;
+  bool LightRotation;
 };
 
 extern GraphicsSystem* g_GraphicsSys;

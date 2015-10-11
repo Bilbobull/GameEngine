@@ -12,12 +12,14 @@ glm::vec4 Lightdiffuse[MAX_LIGHTS];
 glm::vec4 Lightspecular[MAX_LIGHTS];
 Material MaterialVal;
 int LightNum = 0;
-float Shininess = 0.8;
+float Shininess = 0.8f;
+float DistanceAttConstants[3];
+int DistanceAtt = 0;
 
 void RotateLights(void)
 {
   unsigned i = 0;
-  float rotation_rads = 0.0436332;
+  float rotation_rads = 0.0436332f;
   for (int i = 0; i < LightNum; ++i)
   {
     glm::mat4 Translate (1.0f), Rotation(1.0f);
@@ -27,16 +29,15 @@ void RotateLights(void)
     glm::vec4 rotation_around = center;
     glm::vec4 old_min_rotate_a = old_pos - rotation_around;
 
-  //  Vector4 new_pos = Vector4(old_min_rotate_a.x * cos(rotation_rads) - old_min_rotate_a.z * sin(rotation_rads),
-  //    old_min_rotate_a.y,
-  //    old_min_rotate_a.z * cos(rotation_rads) + old_min_rotate_a.x * sin(rotation_rads),
-  //    1);
-
-  //  it.second.position = new_pos + rotation_around;
-
-  //  all_lights[i].direction = it.second.position - rotation_around;
-  //  all_lights[i].direction.Normalize();
-
-  //  Matrix4 proj = Matrix4::CreateProjection(60, app->GetWindowWidth(), app->GetWindowHeight(), 1, 50);
+    glm::vec4 new_pos = glm::vec4(old_min_rotate_a.x * cos(rotation_rads) - old_min_rotate_a.z * sin(rotation_rads),
+      old_min_rotate_a.y,
+      old_min_rotate_a.z * cos(rotation_rads) + old_min_rotate_a.x * sin(rotation_rads),
+      1);
+   
+    Lightposition[i] = new_pos + rotation_around;
+    LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+   
+    Lightdirection[i] = Lightposition[i] - rotation_around;
+    glm::normalize(Lightdirection[i]);
   }
 }

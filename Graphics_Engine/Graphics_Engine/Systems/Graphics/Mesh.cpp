@@ -24,9 +24,13 @@ GLuint CamPosUniform;
 GLuint MaterialAmbientUniform;
 GLuint MaterialDiffuseUniform;
 GLuint MaterialSpecularUniform;
+
 GLuint ShininessUniform;
 
 GLuint LightCountUniform;
+
+GLuint DistanceAttConstUniform;
+GLuint DistanceAttBoolUniform;
 
 
 
@@ -58,6 +62,8 @@ void Mesh::Init_Mesh_Shader(void)
   ModelViewToProjectionUniform = glGetUniformLocation(ModelProgram, "ViewToProjectionMatrix");
   CamPosUniform = glGetUniformLocation(ModelProgram, "CameraPosition");
   ShininessUniform = glGetUniformLocation(ModelProgram, "Shininess");
+  DistanceAttConstUniform = glGetUniformLocation(ModelProgram, "DistanceAttConstants");
+  DistanceAttBoolUniform = glGetUniformLocation(ModelProgram, "DistanceAttBool");
 }
 
 
@@ -107,6 +113,8 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
       glUniform1i(LightCountUniform, LightNum);
       glUniform3fv(CamPosUniform, 1, glm::value_ptr(g_GraphicsSys->GetCurrentCamera().GetPosition()));
       glUniform1f(ShininessUniform, Shininess);
+      glUniform1fv(DistanceAttConstUniform, ARRAYSIZE(DistanceAttConstants), &DistanceAttConstants[0]);
+      glUniform1i(DistanceAttBoolUniform, DistanceAtt);
 
       glUniformMatrix4fv(ModelModelToWorldUniform, 1, GL_FALSE, &ModelToWorld[0][0]);
       glUniformMatrix4fv(ModelWorldToViewUniform, 1, GL_FALSE, &WorldToView[0][0]);

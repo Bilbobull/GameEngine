@@ -25,3 +25,5 @@ extern glm::vec4 Lightspecular[MAX_LIGHTS];
 extern Material MaterialVal;
 extern int LightNum;
 extern float Shininess;
+extern float DistanceAttConstants[3];
+extern int DistanceAtt;

@@ -245,10 +245,7 @@ std::string prevfilename = "cube";
 
 void ImGuiImpl::UpdateGuiButtons(void)
 {
-  {
-    // this code is already setup to copy the model file name into a local C
-    // buffer, allow ImGui to alter it, and then immediately update the file
-    // name based on the changes; feel free to change this logic as you see fit
+#pragma region Model_Debug
 
     char fileNameBuffer[140] = { '\0' };
     std::strcat(fileNameBuffer, filename.c_str());
@@ -259,16 +256,16 @@ void ImGuiImpl::UpdateGuiButtons(void)
     }
 
     if (ImGui::Button("Load Model"))
-    { 
+    {
       if (filename != prevfilename)
       {
         Object* myObj = ObjectManager::CreateObject(glm::linearRand(glm::vec3(-5.0f, -5.0f, -6.0f), glm::vec3(5.0f, 5.0f, 6.0f)),
-                                                    glm::vec3(-2.0f, 0.0f, -3.0f),
-                                                    glm::linearRand(0.0f,360.0f), 
-                                                    glm::linearRand(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)), filename.c_str());
+          glm::vec3(-2.0f, 0.0f, -3.0f),
+          glm::linearRand(0.0f, 360.0f),
+          glm::linearRand(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)), filename.c_str());
         prevfilename = filename;
       }
-       
+
       // TODO(student): implement loading models from a file; you can use the
       // string 'modelFile' which should store the updated file name from ImGui
     }
@@ -280,9 +277,9 @@ void ImGuiImpl::UpdateGuiButtons(void)
     }
 
     // TODO(student): implement GUI logic for enabling debug drawing modes
-    
+
     std::vector<char const *> debugModeStrings = {
-      "No", "FaceNormal", "VertexNormal"};
+      "No", "FaceNormal", "VertexNormal" };
     ImGui::Combo("Debug Mode", &debugMode, debugModeStrings.data(), 3);
     if (debugMode == 0)
       g_GraphicsSys->DebugDraw(false);
@@ -299,33 +296,45 @@ void ImGuiImpl::UpdateGuiButtons(void)
     else
       g_GraphicsSys->VertexNormalDraw(false);
 
-  }
+ 
 
+#pragma endregion
 
+#pragma region Camera
   ImGui::Separator();
   // model options
   {
-    ImGui::PushID("ModelOptions");
-
-    ImGui::SliderFloat3("Camera Position", (float*)&pos, -10.0f, 10.0f);
-    ImGui::SliderFloat3("Lookat Vector", (float*)&lookat, -2.0f,2.0f);
-
-    if (pos != prevpos)
+    if (ImGui::CollapsingHeader("CameraPos"))
     {
-      glm::vec3 vect = pos - prevpos;
-      g_GraphicsSys->GetCurrentCamera().position += vect;
-      prevpos = pos;
-    }
+      ImGui::PushID("Camera");
 
-    if (lookat != prevlookat)
-    {
-      glm::vec3 vect = lookat - prevlookat;
-      glm::normalize(vect);
-      g_GraphicsSys->GetCurrentCamera().viewDirection += vect;
-      glm::normalize(g_GraphicsSys->GetCurrentCamera().viewDirection);
-      prevlookat = lookat;
-    }
+      ImGui::SliderFloat3("Camera Position", (float*)&pos, -10.0f, 10.0f);
+      ImGui::SliderFloat3("Lookat Vector", (float*)&lookat, -2.0f, 2.0f);
 
+      if (pos != prevpos)
+      {
+        glm::vec3 vect = pos - prevpos;
+        g_GraphicsSys->GetCurrentCamera().position += vect;
+        prevpos = pos;
+      }
+
+      if (lookat != prevlookat)
+      {
+        glm::vec3 vect = lookat - prevlookat;
+        glm::normalize(vect);
+        g_GraphicsSys->GetCurrentCamera().viewDirection += vect;
+        glm::normalize(g_GraphicsSys->GetCurrentCamera().viewDirection);
+        prevlookat = lookat;
+      }
+
+      ImGui::PopID();
+    }
+  }
+#pragma endregion
+
+#pragma region Material
+  ImGui::Separator();
+  {
     if (ImGui::CollapsingHeader("Material"))
     {
       // TODO: feel free to alter this code as you see fit; perhaps you wish to
@@ -337,10 +346,15 @@ void ImGuiImpl::UpdateGuiButtons(void)
       ImGui::ColorEdit3("Ambient", (float*)&MaterialVal.ambient);
       ImGui::ColorEdit3("Diffuse", (float*)&MaterialVal.diffuse);
       ImGui::ColorEdit3("Specular", (float*)&MaterialVal.specular);
-   //   MaterialVal.ambient = glm::vec4(tempamb, 0.0f);
-     // MaterialVal.diffuse = glm::vec4(tempdiff, 0.0f);;
+      //   MaterialVal.ambient = glm::vec4(tempamb, 0.0f);
+      // MaterialVal.diffuse = glm::vec4(tempdiff, 0.0f);;
     }
+  }
+#pragma endregion
 
+#pragma region Shinny
+  ImGui::Separator();
+  {
     if (ImGui::CollapsingHeader("Shininess"))
     {
       // TODO: feel free to alter this code as you see fit; perhaps you wish to
@@ -353,102 +367,150 @@ void ImGuiImpl::UpdateGuiButtons(void)
       //   MaterialVal.ambient = glm::vec4(tempamb, 0.0f);
       // MaterialVal.diffuse = glm::vec4(tempdiff, 0.0f);;
     }
-
-    ImGui::PopID();
   }
 
-  if (ImGui::Button("New Light") && LightNum < MAX_LIGHTS)
+#pragma endregion
+
+#pragma region Lights
+
+  if (ImGui::CollapsingHeader("Lights"))
   {
-    ++LightNum;
-    Lighttype[LightNum - 1] = (int)(glm::linearRand(glm::vec4(1), glm::vec4(3)).x);
 
-    glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
-    float angle = 2* PI / (float)LightNum;
-    float radius = 2.0f;
-    for (int i = 0; i < LightNum; ++i)
+#pragma region New_Light
+
+    if (ImGui::Button("New Light") && LightNum < MAX_LIGHTS)
     {
-      float rotate = i * angle;
-      Lightposition[i] = glm::vec4( center.x + cos(rotate), center.y, center.z + sin(rotate), 1);
+      ++LightNum;
+      Lighttype[LightNum - 1] = (int)(glm::linearRand(glm::vec4(1), glm::vec4(3)).x);
+
+      glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
+      float angle = 2 * PI / (float)LightNum;
+      float radius = 2.0f;
+      for (int i = 0; i < LightNum; ++i)
+      {
+        float rotate = i * angle;
+        Lightposition[i].x = center.x + cos(rotate);
+        Lightposition[i].z = center.z + sin(rotate);
+        Lightposition[i].w = 1.0f;
+      }
+
+      Lightposition[LightNum - 1].y = center.y;
+
+
+      Lightdirection[LightNum - 1] = glm::linearRand(glm::vec4(-1), glm::vec4(1));
+      Lightambient[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+      Lightdiffuse[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+      Lightspecular[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+      glm::vec3 temppos = glm::vec3(Lightposition[LightNum - 1].x, Lightposition[LightNum - 1].y, Lightposition[LightNum - 1].z);
+
+      Object* obj = new Object(temppos, glm::vec3(0.25f));
+      LightObjects.push_back(obj);
+      for (int i = 0; i < LightNum; ++i)
+      {
+        LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+      }
+
     }
 
-    Lightdirection[LightNum - 1] = glm::linearRand(glm::vec4(-1), glm::vec4(1));
-    Lightambient[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
-    Lightdiffuse[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
-    Lightspecular[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
-    glm::vec3 temppos = glm::vec3(Lightposition[LightNum - 1].x, Lightposition[LightNum - 1].y, Lightposition[LightNum - 1].z);
+#pragma endregion
 
-    Object* obj = new Object(temppos, glm::vec3(0.25f));
-    LightObjects.push_back(obj);
-    for (int i = 0; i < LightNum; ++i)
+#pragma region Remove_Light
+
+    if (ImGui::Button("Remove Light") && LightNum > 0)
     {
-      LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+      Lighttype[LightNum - 1] = 0;
+      Lightposition[LightNum - 1] = glm::vec4(0);
+      Lightdirection[LightNum - 1] = glm::vec4(0);
+      Lightambient[LightNum - 1] = glm::vec4(0);
+      Lightdiffuse[LightNum - 1] = glm::vec4(0);
+      Lightspecular[LightNum - 1] = glm::vec4(0);
+      LightObjects.pop_back();
+
+      --LightNum;
+      glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
+      float angle = 2 * PI / (float)LightNum;
+      float radius = 2.0f;
+      for (int i = 0; i < LightNum; ++i)
+      {
+        float rotate = i * angle;
+        Lightposition[i].x = center.x + cos(rotate);
+        Lightposition[i].z = center.z + sin(rotate);
+        Lightposition[i].w = 1.0f;
+      }
+
+      for (int i = 0; i < LightNum; ++i)
+      {
+        LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+      }
+
     }
+
+#pragma endregion
+
+
+#pragma region PerLight_Settings
+
+    ImGui::Separator();
+    {
+      std::string numb;
+      std::string temp;
+      for (int i = 0; i < LightNum; ++i)
+      {
+
+        numb = std::to_string(i);
+        temp = Lightstr + numb;
+        ImGui::PushID(temp.c_str());
+        if (ImGui::CollapsingHeader(temp.c_str()))
+        {
+          std::vector<char const *> lighttypes = {
+            "Directional", "Spot", "Point" };
+          ImGui::Combo("Debug Mode", &Lighttype[i], lighttypes.data(), 3);
+          ImGui::InputFloat3("Position", (float*)&Lightposition[i]);
+          glm::vec3 temppos = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+          LightObjects[i]->position = temppos;
+          ImGui::SliderFloat3("Direction", (float*)&Lightdirection[i], -1.0f, 1.0f);
+          ImGui::ColorEdit3("Ambient", (float*)&Lightambient[i]);
+          ImGui::ColorEdit3("Diffuse", (float*)&Lightdiffuse[i]);
+          ImGui::ColorEdit3("Specular", (float*)&Lightspecular[i]);
+        }
+        ImGui::PopID();
+      }
+    }
+#pragma endregion
 
   }
 
-  if (ImGui::Button("Remove Light") && LightNum > 0)
-  {
-    Lighttype[LightNum - 1] = 0;
-    Lightposition[LightNum - 1] = glm::vec4(0);
-    Lightdirection[LightNum - 1] = glm::vec4(0);
-    Lightambient[LightNum - 1] = glm::vec4(0);
-    Lightdiffuse[LightNum - 1] = glm::vec4(0);
-    Lightspecular[LightNum - 1] = glm::vec4(0);
-    LightObjects.pop_back();
+#pragma endregion
 
-    --LightNum;
-    glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
-    float angle = 2 * PI / (float)LightNum;
-    float radius = 2.0f;
-    for (int i = 0; i < LightNum; ++i)
-    {
-      float rotate = i * angle;
-      Lightposition[i] = glm::vec4(center.x + cos(rotate), center.y, center.z + sin(rotate), 1);
-    }
-    for (int i = 0; i < LightNum; ++i)
-    {
-      LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
-    }
-
-  }
-
-
-    // TODO(student): implement loading models from a file; you can use the
-    // string 'modelFile' which should store the updated file name from ImGui
-
-  // light options
+#pragma region Distance_Att
   ImGui::Separator();
   {
-    std::string numb;
-    std::string temp;
-    for (unsigned i = 0; i < LightNum; ++i)
+    if (ImGui::CollapsingHeader("Distance Attenuation"))
     {
-   
-      numb = std::to_string(i);
-      temp = Lightstr + numb;
-      ImGui::PushID(temp.c_str());
-      if (ImGui::CollapsingHeader(temp.c_str()))
-      {
-        std::vector<char const *> lighttypes = {
-          "Directional", "Spot", "Point" };
-        ImGui::Combo("Debug Mode", &Lighttype[i], lighttypes.data(), 3);
-        ImGui::InputFloat3("Position", (float*)&Lightposition[i]);
-        glm::vec3 temppos = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
-        LightObjects[i]->position = temppos;
-        ImGui::InputFloat3("Direction", (float*)&Lightdirection[i]);
-        ImGui::ColorEdit3("Ambient",    (float*)&Lightambient[i]);
-        ImGui::ColorEdit3("Diffuse",    (float*)&Lightdiffuse[i]);
-        ImGui::ColorEdit3("Specular",   (float*)&Lightspecular[i]);
-      }
-      ImGui::PopID();
+      ImGui::SliderFloat("c1", &DistanceAttConstants[0], 0.0f, 2.0f);
+      ImGui::SliderFloat("c2", &DistanceAttConstants[1], 0.0f, 2.0f);
+      ImGui::SliderFloat("c3", &DistanceAttConstants[2], 0.0f, 2.0f);
+      std::vector<char const *> DistAttYesOrNo = {
+        "No", "Yes"};
+      ImGui::Combo("Enabled", &DistanceAtt, DistAttYesOrNo.data(), 2);
     }
   }
+#pragma endregion
+
 
   ImGui::Separator();
   {
     if (ImGui::Button("Particles"))
     {
       g_GraphicsSys->Particle_Draw();
+    }
+  }
+
+  ImGui::Separator();
+  {
+    if (ImGui::Button("Rotate Lights"))
+    {
+      g_GraphicsSys->Light_Rotation();
     }
   }
 

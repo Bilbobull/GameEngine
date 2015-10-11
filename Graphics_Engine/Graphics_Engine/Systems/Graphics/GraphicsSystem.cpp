@@ -76,6 +76,11 @@ void GraphicsSystem::Update(double dt)
     it->Draw();
   }
 
+  if (LightRotation)
+  {
+    RotateLights();
+  }
+
   for (auto it : LightObjects)
   {
     it->Draw();
@@ -83,6 +88,7 @@ void GraphicsSystem::Update(double dt)
 
 
   ironman->Draw();
+
   if (Particles)
   {
     //effect->Update(0.016f);
