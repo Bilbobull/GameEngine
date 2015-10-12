@@ -48,9 +48,16 @@ void RotateLights(void)
       1);
    
     Lightposition[i] = new_pos + rotation_around;
-    glm::vec4 tempos =  glm::vec4(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z, 1);
-    LightObjects[i]->position = glm::vec3(tempos.x, tempos.y, tempos.z);
-   
     Lightdirection[i] = Lightposition[i] - rotation_around;
+
+    if (Lighttype[i] != DIRECTIONAL)
+      LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+
+    else
+    {
+      glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
+      glm::vec4 temp = center - Lightdirection[i];
+      LightObjects[i]->position = glm::vec3(temp.x, temp.y, temp.z);
+    }
   }
 }

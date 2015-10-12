@@ -468,7 +468,14 @@ void ImGuiImpl::UpdateGuiButtons(void)
 
         for (int i = 0; i < LightNum; ++i)
         {
-          LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+          if (Lighttype[i] != DIRECTIONAL)
+            LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+
+          else
+          {
+            glm::vec4 temp = center - Lightdirection[i];
+            LightObjects[i]->position = glm::vec3(temp.x, temp.y, temp.z);
+          }
         }
 
       }
@@ -493,9 +500,18 @@ void ImGuiImpl::UpdateGuiButtons(void)
             "Directional", "Spot", "Point" };
           ImGui::Combo("Debug Mode", &Lighttype[i], lighttypes.data(), 3);
           ImGui::SliderFloat3("Position", (float*)&Lightposition[i], -20.0f, 20.0f);
-          glm::vec3 temppos = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
-          LightObjects[i]->position = temppos;
-          ImGui::SliderFloat3("Direction", (float*)&Lightdirection[i], -1.0f, 1.0f);
+          ImGui::SliderFloat3("Direction", (float*)&Lightdirection[i], -20.0f, 20.0f);
+
+          if (Lighttype[i] != DIRECTIONAL)
+            LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+
+          else
+          {
+            glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
+            glm::vec4 temp = center - Lightdirection[i];
+            LightObjects[i]->position = glm::vec3(temp.x, temp.y, temp.z);
+          }
+
           ImGui::ColorEdit3("Ambient", (float*)&Lightambient[i]);
           ImGui::ColorEdit3("Diffuse", (float*)&Lightdiffuse[i]);
           ImGui::ColorEdit3("Specular", (float*)&Lightspecular[i]);

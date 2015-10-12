@@ -90,7 +90,6 @@ vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
   {
     // compute diffuse contribution on the surface
     diffuse = diffuseFactor * lightdif * MaterialValues.diffuse;
-  //diffuse = vec4(.9, .1, .4, 1);
   }
 
   vec4 globalamb = globalAmbient * MaterialValues.ambient;
@@ -114,12 +113,12 @@ vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
 
   vec4 emisive = lightEmisives[lightIdx];
 
-  if(lightTypes[lightIdx] == 1)
-  {
-	float Alpha = dot(lightDirections[lightIdx], newlightdir);
-	float SpotLight = (cos(Alpha) - cos(lightOuters[lightIdx]))/(cos(lightInners[lightIdx]) - cos(lightOuters[lightIdx]));
-    return globalamb +  emisive + Att * ambient + Att * SpotLight * (diffuse + specular); // total contribution from this light
-  }
+ // if(lightTypes[lightIdx] == 1)
+ // {
+//	float Alpha = dot(lightDirections[lightIdx], newlightdir);
+//	float SpotLight = (cos(Alpha) - cos(lightOuters[lightIdx]))/(cos(lightInners[lightIdx]) - cos(lightOuters[lightIdx]));
+ //   return globalamb +  emisive + Att * ambient + Att * SpotLight * (diffuse + specular); // total contribution from this light
+ // }
 
   //return globalamb +  emisive + Att * ambient +  Att *(diffuse + specular); // total contribution from this light
   return ambient + diffuse + specular; // total contribution from this light
