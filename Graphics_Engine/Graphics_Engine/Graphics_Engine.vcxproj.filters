@@ -263,5 +263,11 @@
     <None Include="Systems\Graphics\Shaders\MouseParticleEffect.cs.glsl">
       <Filter>Systems\Graphics\Shaders</Filter>
     </None>
+    <None Include="Systems\Graphics\Shaders\PerVertexPhong.fs.glsl">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </None>
+    <None Include="Systems\Graphics\Shaders\PerVertexPhong.vs.glsl">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

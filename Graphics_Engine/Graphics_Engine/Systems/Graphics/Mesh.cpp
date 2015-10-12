@@ -51,6 +51,7 @@ void Mesh::Init_Mesh_Shader(void)
   SimpleMatUniform = glGetUniformLocation(SimpleProgram, "FullTransformMatrix");
 
 
+#pragma region PerFragment
 
   ModelProgram = LoadShaders("ModelVertexShader.glsl", "ModelFragmentShader.glsl");
 
@@ -84,6 +85,15 @@ void Mesh::Init_Mesh_Shader(void)
   AtmosphericAttBoolUniform = glGetUniformLocation(ModelProgram, "AtmosphericAttBool");
   AtmosphericAttIntesityUniform = glGetUniformLocation(ModelProgram, "AtmosphericIntensity");
   TexturesUniform = glGetUniformLocation(ModelProgram, "Textures");
+
+#pragma endregion
+
+
+#pragma region PerVertex
+
+
+
+#pragma endregion
 }
 
 

@@ -140,6 +140,8 @@
     <None Include="Systems\Graphics\Shaders\ModelVertexShader.glsl" />
     <None Include="Systems\Graphics\Shaders\ParticleFragmentShader.glsl" />
     <None Include="Systems\Graphics\Shaders\ParticleVertexShader.glsl" />
+    <None Include="Systems\Graphics\Shaders\PerVertexPhong.fs.glsl" />
+    <None Include="Systems\Graphics\Shaders\PerVertexPhong.vs.glsl" />
     <None Include="Systems\Graphics\Shaders\SimpleFragmentShader.glsl" />
     <None Include="Systems\Graphics\Shaders\SimpleVertexShader.glsl" />
     <None Include="Systems\Graphics\Shaders\Vertex.vs.glsl" />
