@@ -371,6 +371,25 @@ void ImGuiImpl::UpdateGuiButtons(void)
 
 #pragma endregion
 
+#pragma region GlobalAmb
+  ImGui::Separator();
+  {
+    if (ImGui::CollapsingHeader("Global Ambient"))
+    {
+      // TODO: feel free to alter this code as you see fit; perhaps you wish to
+      // change how materials are being handled; that's completely fine; this
+      // is fully implemented just to demonstrate how to use ImGui, since none
+      // of the other inputs are saved (minus the model file path input).
+      //glm::vec3 tempamb;
+      //glm::vec3 tempdiff;
+      ImGui::ColorEdit3("Global Ambient Intensity",(float*) &GlobalAmbient);
+      //   MaterialVal.ambient = glm::vec4(tempamb, 0.0f);
+      // MaterialVal.diffuse = glm::vec4(tempdiff, 0.0f);;
+    }
+  }
+
+#pragma endregion
+
 #pragma region Lights
   ImGui::Separator();
   {
@@ -382,7 +401,7 @@ void ImGuiImpl::UpdateGuiButtons(void)
       if (ImGui::Button("New Light") && LightNum < MAX_LIGHTS)
       {
         ++LightNum;
-        Lighttype[LightNum - 1] = (int)(glm::linearRand(glm::vec4(1), glm::vec4(3)).x);
+        Lighttype[LightNum - 1] = POINT;
 
         glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
         float angle = 2 * PI / (float)LightNum;
@@ -402,6 +421,7 @@ void ImGuiImpl::UpdateGuiButtons(void)
         Lightambient[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
         Lightdiffuse[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
         Lightspecular[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+        Lightemisive[LightNum - 1] = glm::vec4(0);
         Lightinner[LightNum - 1] = 15.0f * 2.0f * PI / 360.0f;
         Lightouter[LightNum - 1] = 30.0f * 2.0f * PI / 360.0f;
         Lightfalloff[LightNum - 1] = 1.0f;
@@ -428,6 +448,7 @@ void ImGuiImpl::UpdateGuiButtons(void)
         Lightambient[LightNum - 1] = glm::vec4(0);
         Lightdiffuse[LightNum - 1] = glm::vec4(0);
         Lightspecular[LightNum - 1] = glm::vec4(0);
+        Lightemisive[LightNum - 1] = glm::vec4(0);
         Lightinner[LightNum - 1] = 0.0f;
         Lightouter[LightNum - 1] = 0.0f;
         Lightfalloff[LightNum - 1] = 0.0f;
@@ -478,6 +499,7 @@ void ImGuiImpl::UpdateGuiButtons(void)
           ImGui::ColorEdit3("Ambient", (float*)&Lightambient[i]);
           ImGui::ColorEdit3("Diffuse", (float*)&Lightdiffuse[i]);
           ImGui::ColorEdit3("Specular", (float*)&Lightspecular[i]);
+          ImGui::ColorEdit3("Emisive", (float*)&Lightemisive[i]);
           ImGui::SliderFloat("Inner Angle", (float*)&Lightinner[i], 0, Lightouter[i]);
           ImGui::SliderFloat("Outer Angle", (float*)&Lightouter[i], Lightinner[i], 2 * PI);
           ImGui::InputFloat("Falloff", &Lightfalloff[i]);

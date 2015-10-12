@@ -22,11 +22,14 @@ uniform vec4 lightDirections[MaxLights];
 uniform vec4 lightAmbients[MaxLights]; 
 uniform vec4 lightDiffuses[MaxLights]; 
 uniform vec4 lightSpeculars[MaxLights];
+uniform vec4 lightEmisives[MaxLights];
 uniform float lightInners[MaxLights]; 
 uniform float lightOuters[MaxLights]; 
 uniform float lightFalloffs[MaxLights];
 
 uniform int LightCount; 
+
+uniform vec4 globalAmbient;
 
 uniform Material MaterialValues;
 uniform mat4 ModelToWorldMatrix;
@@ -90,6 +93,8 @@ vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
   //diffuse = vec4(.9, .1, .4, 1);
   }
 
+  vec4 globalamb = globalAmbient * MaterialValues.ambient;
+
   // SPECULAR
   vec4 specular = vec4(0); 
   vec4 reflection = reflect(lightVec, worldNormal);
@@ -100,7 +105,23 @@ vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
     specular = pow(specularFactor, Shininess) * lightspe * MaterialValues.specular;
   }
 
-  return ambient + diffuse + specular; // total contribution from this light
+  float Lightdist = length(newlightdir);
+
+  float c1 = DistanceAttConstants[0];
+  float c2 = DistanceAttConstants[1];
+  float c3 = DistanceAttConstants[2];
+  float Att = min(1/(c1+c2*Lightdist+c3*pow(Lightdist,2.0)), 1.0);
+
+  vec4 emisive = lightEmisives[lightIdx];
+
+  if(lightTypes[lightIdx] == 1)
+  {
+	float Alpha = dot(lightDirections[lightIdx], newlightdir);
+	float SpotLight = (cos(Alpha) - cos(lightOuters[lightIdx]))/(cos(lightInners[lightIdx]) - cos(lightOuters[lightIdx]));
+    return globalamb +  emisive + Att * ambient + Att * SpotLight * (diffuse + specular); // total contribution from this light
+  }
+
+  return globalamb +  emisive + Att * ambient +  Att *(diffuse + specular); // total contribution from this light
 }
 
 float computeDistanceAttenuation(in int lightIdx)

@@ -37,7 +37,7 @@ void GraphicsSystem::Init(void)
   //Object* arrow = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f), " ", Arrow_Mesh );
   //Object* cube = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -10.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f));
   //modelFile = "Cube";
-  ironman = ObjectManager::CreateObject(glm::vec3(0.0f, 0.5f, -3.0f), glm::vec3(10.0f, 10.0f, 10.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "cube");
+  ironman = ObjectManager::CreateObject(glm::vec3(0.0f, 0.5f, -3.0f), glm::vec3(10.0f, 10.0f, 10.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "ironman");
   //Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f), "Ironman");
 
  // effect = new CircleEffect(glm::vec3(0, 0, -3), 100);
@@ -46,6 +46,28 @@ void GraphicsSystem::Init(void)
   c->Initialize();
 
   ImGuiImpl::Initialize(Current_Window.GetWidth(), Current_Window.GetHeight());
+
+  MaterialVal.ambient = glm::vec4(0, 0, 0, 1);
+  MaterialVal.diffuse = glm::vec4(0.8, 0.8, 0.8, 1);
+  MaterialVal.specular = glm::vec4(1, 1, 1, 1);
+  Lighttype[0] = POINT;
+  Lightposition[0] = glm::vec4(-0.3f, 0.5f, -0.5f, 1.0f);
+  Lightdirection[0] = glm::vec4(0.3f, -0.5f, 0.5f, 1.0f);
+  Lightambient[0] = glm::vec4(0, 0, 0, 1);
+  Lightdiffuse[0] = glm::vec4(0.8, 0.8, 0.8, 1);
+  Lightspecular[0] = glm::vec4(1, 1, 1, 1);
+  Lightemisive[0] = glm::vec4(0);
+  Lightinner[0] = 15.0f* 2.0f * PI / 360.0f;
+  Lightouter[0] = 30.0f* 2.0f * PI / 360.0f;
+  Lightfalloff[0] = 1;
+  DistanceAttConstants[0] = 1.0f;
+  DistanceAttConstants[1] = 0.1f;
+  DistanceAttConstants[2] = 0.0f;
+  glm::vec3 temppos = glm::vec3(Lightposition[LightNum - 1].x, Lightposition[LightNum - 1].y, Lightposition[LightNum - 1].z);
+
+  Object* obj = new Object(temppos, glm::vec3(0.25f));
+  LightObjects.push_back(obj);
+
 
 }
 

@@ -18,12 +18,15 @@ GLuint LightDirectionArrayUniform;
 GLuint LightAmbientArrayUniform;
 GLuint LightDiffuseArrayUniform;
 GLuint LightSpecularArrayUniform;
+GLuint LightEmisiveArrayUniform;
 GLuint LightInnerUniform;
 GLuint LightOuterUniform;
 GLuint LightFalloffUniform;
 GLuint TexturesUniform;
 
 GLuint CamPosUniform;
+
+GLuint GlobalAmbientUniform;
 
 GLuint MaterialAmbientUniform;
 GLuint MaterialDiffuseUniform;
@@ -54,12 +57,14 @@ void Mesh::Init_Mesh_Shader(void)
   DiffuseTextureUniform = glGetUniformLocation(ModelProgram, "Texture");
   NormalTextureUniform = glGetUniformLocation(ModelProgram, "normalTexture");
 
+  GlobalAmbientUniform = glGetUniformLocation(ModelProgram, "globalAmbient");
   LightTypeArrayUniform = glGetUniformLocation(ModelProgram, "lightTypes");
   LightPositionArrayUniform = glGetUniformLocation(ModelProgram, "lightPositions");
   LightDirectionArrayUniform = glGetUniformLocation(ModelProgram, "lightDirections");
   LightAmbientArrayUniform = glGetUniformLocation(ModelProgram, "lightAmbients");
   LightDiffuseArrayUniform = glGetUniformLocation(ModelProgram, "lightDiffuses");
   LightSpecularArrayUniform = glGetUniformLocation(ModelProgram, "lightSpeculars");
+  LightEmisiveArrayUniform = glGetUniformLocation(ModelProgram, "lightEmisives");
   LightInnerUniform = glGetUniformLocation(ModelProgram, "lightInners");
   LightOuterUniform = glGetUniformLocation(ModelProgram, "lightOuters");
   LightFalloffUniform = glGetUniformLocation(ModelProgram, "lightFalloffs");
@@ -122,6 +127,7 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
       glUniform4fv(LightAmbientArrayUniform, ARRAYSIZE(Lightambient), glm::value_ptr(Lightambient[0]));
       glUniform4fv(LightDiffuseArrayUniform, ARRAYSIZE(Lightdiffuse), glm::value_ptr(Lightdiffuse[0]));
       glUniform4fv(LightSpecularArrayUniform, ARRAYSIZE(Lightspecular), glm::value_ptr(Lightspecular[0]));
+      glUniform4fv(LightEmisiveArrayUniform, ARRAYSIZE(Lightemisive), glm::value_ptr(Lightemisive[0]));
       glUniform1fv(LightInnerUniform, ARRAYSIZE(Lightinner), &Lightinner[0]);
       glUniform1fv(LightTypeArrayUniform, ARRAYSIZE(Lightouter), &Lightouter[0]);
       glUniform1fv(LightTypeArrayUniform, ARRAYSIZE(Lightfalloff), &Lightfalloff[0]);
@@ -138,6 +144,8 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
       glUniform1f(FarPlaneLocation, FarPlane);
       glUniform1i(AtmosphericAttBoolUniform, AtmosphericAtt);
       glUniform4fv(AtmosphericAttIntesityUniform, 1, glm::value_ptr(AtmosphericIntensity));
+
+      glUniform4fv(GlobalAmbientUniform, 1, glm::value_ptr(GlobalAmbient));
 
       glUniform1i(TexturesUniform, Textures);
 

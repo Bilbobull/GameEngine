@@ -1,4 +1,5 @@
 #include "Light.h"
+#include "GraphicsSystem.h"
 
 //Light::Light(glm::vec4 const &_direction, glm::vec4 const &_ambient = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
 //  glm::vec4 const &_diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)) : direction(_direction), ambient(_ambient), diffuse(_diffuse)
@@ -10,19 +11,22 @@ glm::vec4 Lightdirection[MAX_LIGHTS];
 glm::vec4 Lightambient[MAX_LIGHTS];
 glm::vec4 Lightdiffuse[MAX_LIGHTS];
 glm::vec4 Lightspecular[MAX_LIGHTS];
+glm::vec4 Lightemisive[MAX_LIGHTS];
 float Lightinner[MAX_LIGHTS];
 float Lightouter[MAX_LIGHTS];
 float Lightfalloff[MAX_LIGHTS];
 Material MaterialVal;
-int LightNum = 0;
+
+int LightNum = 1;
 float Shininess = 0.8f;
 float DistanceAttConstants[3];
-int DistanceAtt = 0;
-int AtmosphericAtt = 0;
+int DistanceAtt = 1;
+int AtmosphericAtt = 1;
 glm::vec4 AtmosphericIntensity = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f);
-float NearPlane = 5;
-float FarPlane = 10;
+float NearPlane = 10;
+float FarPlane = 20;
 int Textures = 0;
+glm::vec4 GlobalAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1);
 
 void RotateLights(void)
 {
@@ -43,7 +47,8 @@ void RotateLights(void)
       1);
    
     Lightposition[i] = new_pos + rotation_around;
-    LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+    glm::vec4 tempos =  glm::vec4(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z, 1);
+    LightObjects[i]->position = glm::vec3(tempos.x, tempos.y, tempos.z);
    
     Lightdirection[i] = Lightposition[i] - rotation_around;
     glm::normalize(Lightdirection[i]);

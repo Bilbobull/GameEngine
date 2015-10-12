@@ -2,9 +2,9 @@
 #include "ObjectManager.h"
 #include <vector>
 #define MAX_LIGHTS 8
-#define  DIRECTIONAL 1
-#define  SPOT 2
-#define  POINT 3
+#define  DIRECTIONAL 0
+#define  SPOT 1
+#define  POINT 2
 
 struct Material
 {
@@ -22,6 +22,7 @@ extern glm::vec4 Lightdirection[MAX_LIGHTS];
 extern glm::vec4 Lightambient[MAX_LIGHTS];
 extern glm::vec4 Lightdiffuse[MAX_LIGHTS];
 extern glm::vec4 Lightspecular[MAX_LIGHTS];
+extern glm::vec4 Lightemisive[MAX_LIGHTS];
 extern float Lightinner[MAX_LIGHTS];
 extern float Lightouter[MAX_LIGHTS];
 extern float Lightfalloff[MAX_LIGHTS];
@@ -35,3 +36,4 @@ extern float NearPlane;
 extern float FarPlane;
 extern glm::vec4 AtmosphericIntensity;
 extern int Textures;
+extern glm::vec4 GlobalAmbient;
