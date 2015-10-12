@@ -15,14 +15,19 @@ struct Material
   vec4 specular;
 };
 
-uniform int lightTypes[MaxLights]; // support UP TO 8 lights
-uniform vec4 lightPositions[MaxLights]; // support UP TO 8 lights
-uniform vec4 lightDirections[MaxLights]; // support UP TO 8 lights
-uniform vec4 lightAmbients[MaxLights]; // support UP TO 8 lights
-uniform vec4 lightDiffuses[MaxLights]; // support UP TO 8 lights
-uniform vec4 lightSpeculars[MaxLights]; // support UP TO 8 lights
+// support UP TO 8 lights
+uniform int lightTypes[MaxLights]; 
+uniform vec4 lightPositions[MaxLights]; 
+uniform vec4 lightDirections[MaxLights]; 
+uniform vec4 lightAmbients[MaxLights]; 
+uniform vec4 lightDiffuses[MaxLights]; 
+uniform vec4 lightSpeculars[MaxLights];
+uniform float lightInners[MaxLights]; 
+uniform float lightOuters[MaxLights]; 
+uniform float lightFalloffs[MaxLights];
 
 uniform int LightCount; 
+
 uniform Material MaterialValues;
 uniform mat4 ModelToWorldMatrix;
 uniform mat4 WorldToViewMatrix;
@@ -34,6 +39,12 @@ uniform float Shininess;
 uniform float DistanceAttConstants[3];
 uniform int DistanceAttBool;
 
+uniform float NearPlane;
+uniform float FarPlane;
+uniform int AtmosphericAttBool;
+uniform vec4 AtmosphericIntensity;
+uniform int Textures;
+
 uniform sampler2D Texture;
 uniform sampler2D normalTexture;
 
@@ -43,12 +54,6 @@ layout (location = 1) out vec4 outColorNormal;
 
 vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
 {
-  vec4 lightdir;
-  if(lightTypes[lightIdx] == 0)
-    lightdir = lightDirections[lightIdx];
-  else
-    lightdir = lightPositions[lightIdx];
-
   vec4 lightdif = lightDiffuses[lightIdx];
   vec4 lightamb = lightAmbients[lightIdx];
   vec4 lightspe = lightSpeculars[lightIdx];
@@ -56,27 +61,38 @@ vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
   vec4 newCampos = vec4(0,0,0, 1.0);
 
   vec4 newlightdir = vec4(0);
+
+   vec4 lightdir;
   if(lightTypes[lightIdx] == 0)
-	newlightdir = WorldToViewMatrix * lightdir;
+  {
+    lightdir = lightDirections[lightIdx];
+  	newlightdir = WorldToViewMatrix * lightdir;
+  }
+
   else
+  {
+    lightdir = lightPositions[lightIdx];
     newlightdir = newpos - WorldToViewMatrix * lightdir;
+  }
+
 
   // AMBIENT
   vec4 ambient = lightamb * MaterialValues.ambient;
   
   // DIFUSE
   vec4 diffuse = vec4(0); // same as vec4(0, 0, 0, 0), or black
-  vec4 lightVec = normalize(-newlightdir);
-  float diffuseFactor = dot(worldNormal, lightVec);
+  vec4 lightVec = normalize(newlightdir);
+  float diffuseFactor = dot(worldNormal, -lightVec);
   if (diffuseFactor > 0) // is there a diffuse contribution?
   {
     // compute diffuse contribution on the surface
     diffuse = diffuseFactor * lightdif * MaterialValues.diffuse;
+  //diffuse = vec4(.9, .1, .4, 1);
   }
 
   // SPECULAR
   vec4 specular = vec4(0); 
-  vec4 reflection = reflect(-lightVec, worldNormal);
+  vec4 reflection = reflect(lightVec, worldNormal);
   vec4 view = normalize(newCampos - newpos);
   float specularFactor = dot(reflection, view);
   if (specularFactor > 0) 
@@ -112,6 +128,21 @@ float computeDistanceAttenuation(in int lightIdx)
 
 }
 
+vec4 computeAtmosphericAttenuation(in vec4 color)
+{
+  vec4 newpos =  WorldToViewMatrix * ModelToWorldMatrix * vec4(Position, 1.0);
+  vec4 newCampos = vec4(0,0,0, 1.0);
+  vec4 view = newpos - newCampos;
+  float ViewLength = length(view);
+  float S = clamp( (FarPlane - ViewLength)/(FarPlane - NearPlane), 0 , 1);
+
+  vec4 FinalColor = S * color + (1 - S) * AtmosphericIntensity;
+
+  return FinalColor;
+
+
+}
+
 vec4 computeSurfaceColor(in vec4 worldNormal)
 {
   // Phong: total contribution of light is sum of all individual light contribs.
@@ -125,12 +156,21 @@ vec4 computeSurfaceColor(in vec4 worldNormal)
       color *= computeDistanceAttenuation(i);
   }
 
+  if(AtmosphericAttBool != 0)
+    color = computeAtmosphericAttenuation(color);
+
+
   return color; // contribution from all lights onto surface
 }
 
 void main()
 {
     vec4 worldNorm = normalize( WorldToViewMatrix * ModelToWorldMatrix * vec4(Normal, 0.0));
-	outColor = texture2D (Texture, Texcoord) * computeSurfaceColor(worldNorm); 
+	if(Textures == 1)
+	  outColor = texture2D (Texture, Texcoord) * computeSurfaceColor(worldNorm);  //
+
+	else
+	   outColor = computeSurfaceColor(worldNorm);
+
 	outColorNormal = texture2D (Texture, Texcoord) * vec4(Color, 1.0); 
 }

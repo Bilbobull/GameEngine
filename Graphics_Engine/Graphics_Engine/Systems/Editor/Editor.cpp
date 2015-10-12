@@ -372,86 +372,92 @@ void ImGuiImpl::UpdateGuiButtons(void)
 #pragma endregion
 
 #pragma region Lights
-
-  if (ImGui::CollapsingHeader("Lights"))
+  ImGui::Separator();
   {
+    if (ImGui::CollapsingHeader("Lights"))
+    {
 
 #pragma region New_Light
 
-    if (ImGui::Button("New Light") && LightNum < MAX_LIGHTS)
-    {
-      ++LightNum;
-      Lighttype[LightNum - 1] = (int)(glm::linearRand(glm::vec4(1), glm::vec4(3)).x);
-
-      glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
-      float angle = 2 * PI / (float)LightNum;
-      float radius = 2.0f;
-      for (int i = 0; i < LightNum; ++i)
+      if (ImGui::Button("New Light") && LightNum < MAX_LIGHTS)
       {
-        float rotate = i * angle;
-        Lightposition[i].x = center.x + cos(rotate);
-        Lightposition[i].z = center.z + sin(rotate);
-        Lightposition[i].w = 1.0f;
+        ++LightNum;
+        Lighttype[LightNum - 1] = (int)(glm::linearRand(glm::vec4(1), glm::vec4(3)).x);
+
+        glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
+        float angle = 2 * PI / (float)LightNum;
+        float radius = 2.0f;
+        for (int i = 0; i < LightNum; ++i)
+        {
+          float rotate = i * angle;
+          Lightposition[i].x = center.x + cos(rotate);
+          Lightposition[i].z = center.z + sin(rotate);
+          Lightposition[i].w = 1.0f;
+        }
+
+        Lightposition[LightNum - 1].y = center.y;
+
+
+        Lightdirection[LightNum - 1] = glm::linearRand(glm::vec4(-1), glm::vec4(1));
+        Lightambient[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+        Lightdiffuse[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+        Lightspecular[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
+        Lightinner[LightNum - 1] = 15.0f * 2.0f * PI / 360.0f;
+        Lightouter[LightNum - 1] = 30.0f * 2.0f * PI / 360.0f;
+        Lightfalloff[LightNum - 1] = 1.0f;
+        glm::vec3 temppos = glm::vec3(Lightposition[LightNum - 1].x, Lightposition[LightNum - 1].y, Lightposition[LightNum - 1].z);
+
+        Object* obj = new Object(temppos, glm::vec3(0.25f));
+        LightObjects.push_back(obj);
+        for (int i = 0; i < LightNum; ++i)
+        {
+          LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+        }
+
       }
-
-      Lightposition[LightNum - 1].y = center.y;
-
-
-      Lightdirection[LightNum - 1] = glm::linearRand(glm::vec4(-1), glm::vec4(1));
-      Lightambient[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
-      Lightdiffuse[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
-      Lightspecular[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
-      glm::vec3 temppos = glm::vec3(Lightposition[LightNum - 1].x, Lightposition[LightNum - 1].y, Lightposition[LightNum - 1].z);
-
-      Object* obj = new Object(temppos, glm::vec3(0.25f));
-      LightObjects.push_back(obj);
-      for (int i = 0; i < LightNum; ++i)
-      {
-        LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
-      }
-
-    }
 
 #pragma endregion
 
 #pragma region Remove_Light
 
-    if (ImGui::Button("Remove Light") && LightNum > 0)
-    {
-      Lighttype[LightNum - 1] = 0;
-      Lightposition[LightNum - 1] = glm::vec4(0);
-      Lightdirection[LightNum - 1] = glm::vec4(0);
-      Lightambient[LightNum - 1] = glm::vec4(0);
-      Lightdiffuse[LightNum - 1] = glm::vec4(0);
-      Lightspecular[LightNum - 1] = glm::vec4(0);
-      LightObjects.pop_back();
-
-      --LightNum;
-      glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
-      float angle = 2 * PI / (float)LightNum;
-      float radius = 2.0f;
-      for (int i = 0; i < LightNum; ++i)
+      if (ImGui::Button("Remove Light") && LightNum > 0)
       {
-        float rotate = i * angle;
-        Lightposition[i].x = center.x + cos(rotate);
-        Lightposition[i].z = center.z + sin(rotate);
-        Lightposition[i].w = 1.0f;
-      }
+        Lighttype[LightNum - 1] = 0;
+        Lightposition[LightNum - 1] = glm::vec4(0);
+        Lightdirection[LightNum - 1] = glm::vec4(0);
+        Lightambient[LightNum - 1] = glm::vec4(0);
+        Lightdiffuse[LightNum - 1] = glm::vec4(0);
+        Lightspecular[LightNum - 1] = glm::vec4(0);
+        Lightinner[LightNum - 1] = 0.0f;
+        Lightouter[LightNum - 1] = 0.0f;
+        Lightfalloff[LightNum - 1] = 0.0f;
+        LightObjects.pop_back();
 
-      for (int i = 0; i < LightNum; ++i)
-      {
-        LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
-      }
+        --LightNum;
+        glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
+        float angle = 2 * PI / (float)LightNum;
+        float radius = 2.0f;
+        for (int i = 0; i < LightNum; ++i)
+        {
+          float rotate = i * angle;
+          Lightposition[i].x = center.x + cos(rotate);
+          Lightposition[i].z = center.z + sin(rotate);
+          Lightposition[i].w = 1.0f;
+        }
 
-    }
+        for (int i = 0; i < LightNum; ++i)
+        {
+          LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+        }
+
+      }
 
 #pragma endregion
 
 
 #pragma region PerLight_Settings
 
-    ImGui::Separator();
-    {
+
       std::string numb;
       std::string temp;
       for (int i = 0; i < LightNum; ++i)
@@ -465,19 +471,22 @@ void ImGuiImpl::UpdateGuiButtons(void)
           std::vector<char const *> lighttypes = {
             "Directional", "Spot", "Point" };
           ImGui::Combo("Debug Mode", &Lighttype[i], lighttypes.data(), 3);
-          ImGui::SliderFloat3("Position", (float*)&Lightposition[i], -10.0f, 10.0f);
+          ImGui::SliderFloat3("Position", (float*)&Lightposition[i], -20.0f, 20.0f);
           glm::vec3 temppos = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
           LightObjects[i]->position = temppos;
           ImGui::SliderFloat3("Direction", (float*)&Lightdirection[i], -1.0f, 1.0f);
           ImGui::ColorEdit3("Ambient", (float*)&Lightambient[i]);
           ImGui::ColorEdit3("Diffuse", (float*)&Lightdiffuse[i]);
           ImGui::ColorEdit3("Specular", (float*)&Lightspecular[i]);
+          ImGui::SliderFloat("Inner Angle", (float*)&Lightinner[i], 0, Lightouter[i]);
+          ImGui::SliderFloat("Outer Angle", (float*)&Lightouter[i], Lightinner[i], 2 * PI);
+          ImGui::InputFloat("Falloff", &Lightfalloff[i]);
         }
         ImGui::PopID();
       }
-    }
-#pragma endregion
 
+#pragma endregion
+    }
   }
 
 #pragma endregion
@@ -487,16 +496,39 @@ void ImGuiImpl::UpdateGuiButtons(void)
   {
     if (ImGui::CollapsingHeader("Distance Attenuation"))
     {
+      std::vector<char const *> DistAttYesOrNo = {
+        "No", "Yes" };
+      ImGui::Combo("Distance Attenuation Enabled", &DistanceAtt, DistAttYesOrNo.data(), 2);
       ImGui::SliderFloat("c1", &DistanceAttConstants[0], 0.0f, 1.0f);
       ImGui::SliderFloat("c2", &DistanceAttConstants[1], 0.0f, 1.0f);
       ImGui::SliderFloat("c3", &DistanceAttConstants[2], 0.0f, 1.0f);
-      std::vector<char const *> DistAttYesOrNo = {
-        "No", "Yes"};
-      ImGui::Combo("Enabled", &DistanceAtt, DistAttYesOrNo.data(), 2);
     }
   }
 #pragma endregion
 
+#pragma region Atmospheric_Att
+  ImGui::Separator();
+  {
+    if (ImGui::CollapsingHeader("Atmospheric Attenuation"))
+    {
+      std::vector<char const *> AtmosphericAttYesOrNo = {
+        "No", "Yes" };
+      ImGui::Combo("Atmospheric Attenuation Enabled", &AtmosphericAtt, AtmosphericAttYesOrNo.data(), 2);
+
+      ImGui::ColorEdit3("Fog Intensity", (float*)&AtmosphericIntensity);
+      ImGui::SliderFloat("Near Plane", &NearPlane, 0.0f, FarPlane);
+      ImGui::SliderFloat("FarPlane", &FarPlane, NearPlane, 100.0f);
+    }
+  }
+#pragma endregion
+
+  ImGui::Separator();
+  {
+    if (ImGui::Button("Rotate Lights"))
+    {
+      g_GraphicsSys->Light_Rotation();
+    }
+  }
 
   ImGui::Separator();
   {
@@ -508,11 +540,16 @@ void ImGuiImpl::UpdateGuiButtons(void)
 
   ImGui::Separator();
   {
-    if (ImGui::Button("Rotate Lights"))
+    if (ImGui::Button("Textures"))
     {
-      g_GraphicsSys->Light_Rotation();
+      if (Textures == 0)
+        Textures = 1;
+
+      else
+        Textures = 0;
     }
   }
+
 
 }
 

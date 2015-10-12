@@ -14,11 +14,15 @@ GLuint DiffuseTextureUniform;
 GLuint NormalTextureUniform;
 GLuint  LightTypeArrayUniform;
 GLuint LightPositionArrayUniform;
-
 GLuint LightDirectionArrayUniform;
 GLuint LightAmbientArrayUniform;
 GLuint LightDiffuseArrayUniform;
 GLuint LightSpecularArrayUniform;
+GLuint LightInnerUniform;
+GLuint LightOuterUniform;
+GLuint LightFalloffUniform;
+GLuint TexturesUniform;
+
 GLuint CamPosUniform;
 
 GLuint MaterialAmbientUniform;
@@ -32,7 +36,10 @@ GLuint LightCountUniform;
 GLuint DistanceAttConstUniform;
 GLuint DistanceAttBoolUniform;
 
-
+GLuint NearPlaneLocation;
+GLuint FarPlaneLocation;
+GLuint AtmosphericAttBoolUniform;
+GLuint AtmosphericAttIntesityUniform;
 
 
 void Mesh::Init_Mesh_Shader(void)
@@ -51,8 +58,11 @@ void Mesh::Init_Mesh_Shader(void)
   LightPositionArrayUniform = glGetUniformLocation(ModelProgram, "lightPositions");
   LightDirectionArrayUniform = glGetUniformLocation(ModelProgram, "lightDirections");
   LightAmbientArrayUniform = glGetUniformLocation(ModelProgram, "lightAmbients");
-  LightDiffuseArrayUniform = glGetUniformLocation(ModelProgram, "lightDifuses");
+  LightDiffuseArrayUniform = glGetUniformLocation(ModelProgram, "lightDiffuses");
   LightSpecularArrayUniform = glGetUniformLocation(ModelProgram, "lightSpeculars");
+  LightInnerUniform = glGetUniformLocation(ModelProgram, "lightInners");
+  LightOuterUniform = glGetUniformLocation(ModelProgram, "lightOuters");
+  LightFalloffUniform = glGetUniformLocation(ModelProgram, "lightFalloffs");
   LightCountUniform = glGetUniformLocation(ModelProgram, "LightCount");
   MaterialDiffuseUniform = glGetUniformLocation(ModelProgram, "MaterialValues.diffuse");
   MaterialAmbientUniform = glGetUniformLocation(ModelProgram, "MaterialValues.ambient");
@@ -64,6 +74,11 @@ void Mesh::Init_Mesh_Shader(void)
   ShininessUniform = glGetUniformLocation(ModelProgram, "Shininess");
   DistanceAttConstUniform = glGetUniformLocation(ModelProgram, "DistanceAttConstants");
   DistanceAttBoolUniform = glGetUniformLocation(ModelProgram, "DistanceAttBool");
+  NearPlaneLocation = glGetUniformLocation(ModelProgram, "NearPlane");
+  FarPlaneLocation = glGetUniformLocation(ModelProgram, "FarPlane");
+  AtmosphericAttBoolUniform = glGetUniformLocation(ModelProgram, "AtmosphericAttBool");
+  AtmosphericAttIntesityUniform = glGetUniformLocation(ModelProgram, "AtmosphericIntensity");
+  TexturesUniform = glGetUniformLocation(ModelProgram, "Textures");
 }
 
 
@@ -107,6 +122,10 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
       glUniform4fv(LightAmbientArrayUniform, ARRAYSIZE(Lightambient), glm::value_ptr(Lightambient[0]));
       glUniform4fv(LightDiffuseArrayUniform, ARRAYSIZE(Lightdiffuse), glm::value_ptr(Lightdiffuse[0]));
       glUniform4fv(LightSpecularArrayUniform, ARRAYSIZE(Lightspecular), glm::value_ptr(Lightspecular[0]));
+      glUniform1fv(LightInnerUniform, ARRAYSIZE(Lightinner), &Lightinner[0]);
+      glUniform1fv(LightTypeArrayUniform, ARRAYSIZE(Lightouter), &Lightouter[0]);
+      glUniform1fv(LightTypeArrayUniform, ARRAYSIZE(Lightfalloff), &Lightfalloff[0]);
+
       glUniform4fv(MaterialDiffuseUniform, 1, glm::value_ptr(MaterialVal.diffuse));
       glUniform4fv(MaterialAmbientUniform, 1, glm::value_ptr(MaterialVal.ambient));
       glUniform4fv(MaterialSpecularUniform, 1, glm::value_ptr(MaterialVal.specular));
@@ -115,6 +134,12 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
       glUniform1f(ShininessUniform, Shininess);
       glUniform1fv(DistanceAttConstUniform, ARRAYSIZE(DistanceAttConstants), &DistanceAttConstants[0]);
       glUniform1i(DistanceAttBoolUniform, DistanceAtt);
+      glUniform1f(NearPlaneLocation, NearPlane);
+      glUniform1f(FarPlaneLocation, FarPlane);
+      glUniform1i(AtmosphericAttBoolUniform, AtmosphericAtt);
+      glUniform4fv(AtmosphericAttIntesityUniform, 1, glm::value_ptr(AtmosphericIntensity));
+
+      glUniform1i(TexturesUniform, Textures);
 
       glUniformMatrix4fv(ModelModelToWorldUniform, 1, GL_FALSE, &ModelToWorld[0][0]);
       glUniformMatrix4fv(ModelWorldToViewUniform, 1, GL_FALSE, &WorldToView[0][0]);

@@ -10,11 +10,19 @@ glm::vec4 Lightdirection[MAX_LIGHTS];
 glm::vec4 Lightambient[MAX_LIGHTS];
 glm::vec4 Lightdiffuse[MAX_LIGHTS];
 glm::vec4 Lightspecular[MAX_LIGHTS];
+float Lightinner[MAX_LIGHTS];
+float Lightouter[MAX_LIGHTS];
+float Lightfalloff[MAX_LIGHTS];
 Material MaterialVal;
 int LightNum = 0;
 float Shininess = 0.8f;
 float DistanceAttConstants[3];
 int DistanceAtt = 0;
+int AtmosphericAtt = 0;
+glm::vec4 AtmosphericIntensity = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f);
+float NearPlane = 5;
+float FarPlane = 10;
+int Textures = 0;
 
 void RotateLights(void)
 {
