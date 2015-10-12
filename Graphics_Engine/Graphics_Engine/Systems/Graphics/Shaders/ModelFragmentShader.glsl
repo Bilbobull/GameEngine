@@ -121,7 +121,8 @@ vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
     return globalamb +  emisive + Att * ambient + Att * SpotLight * (diffuse + specular); // total contribution from this light
   }
 
-  return globalamb +  emisive + Att * ambient +  Att *(diffuse + specular); // total contribution from this light
+  //return globalamb +  emisive + Att * ambient +  Att *(diffuse + specular); // total contribution from this light
+  return ambient + diffuse + specular; // total contribution from this light
 }
 
 float computeDistanceAttenuation(in int lightIdx)

@@ -18,3 +18,4 @@ public:
 
 };
 
+glm::mat4 RotateEuler(float angle, glm::vec3 v);

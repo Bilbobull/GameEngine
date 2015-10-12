@@ -548,6 +548,20 @@ void ImGuiImpl::UpdateGuiButtons(void)
   {
     if (ImGui::Button("Rotate Lights"))
     {
+      if (!g_GraphicsSys->Get_Light_Rotation())
+      {
+        glm::vec4 center = glm::vec4(ObjectManager::GetObjectList().at(0)->position.x, ObjectManager::GetObjectList().at(0)->position.y, ObjectManager::GetObjectList().at(0)->position.z, 1);
+        float angle = 2 * PI / (float)LightNum;
+        float radius = 2.0f;
+        for (int i = 0; i < LightNum; ++i)
+        {
+          float rotate = i * angle;
+          Lightposition[i].x = center.x + cos(rotate);
+          Lightposition[i].z = center.z + sin(rotate);
+          Lightposition[i].w = 1.0f;
+          LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+        }
+      }
       g_GraphicsSys->Light_Rotation();
     }
   }

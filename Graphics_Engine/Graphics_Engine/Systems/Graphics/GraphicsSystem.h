@@ -37,6 +37,7 @@ public:
     Particles = !Particles; }
 
   void Light_Rotation(void){ LightRotation = !LightRotation; }
+  bool Get_Light_Rotation(void){ return LightRotation; }
 
 private:
   Window Current_Window;
