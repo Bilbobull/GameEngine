@@ -231,7 +231,7 @@ void ImGuiImpl::KeyboardUpDown(unsigned char key, int x, int y, bool down)
 
 struct
 {
-  glm::vec4 ambient, diffuse;
+  glm::vec4 ambient, diffuse,specular, emisive;
 } Material;
 
 static int debugMode = 0;
@@ -272,8 +272,8 @@ void ImGuiImpl::UpdateGuiButtons(void)
 
 
     std::vector<char const *> shadertypeStrings = {
-      "Fragment Phong", "Vertex Phong" };
-    ImGui::Combo("Light Model", &ShaderType, shadertypeStrings.data(), 2);
+      "Fragment Phong", "Vertex Phong", "Frag Blinn" };
+    ImGui::Combo("Light Model", &ShaderType, shadertypeStrings.data(), 3);
 
 
 
@@ -353,6 +353,7 @@ void ImGuiImpl::UpdateGuiButtons(void)
       ImGui::ColorEdit3("Ambient", (float*)&MaterialVal.ambient);
       ImGui::ColorEdit3("Diffuse", (float*)&MaterialVal.diffuse);
       ImGui::ColorEdit3("Specular", (float*)&MaterialVal.specular);
+      ImGui::ColorEdit3("Emisive", (float*)&MaterialVal.emisive);
       //   MaterialVal.ambient = glm::vec4(tempamb, 0.0f);
       // MaterialVal.diffuse = glm::vec4(tempdiff, 0.0f);;
     }
@@ -428,7 +429,6 @@ void ImGuiImpl::UpdateGuiButtons(void)
         Lightambient[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
         Lightdiffuse[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
         Lightspecular[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
-        Lightemisive[LightNum - 1] = glm::vec4(0);
         Lightinner[LightNum - 1] = 15.0f * 2.0f * PI / 360.0f;
         Lightouter[LightNum - 1] = 30.0f * 2.0f * PI / 360.0f;
         Lightfalloff[LightNum - 1] = 1.0f;
@@ -455,7 +455,6 @@ void ImGuiImpl::UpdateGuiButtons(void)
         Lightambient[LightNum - 1] = glm::vec4(0);
         Lightdiffuse[LightNum - 1] = glm::vec4(0);
         Lightspecular[LightNum - 1] = glm::vec4(0);
-        Lightemisive[LightNum - 1] = glm::vec4(0);
         Lightinner[LightNum - 1] = 0.0f;
         Lightouter[LightNum - 1] = 0.0f;
         Lightfalloff[LightNum - 1] = 0.0f;
@@ -522,7 +521,6 @@ void ImGuiImpl::UpdateGuiButtons(void)
           ImGui::ColorEdit3("Ambient", (float*)&Lightambient[i]);
           ImGui::ColorEdit3("Diffuse", (float*)&Lightdiffuse[i]);
           ImGui::ColorEdit3("Specular", (float*)&Lightspecular[i]);
-          ImGui::ColorEdit3("Emisive", (float*)&Lightemisive[i]);
           ImGui::SliderFloat("Inner Angle", (float*)&Lightinner[i], 0, Lightouter[i]);
           ImGui::SliderFloat("Outer Angle", (float*)&Lightouter[i], Lightinner[i], 2 * PI);
           ImGui::InputFloat("Falloff", &Lightfalloff[i]);

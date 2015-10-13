@@ -50,13 +50,13 @@ void GraphicsSystem::Init(void)
   MaterialVal.ambient = glm::vec4(0, 0, 0, 1);
   MaterialVal.diffuse = glm::vec4(0.8, 0.8, 0.8, 1);
   MaterialVal.specular = glm::vec4(1, 1, 1, 1);
+  MaterialVal.emisive = glm::vec4(0, 0, 0, 1);
   Lighttype[0] = POINT;
   Lightposition[0] = glm::vec4(-0.3f, 0.5f, -0.5f, 1.0f);
   Lightdirection[0] = glm::vec4(0.3f, -0.5f, 0.5f, 1.0f);
   Lightambient[0] = glm::vec4(0, 0, 0, 1);
   Lightdiffuse[0] = glm::vec4(0.8, 0.8, 0.8, 1);
   Lightspecular[0] = glm::vec4(1, 1, 1, 1);
-  Lightemisive[0] = glm::vec4(0);
   Lightinner[0] = 15.0f* 2.0f * PI / 360.0f;
   Lightouter[0] = 30.0f* 2.0f * PI / 360.0f;
   Lightfalloff[0] = 1;

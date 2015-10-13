@@ -13,6 +13,7 @@ struct Material
   vec4 ambient; // ambient color of the surface/how much ambient light to absorb
   vec4 diffuse; // diffuse color of the surface/how much diffuse light to absorb
   vec4 specular;
+  vec4 emisive;
 };
 
 // support UP TO 8 lights
@@ -22,7 +23,7 @@ uniform vec4 lightDirections[MaxLights];
 uniform vec4 lightAmbients[MaxLights]; 
 uniform vec4 lightDiffuses[MaxLights]; 
 uniform vec4 lightSpeculars[MaxLights];
-uniform vec4 lightEmisives[MaxLights];
+
 uniform float lightInners[MaxLights]; 
 uniform float lightOuters[MaxLights]; 
 uniform float lightFalloffs[MaxLights];
@@ -109,17 +110,15 @@ vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
   float c3 = DistanceAttConstants[2];
   float Att = min(1/(c1+c2*Lightdist+c3*pow(Lightdist,2.0)), 1.0);
 
-  vec4 emisive = lightEmisives[lightIdx];
 
  // if(lightTypes[lightIdx] == 1)
  // {
 //	float Alpha = dot(lightDirections[lightIdx], newlightdir);
 //	float SpotLight = (cos(Alpha) - cos(lightOuters[lightIdx]))/(cos(lightInners[lightIdx]) - cos(lightOuters[lightIdx]));
- //   return globalamb +  emisive + Att * ambient + Att * SpotLight * (diffuse + specular); // total contribution from this light
+ //   return  Att * ambient + Att * SpotLight * (diffuse + specular); // total contribution from this light
  // }
 
-  //return globalamb +  emisive + Att * ambient +  Att *(diffuse + specular); // total contribution from this light
-  return ambient + diffuse + specular; // total contribution from this light
+  return  Att * ambient +  Att *(diffuse + specular); // total contribution from this light
 }
 
 float computeDistanceAttenuation(in int lightIdx)
@@ -155,6 +154,7 @@ vec4 computeAtmosphericAttenuation(in vec4 color)
   float ViewLength = length(view);
   float S = clamp( (FarPlane - ViewLength)/(FarPlane - NearPlane), 0 , 1);
 
+
   vec4 FinalColor = S * color + (1 - S) * AtmosphericIntensity;
 
   return FinalColor;
@@ -177,6 +177,9 @@ vec4 computeSurfaceColor(in vec4 worldNormal)
 
   if(AtmosphericAttBool != 0)
     color = computeAtmosphericAttenuation(color);
+
+  vec4 globalamb = globalAmbient * MaterialValues.ambient;
+  color += globalamb + MaterialValues.emisive;
 
 
   return color; // contribution from all lights onto surface

@@ -14,7 +14,6 @@ glm::vec4 Lightdirection[MAX_LIGHTS];
 glm::vec4 Lightambient[MAX_LIGHTS];
 glm::vec4 Lightdiffuse[MAX_LIGHTS];
 glm::vec4 Lightspecular[MAX_LIGHTS];
-glm::vec4 Lightemisive[MAX_LIGHTS];
 float Lightinner[MAX_LIGHTS];
 float Lightouter[MAX_LIGHTS];
 float Lightfalloff[MAX_LIGHTS];
