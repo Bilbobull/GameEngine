@@ -156,7 +156,7 @@ void Mesh::Init_Mesh_Shader(void)
   FragPhongLightDiffuseArrayUniform = glGetUniformLocation(FragPhongModelProgram, "lightDiffuses");
   FragPhongLightSpecularArrayUniform = glGetUniformLocation(FragPhongModelProgram, "lightSpeculars");
 
-  FragPhongLightInnerUniform = glGetUniformLocation(FragPhongModelProgram, "lightInners");
+  FragPhongLightInnerUniform = glGetUniformLocation(FragPhongModelProgram, "lightInners"); 
   FragPhongLightOuterUniform = glGetUniformLocation(FragPhongModelProgram, "lightOuters");
   FragPhongLightFalloffUniform = glGetUniformLocation(FragPhongModelProgram, "lightFalloffs");
   FragPhongLightCountUniform = glGetUniformLocation(FragPhongModelProgram, "LightCount");
@@ -309,8 +309,8 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
         glUniform4fv(FragPhongLightSpecularArrayUniform, ARRAYSIZE(Lightspecular), glm::value_ptr(Lightspecular[0]));
 
         glUniform1fv(FragPhongLightInnerUniform, ARRAYSIZE(Lightinner), &Lightinner[0]);
-        glUniform1fv(FragPhongLightTypeArrayUniform, ARRAYSIZE(Lightouter), &Lightouter[0]);
-        glUniform1fv(FragPhongLightTypeArrayUniform, ARRAYSIZE(Lightfalloff), &Lightfalloff[0]);
+        glUniform1fv(FragPhongLightOuterUniform, ARRAYSIZE(Lightouter), &Lightouter[0]);
+        glUniform1fv(FragPhongLightFalloffUniform, ARRAYSIZE(Lightfalloff), &Lightfalloff[0]);
 
         glUniform4fv(FragPhongMaterialDiffuseUniform, 1, glm::value_ptr(MaterialVal.diffuse));
         glUniform4fv(FragPhongMaterialAmbientUniform, 1, glm::value_ptr(MaterialVal.ambient));
@@ -366,8 +366,8 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
         glUniform4fv(VertPhongLightSpecularArrayUniform, ARRAYSIZE(Lightspecular), glm::value_ptr(Lightspecular[0]));
 
         glUniform1fv(VertPhongLightInnerUniform, ARRAYSIZE(Lightinner), &Lightinner[0]);
-        glUniform1fv(VertPhongLightTypeArrayUniform, ARRAYSIZE(Lightouter), &Lightouter[0]);
-        glUniform1fv(VertPhongLightTypeArrayUniform, ARRAYSIZE(Lightfalloff), &Lightfalloff[0]);
+        glUniform1fv(VertPhongLightOuterUniform, ARRAYSIZE(Lightouter), &Lightouter[0]);
+        glUniform1fv(VertPhongLightFalloffUniform, ARRAYSIZE(Lightfalloff), &Lightfalloff[0]);
 
         glUniform4fv(VertPhongMaterialDiffuseUniform, 1, glm::value_ptr(MaterialVal.diffuse));
         glUniform4fv(VertPhongMaterialAmbientUniform, 1, glm::value_ptr(MaterialVal.ambient));
@@ -423,8 +423,8 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
         glUniform4fv(FragBlinnLightSpecularArrayUniform, ARRAYSIZE(Lightspecular), glm::value_ptr(Lightspecular[0]));
 
         glUniform1fv(FragBlinnLightInnerUniform, ARRAYSIZE(Lightinner), &Lightinner[0]);
-        glUniform1fv(FragBlinnLightTypeArrayUniform, ARRAYSIZE(Lightouter), &Lightouter[0]);
-        glUniform1fv(FragBlinnLightTypeArrayUniform, ARRAYSIZE(Lightfalloff), &Lightfalloff[0]);
+        glUniform1fv(FragBlinnLightOuterUniform, ARRAYSIZE(Lightouter), &Lightouter[0]);
+        glUniform1fv(FragBlinnLightFalloffUniform, ARRAYSIZE(Lightfalloff), &Lightfalloff[0]);
 
         glUniform4fv(FragBlinnMaterialDiffuseUniform, 1, glm::value_ptr(MaterialVal.diffuse));
         glUniform4fv(FragBlinnMaterialAmbientUniform, 1, glm::value_ptr(MaterialVal.ambient));

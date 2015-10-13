@@ -112,12 +112,19 @@ vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
   float c3 = DistanceAttConstants[2];
   float Att = min(1/(c1+c2*Lightdist+c3*pow(Lightdist,2.0)), 1.0);
 
- // if(lightTypes[lightIdx] == 1)
- // {
- //	  float Alpha = dot(lightDirections[lightIdx], newlightdir);
- //	  float SpotLight = (cos(Alpha) - cos(lightOuters[lightIdx]))/(cos(lightInners[lightIdx]) - cos(lightOuters[lightIdx]));
- //   return Att * ambient + Att * SpotLight * (diffuse + specular); // total contribution from this light
- // }
+  if(lightTypes[lightIdx] == 1)
+  {
+		vec4 lightDir = normalize(WorldToViewMatrix * vec4(lightDirections[lightIdx].xyz, 0));
+ 	  float Alpha = dot(lightDir, normalize(newlightdir));
+	  if(Alpha < cos(lightOuters[lightIdx]))
+		  return vec4(0,0,0,0);
+
+    if(Alpha > cos(lightInners[lightIdx]))
+	    return  Att * ambient +  Att *(diffuse + specular); 
+
+ 	  float SpotLight = pow((Alpha - cos(lightOuters[lightIdx]))/(cos(lightInners[lightIdx]) - cos(lightOuters[lightIdx])),lightFalloffs[lightIdx]);
+      return Att * ambient + Att * SpotLight * (diffuse + specular); // total contribution from this light
+  }
 
   return  Att * ambient +  Att *(diffuse + specular); // total contribution from this light
   //return ambient + diffuse + specular; // total contribution from this light

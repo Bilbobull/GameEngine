@@ -1,6 +1,8 @@
 For this project I used my own Graphics Engine, so there are some things that work kind of different.
 Instructions:
 
+Use in Debug Mode, couldnt find some dll
+
 Can't move object with GUI, instead, I implemented a Camera that you can move with keyboard input
  - W forward
  - S backwards

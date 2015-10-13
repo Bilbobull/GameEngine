@@ -429,8 +429,8 @@ void ImGuiImpl::UpdateGuiButtons(void)
         Lightambient[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
         Lightdiffuse[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
         Lightspecular[LightNum - 1] = glm::linearRand(glm::vec4(0), glm::vec4(1));
-        Lightinner[LightNum - 1] = 15.0f * 2.0f * PI / 360.0f;
-        Lightouter[LightNum - 1] = 30.0f * 2.0f * PI / 360.0f;
+        Lightinner[LightNum - 1] = 15.0f *2.0f * PI / 360.0f;
+        Lightouter[LightNum - 1] = 30.0f *2.0f * PI / 360.0f;
         Lightfalloff[LightNum - 1] = 1.0f;
         glm::vec3 temppos = glm::vec3(Lightposition[LightNum - 1].x, Lightposition[LightNum - 1].y, Lightposition[LightNum - 1].z);
 
@@ -521,8 +521,8 @@ void ImGuiImpl::UpdateGuiButtons(void)
           ImGui::ColorEdit3("Ambient", (float*)&Lightambient[i]);
           ImGui::ColorEdit3("Diffuse", (float*)&Lightdiffuse[i]);
           ImGui::ColorEdit3("Specular", (float*)&Lightspecular[i]);
-          ImGui::SliderFloat("Inner Angle", (float*)&Lightinner[i], 0, Lightouter[i]);
-          ImGui::SliderFloat("Outer Angle", (float*)&Lightouter[i], Lightinner[i], 2 * PI);
+          ImGui::SliderFloat("Inner Angle", (float*)&Lightinner[i], 0.0f, Lightouter[i]);
+          ImGui::SliderFloat("Outer Angle", (float*)&Lightouter[i], Lightinner[i], 40.0f * 2 * PI / 360.0f);
           ImGui::InputFloat("Falloff", &Lightfalloff[i]);
         }
         ImGui::PopID();

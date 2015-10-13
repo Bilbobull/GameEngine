@@ -49,10 +49,12 @@ void RotateLights(void)
       1);
    
     Lightposition[i] = new_pos + rotation_around;
-    Lightdirection[i] = Lightposition[i] - rotation_around;
+    Lightdirection[i] = Lightposition[i] - center;
 
     if (Lighttype[i] != DIRECTIONAL)
+    {
       LightObjects[i]->position = glm::vec3(Lightposition[i].x, Lightposition[i].y, Lightposition[i].z);
+    }
 
     else
     {
