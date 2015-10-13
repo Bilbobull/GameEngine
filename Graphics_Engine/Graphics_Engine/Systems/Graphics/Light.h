@@ -15,6 +15,7 @@ struct Material
 
 void RotateLights(void);
 
+extern int ShaderType;
 extern std::vector<Object*> LightObjects;
 extern int Lighttype[MAX_LIGHTS];
 extern glm::vec4 Lightposition[MAX_LIGHTS];

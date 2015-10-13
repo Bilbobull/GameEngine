@@ -115,8 +115,8 @@ vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
 
  // if(lightTypes[lightIdx] == 1)
  // {
-//	float Alpha = dot(lightDirections[lightIdx], newlightdir);
-//	float SpotLight = (cos(Alpha) - cos(lightOuters[lightIdx]))/(cos(lightInners[lightIdx]) - cos(lightOuters[lightIdx]));
+ //	  float Alpha = dot(lightDirections[lightIdx], newlightdir);
+ //	  float SpotLight = (cos(Alpha) - cos(lightOuters[lightIdx]))/(cos(lightInners[lightIdx]) - cos(lightOuters[lightIdx]));
  //   return globalamb +  emisive + Att * ambient + Att * SpotLight * (diffuse + specular); // total contribution from this light
  // }
 

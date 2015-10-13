@@ -270,6 +270,13 @@ void ImGuiImpl::UpdateGuiButtons(void)
       // string 'modelFile' which should store the updated file name from ImGui
     }
 
+
+    std::vector<char const *> shadertypeStrings = {
+      "Fragment Phong", "Vertex Phong" };
+    ImGui::Combo("Light Model", &ShaderType, shadertypeStrings.data(), 2);
+
+
+
     if (ImGui::Button("Reload Shaders"))
     {
       // we could implement reloading shaders here, but not necessary for

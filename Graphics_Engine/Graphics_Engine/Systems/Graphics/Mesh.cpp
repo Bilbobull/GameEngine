@@ -6,44 +6,90 @@
 GLuint SimpleProgram;
 GLuint SimpleMatUniform;
 
-GLuint ModelProgram;
-GLuint ModelModelToWorldUniform;
-GLuint ModelWorldToViewUniform;
-GLuint ModelViewToProjectionUniform;
-GLuint DiffuseTextureUniform;
-GLuint NormalTextureUniform;
-GLuint  LightTypeArrayUniform;
-GLuint LightPositionArrayUniform;
-GLuint LightDirectionArrayUniform;
-GLuint LightAmbientArrayUniform;
-GLuint LightDiffuseArrayUniform;
-GLuint LightSpecularArrayUniform;
-GLuint LightEmisiveArrayUniform;
-GLuint LightInnerUniform;
-GLuint LightOuterUniform;
-GLuint LightFalloffUniform;
-GLuint TexturesUniform;
+#pragma region FragPhong 
 
-GLuint CamPosUniform;
+GLuint FragPhongModelProgram;
+GLuint FragPhongModelModelToWorldUniform;
+GLuint FragPhongModelWorldToViewUniform;
+GLuint FragPhongModelViewToProjectionUniform;
+GLuint FragPhongDiffuseTextureUniform;
+GLuint FragPhongNormalTextureUniform;
+GLuint FragPhongLightTypeArrayUniform;
+GLuint FragPhongLightPositionArrayUniform;
+GLuint FragPhongLightDirectionArrayUniform;
+GLuint FragPhongLightAmbientArrayUniform;
+GLuint FragPhongLightDiffuseArrayUniform;
+GLuint FragPhongLightSpecularArrayUniform;
+GLuint FragPhongLightEmisiveArrayUniform;
+GLuint FragPhongLightInnerUniform;
+GLuint FragPhongLightOuterUniform;
+GLuint FragPhongLightFalloffUniform;
+GLuint FragPhongTexturesUniform;
 
-GLuint GlobalAmbientUniform;
+GLuint FragPhongCamPosUniform;
 
-GLuint MaterialAmbientUniform;
-GLuint MaterialDiffuseUniform;
-GLuint MaterialSpecularUniform;
+GLuint FragPhongGlobalAmbientUniform;
 
-GLuint ShininessUniform;
+GLuint FragPhongMaterialAmbientUniform;
+GLuint FragPhongMaterialDiffuseUniform;
+GLuint FragPhongMaterialSpecularUniform;
 
-GLuint LightCountUniform;
+GLuint FragPhongShininessUniform;
 
-GLuint DistanceAttConstUniform;
-GLuint DistanceAttBoolUniform;
+GLuint FragPhongLightCountUniform;
 
-GLuint NearPlaneLocation;
-GLuint FarPlaneLocation;
-GLuint AtmosphericAttBoolUniform;
-GLuint AtmosphericAttIntesityUniform;
+GLuint FragPhongDistanceAttConstUniform;
+GLuint FragPhongDistanceAttBoolUniform;
 
+GLuint FragPhongNearPlaneLocation;
+GLuint FragPhongFarPlaneLocation;
+GLuint FragPhongAtmosphericAttBoolUniform;
+GLuint FragPhongAtmosphericAttIntesityUniform;
+
+#pragma endregion
+
+
+#pragma region VertPhong
+
+GLuint VertPhongModelProgram;
+GLuint VertPhongModelModelToWorldUniform;
+GLuint VertPhongModelWorldToViewUniform;
+GLuint VertPhongModelViewToProjectionUniform;
+GLuint VertPhongDiffuseTextureUniform;
+GLuint VertPhongNormalTextureUniform;
+GLuint VertPhongLightTypeArrayUniform;
+GLuint VertPhongLightPositionArrayUniform;
+GLuint VertPhongLightDirectionArrayUniform;
+GLuint VertPhongLightAmbientArrayUniform;
+GLuint VertPhongLightDiffuseArrayUniform;
+GLuint VertPhongLightSpecularArrayUniform;
+GLuint VertPhongLightEmisiveArrayUniform;
+GLuint VertPhongLightInnerUniform;
+GLuint VertPhongLightOuterUniform;
+GLuint VertPhongLightFalloffUniform;
+GLuint VertPhongTexturesUniform;
+
+GLuint VertPhongCamPosUniform;
+
+GLuint VertPhongGlobalAmbientUniform;
+
+GLuint VertPhongMaterialAmbientUniform;
+GLuint VertPhongMaterialDiffuseUniform;
+GLuint VertPhongMaterialSpecularUniform;
+
+GLuint VertPhongShininessUniform;
+
+GLuint VertPhongLightCountUniform;
+
+GLuint VertPhongDistanceAttConstUniform;
+GLuint VertPhongDistanceAttBoolUniform;
+
+GLuint VertPhongNearPlaneLocation;
+GLuint VertPhongFarPlaneLocation;
+GLuint VertPhongAtmosphericAttBoolUniform;
+GLuint VertPhongAtmosphericAttIntesityUniform;
+
+#pragma endregion
 
 void Mesh::Init_Mesh_Shader(void)
 {
@@ -53,45 +99,75 @@ void Mesh::Init_Mesh_Shader(void)
 
 #pragma region PerFragment
 
-  ModelProgram = LoadShaders("ModelVertexShader.glsl", "ModelFragmentShader.glsl");
+  FragPhongModelProgram = LoadShaders("ModelVertexShader.glsl", "ModelFragmentShader.glsl");
 
-  DiffuseTextureUniform = glGetUniformLocation(ModelProgram, "Texture");
-  NormalTextureUniform = glGetUniformLocation(ModelProgram, "normalTexture");
+  FragPhongDiffuseTextureUniform = glGetUniformLocation(FragPhongModelProgram, "Texture");
+  FragPhongNormalTextureUniform = glGetUniformLocation(FragPhongModelProgram, "normalTexture");
 
-  GlobalAmbientUniform = glGetUniformLocation(ModelProgram, "globalAmbient");
-  LightTypeArrayUniform = glGetUniformLocation(ModelProgram, "lightTypes");
-  LightPositionArrayUniform = glGetUniformLocation(ModelProgram, "lightPositions");
-  LightDirectionArrayUniform = glGetUniformLocation(ModelProgram, "lightDirections");
-  LightAmbientArrayUniform = glGetUniformLocation(ModelProgram, "lightAmbients");
-  LightDiffuseArrayUniform = glGetUniformLocation(ModelProgram, "lightDiffuses");
-  LightSpecularArrayUniform = glGetUniformLocation(ModelProgram, "lightSpeculars");
-  LightEmisiveArrayUniform = glGetUniformLocation(ModelProgram, "lightEmisives");
-  LightInnerUniform = glGetUniformLocation(ModelProgram, "lightInners");
-  LightOuterUniform = glGetUniformLocation(ModelProgram, "lightOuters");
-  LightFalloffUniform = glGetUniformLocation(ModelProgram, "lightFalloffs");
-  LightCountUniform = glGetUniformLocation(ModelProgram, "LightCount");
-  MaterialDiffuseUniform = glGetUniformLocation(ModelProgram, "MaterialValues.diffuse");
-  MaterialAmbientUniform = glGetUniformLocation(ModelProgram, "MaterialValues.ambient");
-  MaterialSpecularUniform = glGetUniformLocation(ModelProgram, "MaterialValues.specular");
-  ModelModelToWorldUniform = glGetUniformLocation(ModelProgram, "ModelToWorldMatrix");
-  ModelWorldToViewUniform = glGetUniformLocation(ModelProgram, "WorldToViewMatrix");
-  ModelViewToProjectionUniform = glGetUniformLocation(ModelProgram, "ViewToProjectionMatrix");
-  CamPosUniform = glGetUniformLocation(ModelProgram, "CameraPosition");
-  ShininessUniform = glGetUniformLocation(ModelProgram, "Shininess");
-  DistanceAttConstUniform = glGetUniformLocation(ModelProgram, "DistanceAttConstants");
-  DistanceAttBoolUniform = glGetUniformLocation(ModelProgram, "DistanceAttBool");
-  NearPlaneLocation = glGetUniformLocation(ModelProgram, "NearPlane");
-  FarPlaneLocation = glGetUniformLocation(ModelProgram, "FarPlane");
-  AtmosphericAttBoolUniform = glGetUniformLocation(ModelProgram, "AtmosphericAttBool");
-  AtmosphericAttIntesityUniform = glGetUniformLocation(ModelProgram, "AtmosphericIntensity");
-  TexturesUniform = glGetUniformLocation(ModelProgram, "Textures");
+  FragPhongGlobalAmbientUniform = glGetUniformLocation(FragPhongModelProgram, "globalAmbient");
+  FragPhongLightTypeArrayUniform = glGetUniformLocation(FragPhongModelProgram, "lightTypes");
+  FragPhongLightPositionArrayUniform = glGetUniformLocation(FragPhongModelProgram, "lightPositions");
+  FragPhongLightDirectionArrayUniform = glGetUniformLocation(FragPhongModelProgram, "lightDirections");
+  FragPhongLightAmbientArrayUniform = glGetUniformLocation(FragPhongModelProgram, "lightAmbients");
+  FragPhongLightDiffuseArrayUniform = glGetUniformLocation(FragPhongModelProgram, "lightDiffuses");
+  FragPhongLightSpecularArrayUniform = glGetUniformLocation(FragPhongModelProgram, "lightSpeculars");
+  FragPhongLightEmisiveArrayUniform = glGetUniformLocation(FragPhongModelProgram, "lightEmisives");
+  FragPhongLightInnerUniform = glGetUniformLocation(FragPhongModelProgram, "lightInners");
+  FragPhongLightOuterUniform = glGetUniformLocation(FragPhongModelProgram, "lightOuters");
+  FragPhongLightFalloffUniform = glGetUniformLocation(FragPhongModelProgram, "lightFalloffs");
+  FragPhongLightCountUniform = glGetUniformLocation(FragPhongModelProgram, "LightCount");
+  FragPhongMaterialDiffuseUniform = glGetUniformLocation(FragPhongModelProgram, "MaterialValues.diffuse");
+  FragPhongMaterialAmbientUniform = glGetUniformLocation(FragPhongModelProgram, "MaterialValues.ambient");
+  FragPhongMaterialSpecularUniform = glGetUniformLocation(FragPhongModelProgram, "MaterialValues.specular");
+  FragPhongModelModelToWorldUniform = glGetUniformLocation(FragPhongModelProgram, "ModelToWorldMatrix");
+  FragPhongModelWorldToViewUniform = glGetUniformLocation(FragPhongModelProgram, "WorldToViewMatrix");
+  FragPhongModelViewToProjectionUniform = glGetUniformLocation(FragPhongModelProgram, "ViewToProjectionMatrix");
+  FragPhongCamPosUniform = glGetUniformLocation(FragPhongModelProgram, "CameraPosition");
+  FragPhongShininessUniform = glGetUniformLocation(FragPhongModelProgram, "Shininess");
+  FragPhongDistanceAttConstUniform = glGetUniformLocation(FragPhongModelProgram, "DistanceAttConstants");
+  FragPhongDistanceAttBoolUniform = glGetUniformLocation(FragPhongModelProgram, "DistanceAttBool");
+  FragPhongNearPlaneLocation = glGetUniformLocation(FragPhongModelProgram, "NearPlane");
+  FragPhongFarPlaneLocation = glGetUniformLocation(FragPhongModelProgram, "FarPlane");
+  FragPhongAtmosphericAttBoolUniform = glGetUniformLocation(FragPhongModelProgram, "AtmosphericAttBool");
+  FragPhongAtmosphericAttIntesityUniform = glGetUniformLocation(FragPhongModelProgram, "AtmosphericIntensity");
+  FragPhongTexturesUniform = glGetUniformLocation(FragPhongModelProgram, "Textures");
 
 #pragma endregion
 
-
 #pragma region PerVertex
 
+  VertPhongModelProgram = LoadShaders("PerVertexPhong.vs.glsl", "PerVertexPhong.fs.glsl");
 
+  VertPhongDiffuseTextureUniform = glGetUniformLocation(VertPhongModelProgram, "Texture");
+  VertPhongNormalTextureUniform = glGetUniformLocation(VertPhongModelProgram, "normalTexture");
+
+  VertPhongGlobalAmbientUniform = glGetUniformLocation(VertPhongModelProgram, "globalAmbient");
+  VertPhongLightTypeArrayUniform = glGetUniformLocation(VertPhongModelProgram, "lightTypes");
+  VertPhongLightPositionArrayUniform = glGetUniformLocation(VertPhongModelProgram, "lightPositions");
+  VertPhongLightDirectionArrayUniform = glGetUniformLocation(VertPhongModelProgram, "lightDirections");
+  VertPhongLightAmbientArrayUniform = glGetUniformLocation(VertPhongModelProgram, "lightAmbients");
+  VertPhongLightDiffuseArrayUniform = glGetUniformLocation(VertPhongModelProgram, "lightDiffuses");
+  VertPhongLightSpecularArrayUniform = glGetUniformLocation(VertPhongModelProgram, "lightSpeculars");
+  VertPhongLightEmisiveArrayUniform = glGetUniformLocation(VertPhongModelProgram, "lightEmisives");
+  VertPhongLightInnerUniform = glGetUniformLocation(VertPhongModelProgram, "lightInners");
+  VertPhongLightOuterUniform = glGetUniformLocation(VertPhongModelProgram, "lightOuters");
+  VertPhongLightFalloffUniform = glGetUniformLocation(VertPhongModelProgram, "lightFalloffs");
+  VertPhongLightCountUniform = glGetUniformLocation(VertPhongModelProgram, "LightCount");
+  VertPhongMaterialDiffuseUniform = glGetUniformLocation(VertPhongModelProgram, "MaterialValues.diffuse");
+  VertPhongMaterialAmbientUniform = glGetUniformLocation(VertPhongModelProgram, "MaterialValues.ambient");
+  VertPhongMaterialSpecularUniform = glGetUniformLocation(VertPhongModelProgram, "MaterialValues.specular");
+  VertPhongModelModelToWorldUniform = glGetUniformLocation(VertPhongModelProgram, "ModelToWorldMatrix");
+  VertPhongModelWorldToViewUniform = glGetUniformLocation(VertPhongModelProgram, "WorldToViewMatrix");
+  VertPhongModelViewToProjectionUniform = glGetUniformLocation(VertPhongModelProgram, "ViewToProjectionMatrix");
+  VertPhongCamPosUniform = glGetUniformLocation(VertPhongModelProgram, "CameraPosition");
+  VertPhongShininessUniform = glGetUniformLocation(VertPhongModelProgram, "Shininess");
+  VertPhongDistanceAttConstUniform = glGetUniformLocation(VertPhongModelProgram, "DistanceAttConstants");
+  VertPhongDistanceAttBoolUniform = glGetUniformLocation(VertPhongModelProgram, "DistanceAttBool");
+  VertPhongNearPlaneLocation = glGetUniformLocation(VertPhongModelProgram, "NearPlane");
+  VertPhongFarPlaneLocation = glGetUniformLocation(VertPhongModelProgram, "FarPlane");
+  VertPhongAtmosphericAttBoolUniform = glGetUniformLocation(VertPhongModelProgram, "AtmosphericAttBool");
+  VertPhongAtmosphericAttIntesityUniform = glGetUniformLocation(VertPhongModelProgram, "AtmosphericIntensity");
+  VertPhongTexturesUniform = glGetUniformLocation(VertPhongModelProgram, "Textures");
 
 #pragma endregion
 }
@@ -118,52 +194,116 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
     {
       glClearColor(0, 0, 0, 0);
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-      glUseProgram(ModelProgram);
 
-      glActiveTexture(GL_TEXTURE0);
-      texture->TexBind();
-      glUniform1i(DiffuseTextureUniform, 0);
+      if (ShaderType == 0)
+      {
+#pragma region PerFragent
 
-      glActiveTexture(GL_TEXTURE1);
-      texture->NorBind();
-      glUniform1i(NormalTextureUniform, 1);
+        glUseProgram(FragPhongModelProgram);
 
-      glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE0);
+        texture->TexBind();
+        glUniform1i(FragPhongDiffuseTextureUniform, 0);
 
-      vao->Bind();
-      glUniform1iv(LightTypeArrayUniform, ARRAYSIZE(Lighttype), &Lighttype[0]);
-      glUniform4fv(LightPositionArrayUniform, ARRAYSIZE(Lightposition), glm::value_ptr(Lightposition[0]));
-      glUniform4fv(LightDirectionArrayUniform, ARRAYSIZE(Lightdirection), glm::value_ptr(Lightdirection[0]));
-      glUniform4fv(LightAmbientArrayUniform, ARRAYSIZE(Lightambient), glm::value_ptr(Lightambient[0]));
-      glUniform4fv(LightDiffuseArrayUniform, ARRAYSIZE(Lightdiffuse), glm::value_ptr(Lightdiffuse[0]));
-      glUniform4fv(LightSpecularArrayUniform, ARRAYSIZE(Lightspecular), glm::value_ptr(Lightspecular[0]));
-      glUniform4fv(LightEmisiveArrayUniform, ARRAYSIZE(Lightemisive), glm::value_ptr(Lightemisive[0]));
-      glUniform1fv(LightInnerUniform, ARRAYSIZE(Lightinner), &Lightinner[0]);
-      glUniform1fv(LightTypeArrayUniform, ARRAYSIZE(Lightouter), &Lightouter[0]);
-      glUniform1fv(LightTypeArrayUniform, ARRAYSIZE(Lightfalloff), &Lightfalloff[0]);
+        glActiveTexture(GL_TEXTURE1);
+        texture->NorBind();
+        glUniform1i(FragPhongNormalTextureUniform, 1);
 
-      glUniform4fv(MaterialDiffuseUniform, 1, glm::value_ptr(MaterialVal.diffuse));
-      glUniform4fv(MaterialAmbientUniform, 1, glm::value_ptr(MaterialVal.ambient));
-      glUniform4fv(MaterialSpecularUniform, 1, glm::value_ptr(MaterialVal.specular));
-      glUniform1i(LightCountUniform, LightNum);
-      glUniform3fv(CamPosUniform, 1, glm::value_ptr(g_GraphicsSys->GetCurrentCamera().GetPosition()));
-      glUniform1f(ShininessUniform, Shininess);
-      glUniform1fv(DistanceAttConstUniform, ARRAYSIZE(DistanceAttConstants), &DistanceAttConstants[0]);
-      glUniform1i(DistanceAttBoolUniform, DistanceAtt);
-      glUniform1f(NearPlaneLocation, NearPlane);
-      glUniform1f(FarPlaneLocation, FarPlane);
-      glUniform1i(AtmosphericAttBoolUniform, AtmosphericAtt);
-      glUniform4fv(AtmosphericAttIntesityUniform, 1, glm::value_ptr(AtmosphericIntensity));
+        glActiveTexture(GL_TEXTURE0);
 
-      glUniform4fv(GlobalAmbientUniform, 1, glm::value_ptr(GlobalAmbient));
+        vao->Bind();
+        glUniform1iv(FragPhongLightTypeArrayUniform, ARRAYSIZE(Lighttype), &Lighttype[0]);
+        glUniform4fv(FragPhongLightPositionArrayUniform, ARRAYSIZE(Lightposition), glm::value_ptr(Lightposition[0]));
+        glUniform4fv(FragPhongLightDirectionArrayUniform, ARRAYSIZE(Lightdirection), glm::value_ptr(Lightdirection[0]));
+        glUniform4fv(FragPhongLightAmbientArrayUniform, ARRAYSIZE(Lightambient), glm::value_ptr(Lightambient[0]));
+        glUniform4fv(FragPhongLightDiffuseArrayUniform, ARRAYSIZE(Lightdiffuse), glm::value_ptr(Lightdiffuse[0]));
+        glUniform4fv(FragPhongLightSpecularArrayUniform, ARRAYSIZE(Lightspecular), glm::value_ptr(Lightspecular[0]));
+        glUniform4fv(FragPhongLightEmisiveArrayUniform, ARRAYSIZE(Lightemisive), glm::value_ptr(Lightemisive[0]));
+        glUniform1fv(FragPhongLightInnerUniform, ARRAYSIZE(Lightinner), &Lightinner[0]);
+        glUniform1fv(FragPhongLightTypeArrayUniform, ARRAYSIZE(Lightouter), &Lightouter[0]);
+        glUniform1fv(FragPhongLightTypeArrayUniform, ARRAYSIZE(Lightfalloff), &Lightfalloff[0]);
 
-      glUniform1i(TexturesUniform, Textures);
+        glUniform4fv(FragPhongMaterialDiffuseUniform, 1, glm::value_ptr(MaterialVal.diffuse));
+        glUniform4fv(FragPhongMaterialAmbientUniform, 1, glm::value_ptr(MaterialVal.ambient));
+        glUniform4fv(FragPhongMaterialSpecularUniform, 1, glm::value_ptr(MaterialVal.specular));
+        glUniform1i(FragPhongLightCountUniform, LightNum);
+        glUniform3fv(FragPhongCamPosUniform, 1, glm::value_ptr(g_GraphicsSys->GetCurrentCamera().GetPosition()));
+        glUniform1f(FragPhongShininessUniform, Shininess);
+        glUniform1fv(FragPhongDistanceAttConstUniform, ARRAYSIZE(DistanceAttConstants), &DistanceAttConstants[0]);
+        glUniform1i(FragPhongDistanceAttBoolUniform, DistanceAtt);
+        glUniform1f(FragPhongNearPlaneLocation, NearPlane);
+        glUniform1f(FragPhongFarPlaneLocation, FarPlane);
+        glUniform1i(FragPhongAtmosphericAttBoolUniform, AtmosphericAtt);
+        glUniform4fv(FragPhongAtmosphericAttIntesityUniform, 1, glm::value_ptr(AtmosphericIntensity));
 
-      glUniformMatrix4fv(ModelModelToWorldUniform, 1, GL_FALSE, &ModelToWorld[0][0]);
-      glUniformMatrix4fv(ModelWorldToViewUniform, 1, GL_FALSE, &WorldToView[0][0]);
-      glUniformMatrix4fv(ModelViewToProjectionUniform, 1, GL_FALSE, &ViewToProjection[0][0]);
-      glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, 0);
-      texture->unBind();
+        glUniform4fv(FragPhongGlobalAmbientUniform, 1, glm::value_ptr(GlobalAmbient));
+
+        glUniform1i(FragPhongTexturesUniform, Textures);
+
+        glUniformMatrix4fv(FragPhongModelModelToWorldUniform, 1, GL_FALSE, &ModelToWorld[0][0]);
+        glUniformMatrix4fv(FragPhongModelWorldToViewUniform, 1, GL_FALSE, &WorldToView[0][0]);
+        glUniformMatrix4fv(FragPhongModelViewToProjectionUniform, 1, GL_FALSE, &ViewToProjection[0][0]);
+        glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, 0);
+        texture->unBind();
+
+#pragma endregion 
+      }
+
+      else if (ShaderType == 1)
+      {
+
+#pragma region PerVertex
+        
+        glUseProgram(VertPhongModelProgram);
+
+        glActiveTexture(GL_TEXTURE0);
+        texture->TexBind();
+        glUniform1i(VertPhongDiffuseTextureUniform, 0);
+
+        glActiveTexture(GL_TEXTURE1);
+        texture->NorBind();
+        glUniform1i(VertPhongNormalTextureUniform, 1);
+
+        glActiveTexture(GL_TEXTURE0);
+
+        vao->Bind();
+        glUniform1iv(VertPhongLightTypeArrayUniform, ARRAYSIZE(Lighttype), &Lighttype[0]);
+        glUniform4fv(VertPhongLightPositionArrayUniform, ARRAYSIZE(Lightposition), glm::value_ptr(Lightposition[0]));
+        glUniform4fv(VertPhongLightDirectionArrayUniform, ARRAYSIZE(Lightdirection), glm::value_ptr(Lightdirection[0]));
+        glUniform4fv(VertPhongLightAmbientArrayUniform, ARRAYSIZE(Lightambient), glm::value_ptr(Lightambient[0]));
+        glUniform4fv(VertPhongLightDiffuseArrayUniform, ARRAYSIZE(Lightdiffuse), glm::value_ptr(Lightdiffuse[0]));
+        glUniform4fv(VertPhongLightSpecularArrayUniform, ARRAYSIZE(Lightspecular), glm::value_ptr(Lightspecular[0]));
+        glUniform4fv(VertPhongLightEmisiveArrayUniform, ARRAYSIZE(Lightemisive), glm::value_ptr(Lightemisive[0]));
+        glUniform1fv(VertPhongLightInnerUniform, ARRAYSIZE(Lightinner), &Lightinner[0]);
+        glUniform1fv(VertPhongLightTypeArrayUniform, ARRAYSIZE(Lightouter), &Lightouter[0]);
+        glUniform1fv(VertPhongLightTypeArrayUniform, ARRAYSIZE(Lightfalloff), &Lightfalloff[0]);
+
+        glUniform4fv(VertPhongMaterialDiffuseUniform, 1, glm::value_ptr(MaterialVal.diffuse));
+        glUniform4fv(VertPhongMaterialAmbientUniform, 1, glm::value_ptr(MaterialVal.ambient));
+        glUniform4fv(VertPhongMaterialSpecularUniform, 1, glm::value_ptr(MaterialVal.specular));
+        glUniform1i(VertPhongLightCountUniform, LightNum);
+        glUniform3fv(VertPhongCamPosUniform, 1, glm::value_ptr(g_GraphicsSys->GetCurrentCamera().GetPosition()));
+        glUniform1f(VertPhongShininessUniform, Shininess);
+        glUniform1fv(VertPhongDistanceAttConstUniform, ARRAYSIZE(DistanceAttConstants), &DistanceAttConstants[0]);
+        glUniform1i(VertPhongDistanceAttBoolUniform, DistanceAtt);
+        glUniform1f(VertPhongNearPlaneLocation, NearPlane);
+        glUniform1f(VertPhongFarPlaneLocation, FarPlane);
+        glUniform1i(VertPhongAtmosphericAttBoolUniform, AtmosphericAtt);
+        glUniform4fv(VertPhongAtmosphericAttIntesityUniform, 1, glm::value_ptr(AtmosphericIntensity));
+
+        glUniform4fv(VertPhongGlobalAmbientUniform, 1, glm::value_ptr(GlobalAmbient));
+
+        glUniform1i(VertPhongTexturesUniform, Textures);
+
+        glUniformMatrix4fv(VertPhongModelModelToWorldUniform, 1, GL_FALSE, &ModelToWorld[0][0]);
+        glUniformMatrix4fv(VertPhongModelWorldToViewUniform, 1, GL_FALSE, &WorldToView[0][0]);
+        glUniformMatrix4fv(VertPhongModelViewToProjectionUniform, 1, GL_FALSE, &ViewToProjection[0][0]);
+        glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, 0);
+        texture->unBind();
+
+#pragma endregion
+
+      }
     }
 
 
