@@ -58,6 +58,7 @@ void ParticleSystem::AddRenderer(ParticleRenderer* render)
 void ParticleSystem::Init(void)
 {
   renderer->Init(this);
+  renderer->InitCompute(this);
 }
 
 void ParticleSystem::Update(float dt)
@@ -79,7 +80,7 @@ void ParticleSystem::Update(float dt)
 
 void ParticleSystem::Draw(void)
 {
-  renderer->Render();
+  renderer->ComputeRender();
 }
 
 

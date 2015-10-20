@@ -21,16 +21,16 @@ void CircleEffect::Init()
 
   emitter->min_Particles = p_sys->GetMaxParticles() / 2;
   emitter->AddGenerator(rpg);
-  emitter->AddGenerator(lg);
+  //emitter->AddGenerator(lg);
   emitter->AddGenerator(cg);
   emitter->AddGenerator(vg);
 
   p_sys->AddEmitter(emitter);
 
-  p_sys->AddUpdater(l_updater);
+  //p_sys->AddUpdater(l_updater);
   p_sys->AddUpdater(c_updater);
-  p_sys->AddUpdater(tb_updater);
-  p_sys->AddUpdater(v_updater);
+  //p_sys->AddUpdater(tb_updater);
+  //p_sys->AddUpdater(v_updater);
 
   p_sys->AddRenderer(renderer);
 

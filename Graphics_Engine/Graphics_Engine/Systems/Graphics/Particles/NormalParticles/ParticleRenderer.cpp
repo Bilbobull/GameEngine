@@ -73,19 +73,28 @@ void ParticleRenderer::InitCompute(ParticleSystem* sys)
   Posbuffer->UnMapBuffer();
   Posbuffer->BindBufferBase(0);
 
+
+  VelBuffer = new SSBO(p_sys->GetMaxParticles() * sizeof(glm::vec4));
+  glm::vec4* verticesVel = VelBuffer->MapBufferRange<glm::vec4>(0, p_sys->GetMaxParticles());
+  for (int i = 0; i < p_sys->GetMaxParticles(); i++)
+  {
+    verticesVel[i].x = 0.0f;
+    verticesVel[i].y = 0.0f;
+    verticesVel[i].z = 0.0f;
+    verticesVel[i].w = 1.0f;
+  }
+  VelBuffer->UnMapBuffer();
+  VelBuffer->BindBufferBase(1);
+
+
   computeshader = LoadComputeShader("Systems/Graphics/Shaders/Simple.cs.glsl");
 
   c_vao->unBind();
-
-  //VelBuffer = new SSBO(NumParticles * sizeof(glm::vec4));
-  //CreateVel();
-  //VelBuffer->BindBufferBase(1);
-
   //AccBuffer = new SSBO(NumParticles * sizeof(glm::vec4));
   //CreateAcc();
   //AccBuffer->BindBufferBase(2);
 
-  c_vao->unBind();
+  //c_vao->unBind();
 }
 
 void ParticleRenderer::Render(void)
@@ -137,8 +146,9 @@ void ParticleRenderer::ComputeRender()
   {
     c_vao->Bind();
     Posbuffer->BindBufferBase(0);
+    VelBuffer->BindBufferBase(1);
     computeshader->Bind();
-    int workingGroups = p_sys->GetAlivePartCount() / 16;
+    int workingGroups = p_sys->GetMaxParticles() / 16;
     computeshader->Dispatch_Compute(workingGroups + 2, 1, 1);
     computeshader->unBind();
     glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);

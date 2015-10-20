@@ -25,5 +25,5 @@ private:
 
   VAO* c_vao;
   ComputeShaders::ComputeShader* computeshader;
-  SSBO* Posbuffer;
+  SSBO* Posbuffer, *VelBuffer;
 };
