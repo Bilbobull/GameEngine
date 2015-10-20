@@ -78,11 +78,9 @@ void ParticleRenderer::InitCompute(ParticleSystem* sys)
   glm::vec4* verticesVel = VelBuffer->MapBufferRange<glm::vec4>(0, p_sys->GetMaxParticles());
   for (int i = 0; i < p_sys->GetMaxParticles(); i++)
   {
-    verticesVel[i].x = 0.0f;
-    verticesVel[i].y = 0.0f;
-    verticesVel[i].z = 0.0f;
-    verticesVel[i].w = 1.0f;
+    verticesVel[i] = glm::linearRand(glm::vec4(-0.4f, -0.4f, -0.2f, 0.0f), glm::vec4(0.4f, 0.4f, 0.2f, 0.0f));
   }
+
   VelBuffer->UnMapBuffer();
   VelBuffer->BindBufferBase(1);
 
@@ -144,20 +142,24 @@ void ParticleRenderer::ComputeRender()
 {
   if (p_sys->GetAlivePartCount() > 0)
   {
+    computeshader->Bind();
     c_vao->Bind();
     Posbuffer->BindBufferBase(0);
     VelBuffer->BindBufferBase(1);
-    computeshader->Bind();
-    int workingGroups = p_sys->GetMaxParticles() / 16;
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    int workingGroups = p_sys->GetAlivePartCount() / 16;
     computeshader->Dispatch_Compute(workingGroups + 2, 1, 1);
     computeshader->unBind();
     glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 
+    glUseProgram(ParticleProgram);
+    vao.Bind();
     texture->TexBind();
     matrix = g_GraphicsSys->GetCurrentCamera().getProjectionMatrix() * g_GraphicsSys->GetCurrentCamera().getWorldToViewMatrix();
     glEnable(GL_POINT_SPRITE);
     glEnable(GL_PROGRAM_POINT_SIZE);
-    glUseProgram(ParticleProgram);
 
     glUniformMatrix4fv(matrixLocation, 1, GL_FALSE, &matrix[0][0]);
     //glBufferSubData(GL_ARRAY_BUFFER, 0, p_sys->GetAlivePartCount() * 3 * sizeof(float), (void*)p_sys->GetPositionData());
@@ -168,23 +170,9 @@ void ParticleRenderer::ComputeRender()
     glBindBuffer(GL_ARRAY_BUFFER, vbo_col);
     glBufferSubData(GL_ARRAY_BUFFER, 0, p_sys->GetAlivePartCount() * 4 * sizeof(float), (void*)p_sys->GetColorData());
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glPointSize(5);
-    vao.Bind();
-
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-
-    //if (glfwGetKey(g_GraphicsSys->GetCurrentWindow().glfw_GetWindow(), GLFW_KEY_B))
-    //{
-    //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //}
-    //else if (glfwGetKey(g_GraphicsSys->GetCurrentWindow().glfw_GetWindow(), GLFW_KEY_N))
-    {
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    }
-
-
+    glPointSize(10);
     glDrawArrays(GL_POINTS, 0, p_sys->GetAlivePartCount());
+
     glUseProgram(0);
     vao.unBind();
     texture->unBind();
