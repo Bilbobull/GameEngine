@@ -170,6 +170,85 @@ private:
   GLuint fbo;
 };
 
+
+class ShaderStorageBuffer
+{
+public:
+  ShaderStorageBuffer::ShaderStorageBuffer() : bufferPos(0) {}
+  ShaderStorageBuffer(GLuint size, GLenum mode = GL_STATIC_DRAW)
+  {
+    glGenBuffers(1, &bufferPos);
+    BindBuffer();
+    BufferData(size, NULL, mode);
+  }
+
+  ~ShaderStorageBuffer(){}
+
+  void GenerateBuffer()
+  {
+    glGenBuffers(1, &bufferPos);
+  }
+
+  void BindBuffer(GLenum mode = GL_SHADER_STORAGE_BUFFER)
+  {
+    glBindBuffer(mode, bufferPos);
+  }
+
+  void BindBufferBase(GLuint index = 0)
+  {
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, index, bufferPos);
+  }
+
+  void BufferData(GLuint size, const void* data = NULL, GLenum mode = GL_STATIC_DRAW)
+  {
+    glBufferData(GL_SHADER_STORAGE_BUFFER, size, data, mode);
+  }
+
+  void BufferSubData(GLuint size, GLuint offset, const void* data)
+  {
+    glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, size, data);
+  }
+
+  template <typename T>
+  T* MapBufferRange(int offset, int size)
+  {
+    return (T*)glMapBufferRange(GL_SHADER_STORAGE_BUFFER, offset * sizeof(T), size * sizeof(T), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+  }
+  void UnMapBuffer()
+  {
+    glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+  }
+
+  void UnBindBuffer()
+  {
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+  }
+
+  void DeleteBuffer()
+  {
+    glDeleteBuffers(1, &bufferPos);
+  }
+
+  inline GLuint Get_POS()
+  {
+    return bufferPos;
+  }
+  bool IsBuffer()
+  {
+    if (glIsBuffer(bufferPos))
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+private:
+  GLuint bufferPos;
+};
+
+typedef ShaderStorageBuffer SSBO;
 typedef VertexArrayObject VAO;
 typedef VertexBufferObject VBO;
 typedef ElementBufferObject EBO;

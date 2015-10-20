@@ -112,12 +112,6 @@
     <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\ComputeParticleRenderer.cpp">
       <Filter>Systems\Particles\ComputeParticles\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\ComputeShader.cpp">
-      <Filter>Systems\Particles\ComputeParticles\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\Shader.cpp">
-      <Filter>Systems\Particles\ComputeParticles\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Systems\Graphics\Particles\NormalParticles\ParticleEffect.cpp">
       <Filter>Systems\Particles\ParticleSystem\Source</Filter>
     </ClCompile>
@@ -139,8 +133,8 @@
     <ClCompile Include="Systems\Graphics\Light.cpp">
       <Filter>Systems\Graphics\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Systems\Graphics\Particles\ComputeParticles\ShaderBufferManager.cpp">
-      <Filter>Systems\Particles\ComputeParticles\Source</Filter>
+    <ClCompile Include="Systems\Graphics\ComputeShaders.cpp">
+      <Filter>Systems\Graphics\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,12 +198,6 @@
     <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\ComputeParticleRenderer.h">
       <Filter>Systems\Particles\ComputeParticles\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\ComputeShader.h">
-      <Filter>Systems\Particles\ComputeParticles\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\Shader.h">
-      <Filter>Systems\Particles\ComputeParticles\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Systems\Graphics\Particles\NormalParticles\ParticleEffect.h">
       <Filter>Systems\Particles\ParticleSystem\Headers</Filter>
     </ClInclude>
@@ -231,8 +219,8 @@
     <ClInclude Include="Systems\Graphics\Light.h">
       <Filter>Systems\Graphics\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\Graphics\Particles\ComputeParticles\ShaderBufferManager.h">
-      <Filter>Systems\Particles\ComputeParticles\Headers</Filter>
+    <ClInclude Include="Systems\Graphics\ComputeShaders.h">
+      <Filter>Systems\Graphics\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

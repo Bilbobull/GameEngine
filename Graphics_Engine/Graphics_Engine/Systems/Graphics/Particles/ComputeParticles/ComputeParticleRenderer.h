@@ -2,9 +2,8 @@
 
 #include "../../Graphics_Headers.h"
 #include "../../Math_Headers.h"
-#include "ShaderBufferManager.h"
 #include "../../Buffer_Manager.h"
-#include "ComputeShader.h"
+#include "../../ComputeShaders.h"
 #include "../../Texture.h"
 #include <string>
 

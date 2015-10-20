@@ -59,15 +59,15 @@ namespace ComputeShaders
     destPos.x = (float)(MousePosX / (windowWidth)-0.5f) * 2.0f;
     destPos.y = (float)((windowHeight - MousePosY) / windowHeight - 0.5f) * 2.0f;
 
-    computeshader->Use();
-    computeshader->uni1f("dTime", 10 * 0.1f);
+    computeshader->Bind();
+    computeshader->uni1f("dTime", 20 * 0.1f);
     computeshader->uni3f("destPos", destPos.x, destPos.y, 0);
     computeshader->uni1f("et", (float)glfwGetTime());
 
     int workingGroups = NumParticles / 16;
 
     computeshader->Dispatch_Compute(workingGroups + 2, 1, 1);
-    computeshader->Disable();
+    computeshader->unBind();
 
     glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
     glUseProgram(shader);
@@ -97,7 +97,7 @@ namespace ComputeShaders
   void CS_Renderer::InitShaders()
   {
     shader = LoadShaders("Vertex.vs.glsl", "Fragment.frag.glsl");
-    computeshader = LoadComputeShader ("Systems/Graphics/Shaders/MouseParticleEffect.cs.glsl");
+    computeshader = LoadComputeShader("Systems/Graphics/Shaders/MouseParticleEffect.cs.glsl");
   }
 
 
@@ -131,8 +131,8 @@ namespace ComputeShaders
     glfwGetCursorPos(g_GraphicsSys->GetCurrentWindow().glfw_GetWindow(), &MousePosX, &MousePosY);
     glfwGetWindowSize(g_GraphicsSys->GetCurrentWindow().glfw_GetWindow(), &windowWidth, &windowHeight);
 
-    destPos.x = (float) (MousePosX / (windowWidth) -0.5f) * 2.0f;
-    destPos.y = (float) ((windowHeight - MousePosY) / windowHeight - 0.5f) * 2.0f;
+    destPos.x = (float)(MousePosX / (windowWidth)-0.5f) * 2.0f;
+    destPos.y = (float)((windowHeight - MousePosY) / windowHeight - 0.5f) * 2.0f;
 
 
     glm::vec4* verticesPos = (glm::vec4*)Posbuffer->MapBufferRange<glm::vec4>(0, NumParticles);

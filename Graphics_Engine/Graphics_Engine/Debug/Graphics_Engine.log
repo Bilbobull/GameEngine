@@ -1,12 +1,13 @@
-﻿Build started 12/10/2015 22:08:45.
-     1>Project "C:\Users\Gonzalo Rojo\Desktop\GameEngine\Graphics_Engine\Graphics_Engine\Graphics_Engine.vcxproj" on node 2 (Build target(s)).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(381,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (My_Project.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿Build started 10/20/2015 12:26:20 AM.
+     1>Project "C:\Users\Gonzalo\Desktop\GameEngine\Graphics_Engine\Graphics_Engine\Graphics_Engine.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (My_Project.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _MBCS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Systems\Graphics\Light.cpp
-         Light.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _MBCS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Systems\Graphics\GraphicsSystem.cpp
+         GraphicsSystem.cpp
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Gonzalo Rojo\Desktop\GameEngine\Graphics_Engine\Debug\Graphics_Engine.exe" /INCREMENTAL /NOLOGO ImGuid.lib STB.lib opengl32.lib glew32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Gonzalo Rojo\Desktop\GameEngine\Graphics_Engine\Debug\Graphics_Engine.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Gonzalo Rojo\Desktop\GameEngine\Graphics_Engine\Debug\Graphics_Engine.lib" /MACHINE:X86 /ignore:4099 Debug\Editor.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Gonzalo\Desktop\GameEngine\Graphics_Engine\Debug\Graphics_Engine.exe" /INCREMENTAL /NOLOGO ImGuid.lib STB.lib opengl32.lib glew32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Gonzalo\Desktop\GameEngine\Graphics_Engine\Debug\Graphics_Engine.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Gonzalo\Desktop\GameEngine\Graphics_Engine\Debug\Graphics_Engine.lib" /MACHINE:X86 /ignore:4099 Debug\Editor.obj
          Debug\Camera.obj
+         Debug\ComputeShaders.obj
          Debug\Context.obj
          Debug\GraphicsSystem.obj
          Debug\Light.obj
@@ -16,9 +17,6 @@
          Debug\ObjectManager.obj
          Debug\OBJLoader.obj
          Debug\ComputeParticleRenderer.obj
-         Debug\ComputeShader.obj
-         Debug\Shader.obj
-         Debug\ShaderBufferManager.obj
          Debug\ParticleEffect.obj
          Debug\ParticleEmiter.obj
          Debug\ParticleGenerator.obj
@@ -31,9 +29,9 @@
          Debug\InputSystem.obj
          Debug\main.obj
          Debug\Systems.obj
-         Graphics_Engine.vcxproj -> C:\Users\Gonzalo Rojo\Desktop\GameEngine\Graphics_Engine\Debug\Graphics_Engine.exe
-     1>Done Building Project "C:\Users\Gonzalo Rojo\Desktop\GameEngine\Graphics_Engine\Graphics_Engine\Graphics_Engine.vcxproj" (Build target(s)).
+         Graphics_Engine.vcxproj -> C:\Users\Gonzalo\Desktop\GameEngine\Graphics_Engine\Debug\Graphics_Engine.exe
+     1>Done Building Project "C:\Users\Gonzalo\Desktop\GameEngine\Graphics_Engine\Graphics_Engine\Graphics_Engine.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.39
+Time Elapsed 00:00:01.20
