@@ -40,10 +40,10 @@ void GraphicsSystem::Init(void)
   ironman = ObjectManager::CreateObject(glm::vec3(0.0f, 0.5f, -3.0f), glm::vec3(10.0f, 10.0f, 10.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "ironman");
   //Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f), "Ironman");
 
- // effect = new CircleEffect(glm::vec3(0, 0, -3), 100);
- // effect->Init();
-  c = new ComputeShaders::CS_Renderer();
-  c->Initialize();
+  effect = new CircleEffect(glm::vec3(0, 0, -3), 100);
+  effect->Init();
+  //c = new ComputeShaders::CS_Renderer();
+  //c->Initialize();
 
   ImGuiImpl::Initialize(Current_Window.GetWidth(), Current_Window.GetHeight());
 
@@ -113,16 +113,16 @@ void GraphicsSystem::Update(double dt)
 
   if (Particles)
   {
-    //effect->Update(0.016f);
-    //effect->Draw();
-    if (ResetParticles)
-    {
-      ResetParticles = false;
-      delete c;
-      c = new ComputeShaders::CS_Renderer();
-      c->Initialize();
-    }
-    c->Draw();
+    effect->Update(0.016f);
+    effect->Draw();
+   // if (ResetParticles)
+   // {
+   //   ResetParticles = false;
+   //   delete c;
+   //   c = new ComputeShaders::CS_Renderer();
+   //   c->Initialize();
+   // }
+   // c->Draw();
   }
 
 

@@ -12,7 +12,7 @@ void CircleEffect::Init()
 
   ParticleRenderer* renderer = new ParticleRenderer();
 
-  glm::vec3 maxOff = glm::vec3(0.5f, 0.5f, 0.5f);
+  //glm::vec3 maxOff = glm::vec3(0.5f, 0.5f, 0.5f);
   glm::vec3 radius = glm::vec3(1.f, 1.f, 1.0f);
   CircleGenerator *rpg = new CircleGenerator(position, radius);
   VelocityGenerator* vg = new VelocityGenerator(glm::vec3(-0.4f, -0.4f, -0.2f), glm::vec3(0.4f, 0.4f, 0.2f));

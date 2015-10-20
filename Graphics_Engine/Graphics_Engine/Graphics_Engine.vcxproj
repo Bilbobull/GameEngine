@@ -140,6 +140,7 @@
     <None Include="Systems\Graphics\Shaders\PerFragmentBlinn.vs.glsl" />
     <None Include="Systems\Graphics\Shaders\PerVertexPhong.fs.glsl" />
     <None Include="Systems\Graphics\Shaders\PerVertexPhong.vs.glsl" />
+    <None Include="Systems\Graphics\Shaders\Simple.cs.glsl" />
     <None Include="Systems\Graphics\Shaders\SimpleFragmentShader.glsl" />
     <None Include="Systems\Graphics\Shaders\SimpleVertexShader.glsl" />
     <None Include="Systems\Graphics\Shaders\Vertex.vs.glsl" />

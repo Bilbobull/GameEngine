@@ -263,5 +263,8 @@
     <None Include="Systems\Graphics\Shaders\PerFragmentBlinn.vs.glsl">
       <Filter>Systems\Graphics\Shaders</Filter>
     </None>
+    <None Include="Systems\Graphics\Shaders\Simple.cs.glsl">
+      <Filter>Systems\Graphics\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 #include "../../LoadShader.h"
 #include "../../GraphicsSystem.h"
 
+
 Texture* texture;
 GLuint ParticleProgram;
 GLuint matrixLocation = 0;
@@ -56,6 +57,37 @@ void ParticleRenderer::Init(ParticleSystem* sys)
   matrixLocation = glGetUniformLocation(ParticleProgram, "matrix");
 }
 
+
+void ParticleRenderer::InitCompute(ParticleSystem* sys)
+{
+
+  c_vao = new VAO();
+
+  Posbuffer = new SSBO(p_sys->GetMaxParticles() * sizeof(glm::vec4));
+
+  glm::vec4* verticesPos = (glm::vec4*)Posbuffer->MapBufferRange<glm::vec4>(0, p_sys->GetMaxParticles());
+  for (int i = 0; i < p_sys->GetMaxParticles(); i++)
+  {
+    verticesPos[i] = glm::linearRand(glm::vec4(-0.25f, -0.5f, -0.5f, 1.0f), glm::vec4(0.25f, 0.5f, 0.5f, 1.0f));
+  }
+  Posbuffer->UnMapBuffer();
+  Posbuffer->BindBufferBase(0);
+
+  computeshader = LoadComputeShader("Systems/Graphics/Shaders/Simple.cs.glsl");
+
+  c_vao->unBind();
+
+  //VelBuffer = new SSBO(NumParticles * sizeof(glm::vec4));
+  //CreateVel();
+  //VelBuffer->BindBufferBase(1);
+
+  //AccBuffer = new SSBO(NumParticles * sizeof(glm::vec4));
+  //CreateAcc();
+  //AccBuffer->BindBufferBase(2);
+
+  c_vao->unBind();
+}
+
 void ParticleRenderer::Render(void)
 {
   if (p_sys->GetAlivePartCount() > 0)
@@ -98,3 +130,57 @@ void ParticleRenderer::Render(void)
 
   }
 }
+
+void ParticleRenderer::ComputeRender()
+{
+  if (p_sys->GetAlivePartCount() > 0)
+  {
+    c_vao->Bind();
+    Posbuffer->BindBufferBase(0);
+    computeshader->Bind();
+    int workingGroups = p_sys->GetAlivePartCount() / 16;
+    computeshader->Dispatch_Compute(workingGroups + 2, 1, 1);
+    computeshader->unBind();
+    glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+
+    texture->TexBind();
+    matrix = g_GraphicsSys->GetCurrentCamera().getProjectionMatrix() * g_GraphicsSys->GetCurrentCamera().getWorldToViewMatrix();
+    glEnable(GL_POINT_SPRITE);
+    glEnable(GL_PROGRAM_POINT_SIZE);
+    glUseProgram(ParticleProgram);
+
+    glUniformMatrix4fv(matrixLocation, 1, GL_FALSE, &matrix[0][0]);
+    //glBufferSubData(GL_ARRAY_BUFFER, 0, p_sys->GetAlivePartCount() * 3 * sizeof(float), (void*)p_sys->GetPositionData());
+    GLuint posAttrib = glGetAttribLocation(ParticleProgram, "position");
+    glBindBuffer(GL_ARRAY_BUFFER, Posbuffer->Get_POS());
+    glVertexAttribPointer(posAttrib, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(posAttrib);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_col);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, p_sys->GetAlivePartCount() * 4 * sizeof(float), (void*)p_sys->GetColorData());
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glPointSize(5);
+    vao.Bind();
+
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+
+    //if (glfwGetKey(g_GraphicsSys->GetCurrentWindow().glfw_GetWindow(), GLFW_KEY_B))
+    //{
+    //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //}
+    //else if (glfwGetKey(g_GraphicsSys->GetCurrentWindow().glfw_GetWindow(), GLFW_KEY_N))
+    {
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    }
+
+
+    glDrawArrays(GL_POINTS, 0, p_sys->GetAlivePartCount());
+    glUseProgram(0);
+    vao.unBind();
+    texture->unBind();
+    glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+
+  }
+}
+
