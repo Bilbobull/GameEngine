@@ -1,0 +1,6 @@
+
+//== PROGRAM LINK STATUS = FALSE
+//== PROGRAM VALIDATE STATUS = FALSE
+/*== INFO LOG ==
+Attached compute shader is not compiled.
+  == INFO LOG END ==*/

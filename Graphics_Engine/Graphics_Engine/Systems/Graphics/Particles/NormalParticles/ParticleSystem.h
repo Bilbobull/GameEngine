@@ -7,16 +7,33 @@
 #include "ParticleGenerator.h"
 #include "ParticleRenderer.h"
 
+
+struct Particle
+{
+  glm::vec3 position;
+  float timeleft;
+  glm::vec3 velocity;
+  float size;
+  glm::vec4 startcolor;
+  glm::vec4 endcolor;
+  glm::vec4 color;
+  bool alive;
+
+  glm::vec3 padding;
+};
+
 // Everything public, wanna be able to access these elements
 struct ParticleArray{
   //Per particle data
-  std::vector <glm::vec3> position;
-  std::vector <glm::vec3> velocity;
-  std::vector <glm::vec4> startcolor;
-  std::vector <glm::vec4> endcolor;
-  std::vector <glm::vec4> color;
-  std::vector <float> timeleft;
-  std::vector <bool> alive;
+  //std::vector <glm::vec3> position;
+  //std::vector <glm::vec3> velocity;
+  //std::vector <glm::vec4> startcolor;
+  //std::vector <glm::vec4> endcolor;
+  //std::vector <glm::vec4> color;
+  //std::vector <float> timeleft;
+  //std::vector <bool> alive;
+  Particle* particles;
+
   const int max_Particles;
   int alive_Particles;
 
@@ -26,6 +43,8 @@ struct ParticleArray{
   void Kill(int index);
 
 };
+
+
 
 class ParticleSystem{
 public:
@@ -38,8 +57,10 @@ public:
   int GetMaxParticles(void){ return max_Particles; }
   int GetAlivePartCount(void) { return particle_array->alive_Particles; }
 
-  glm::vec3* GetPositionData(void){ return particle_array->position.data(); }
-  glm::vec4* GetColorData(void){ return particle_array->color.data(); }
+ // glm::vec3* GetPositionData(void){ return particle_array->position.data(); }
+ // glm::vec4* GetColorData(void){ return particle_array->color.data(); }
+
+  ParticleArray* GetParticleArray(void){ return particle_array; }
 
   void Init(void);
   void Update(float dt);

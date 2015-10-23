@@ -1,15 +1,28 @@
 #version 330
 
-in vec3 position;
-in vec4 color;
+uniform mat4 matr;
+
+struct Particle
+{
+  glm::vec3 position;
+  float timeleft;
+  glm::vec3 velocity;
+  float size;
+  glm::vec4 startcolor;
+  glm::vec4 endcolor;
+  glm::vec4 color;
+  bool alive;
+};
+
+in Particle particles;
 
 out vec4 Color;
 
-uniform mat4 matrix;
+
 
 void main(void)
 {
-	vec4 eyePos = vec4(position , 1.0);
-	gl_Position = matrix * eyePos;
-	Color = color;
+	vec4 eyePos = vec4(particles.position , 1.0);
+	gl_Position = matr * eyePos;
+	Color = particles.color;
 }

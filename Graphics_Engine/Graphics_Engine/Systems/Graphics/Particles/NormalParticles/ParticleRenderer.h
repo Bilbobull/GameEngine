@@ -19,11 +19,11 @@ public:
 private:
   ParticleSystem* p_sys;
   VAO vao;
-  GLuint vbo_pos;
-  GLuint vbo_col;
+  //GLuint vbo_pos;
+  //GLuint vbo_col;
 
 
   VAO* c_vao;
   ComputeShaders::ComputeShader* computeshader;
-  SSBO* Posbuffer, *VelBuffer;
+  SSBO* particleBuffer;
 };

@@ -1,9 +1,9 @@
 #version 330
 
+uniform sampler2D image;
+
 in vec4 Color;
 out vec4 outColor;
-
-uniform sampler2D image;
 
 void main (void)
 {

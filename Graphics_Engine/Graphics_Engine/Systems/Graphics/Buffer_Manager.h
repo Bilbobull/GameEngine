@@ -175,7 +175,7 @@ class ShaderStorageBuffer
 {
 public:
   ShaderStorageBuffer::ShaderStorageBuffer() : bufferPos(0) {}
-  ShaderStorageBuffer(GLuint size, GLenum mode = GL_STATIC_DRAW)
+  ShaderStorageBuffer(GLuint size, GLenum mode = GL_DYNAMIC_DRAW)
   {
     glGenBuffers(1, &bufferPos);
     BindBuffer();
@@ -199,7 +199,7 @@ public:
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, index, bufferPos);
   }
 
-  void BufferData(GLuint size, const void* data = NULL, GLenum mode = GL_STATIC_DRAW)
+  void BufferData(GLuint size, const void* data = NULL, GLenum mode = GL_DYNAMIC_DRAW)
   {
     glBufferData(GL_SHADER_STORAGE_BUFFER, size, data, mode);
   }
@@ -212,7 +212,7 @@ public:
   template <typename T>
   T* MapBufferRange(int offset, int size)
   {
-    return (T*)glMapBufferRange(GL_SHADER_STORAGE_BUFFER, offset * sizeof(T), size * sizeof(T), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+    return (T*)glMapBufferRange(GL_SHADER_STORAGE_BUFFER, offset * sizeof(T), size * sizeof(T), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_RANGE_BIT);
   }
   void UnMapBuffer()
   {

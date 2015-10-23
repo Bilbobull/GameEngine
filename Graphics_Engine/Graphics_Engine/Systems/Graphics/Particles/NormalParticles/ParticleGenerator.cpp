@@ -15,7 +15,7 @@ void CircleGenerator::Generate(int start, int end, ParticleArray* p_array)
 
   // Check Z value, might be incorrect
   for (int i = start; i < end; ++i)
-    p_array->position[i] = center + glm::vec3(radius.x * sin(ang), radius.y * cos(ang), radius.z * tan(ang));
+    p_array->particles[i].position = center + glm::vec3(radius.x * sin(ang), radius.y * cos(ang), radius.z * tan(ang));
 
 }
 
@@ -23,8 +23,8 @@ void ColorGenerator::Generate(int startIndex, int endIndex, ParticleArray *p)
 {
   for (int i = startIndex; i < endIndex; ++i)
   {
-    p->startcolor[i] = glm::linearRand(m_minstartcolor, m_maxstartcolor);
-    p->endcolor[i] = glm::linearRand(m_minendcolor, m_maxendcolor);
+    p->particles[i].startcolor = glm::linearRand(m_minstartcolor, m_maxstartcolor);
+    p->particles[i].endcolor = glm::linearRand(m_minendcolor, m_maxendcolor);
   }
 }
 
@@ -32,7 +32,7 @@ void LifeGenerator::Generate(int startIndex, int endIndex, ParticleArray *p)
 {
   for (int i = startIndex; i < endIndex; ++i)
   {
-    p->timeleft[i] = glm::linearRand(minLife, maxLife);
+    p->particles[i].timeleft = glm::linearRand(minLife, maxLife);
   }
 }
 
@@ -40,6 +40,6 @@ void VelocityGenerator::Generate(int startIndex, int endIndex, ParticleArray *p)
 {
   for (int i = startIndex; i < endIndex; ++i)
   {
-    p->velocity[i] = glm::linearRand(m_minVel, m_maxVel);
+    p->particles[i].velocity = glm::linearRand(m_minVel, m_maxVel);
   }
 }
