@@ -1,11 +1,11 @@
 #version 330
 
-uniform sampler2D image;
+uniform sampler2D uniTexture;
 
-in vec4 Color;
+in vec4 vColor;
 out vec4 outColor;
 
 void main (void)
 {
-  outColor = texture (image, gl_PointCoord) * Color;
+  outColor = texture2D (uniTexture, gl_PointCoord) * vColor;
 }

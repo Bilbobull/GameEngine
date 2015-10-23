@@ -1,28 +1,17 @@
 #version 330
 
-uniform mat4 matr;
+uniform mat4 uniViewProjection;
 
-struct Particle
-{
-  glm::vec3 position;
-  float timeleft;
-  glm::vec3 velocity;
-  float size;
-  glm::vec4 startcolor;
-  glm::vec4 endcolor;
-  glm::vec4 color;
-  bool alive;
-};
+in vec3 Position;
+in vec4 Color;
 
-in Particle particles;
-
-out vec4 Color;
+out vec4 vColor;
 
 
 
 void main(void)
 {
-	vec4 eyePos = vec4(particles.position , 1.0);
-	gl_Position = matr * eyePos;
-	Color = particles.color;
+  vec4 eyePos = vec4(Position, 1.0);
+  gl_Position = uniViewProjection * eyePos;
+	vColor = Color;
 }

@@ -22,6 +22,13 @@ struct Particle
   glm::vec3 padding;
 };
 
+struct ComputeParticle
+{
+  glm::vec3 position;
+  glm::vec3 velocity;
+  glm::vec4 color;
+};
+
 // Everything public, wanna be able to access these elements
 struct ParticleArray{
   //Per particle data
