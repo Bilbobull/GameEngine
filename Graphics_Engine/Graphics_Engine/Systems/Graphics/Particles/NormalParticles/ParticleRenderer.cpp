@@ -3,12 +3,14 @@
 #include "../../Texture.h"
 #include "../../LoadShader.h"
 #include "../../GraphicsSystem.h"
+#include <cstddef>
 
 
 Texture* texture;
 GLuint ParticleProgram;
 GLuint matrixLocation = 0;
 glm::mat4 matrix;
+bool firstPass = true;
 
 void ParticleRenderer::Init(ParticleSystem* sys)
 {
@@ -45,15 +47,22 @@ void ParticleRenderer::InitCompute(ParticleSystem* sys)
 {
   p_sys = sys;
 
-  auto particleSize = sizeof(ComputeParticle);
+  auto particleSize = sizeof(Particle);
   particleBuffer = new SSBO(p_sys->GetMaxParticles() * particleSize, GL_DYNAMIC_DRAW);
 
-  auto* particles = particleBuffer->MapBufferRange <ComputeParticle>(0, p_sys->GetMaxParticles());
+  auto* particles = particleBuffer->MapBufferRange <Particle>(0, p_sys->GetMaxParticles());
   for (auto i = 0; i < p_sys->GetMaxParticles(); ++i)
   {
     particles[i].position = p_sys->GetParticleArray()->particles[i].position;
-    particles[i].color = p_sys->GetParticleArray()->particles[i].color;
+    particles[i].timeleft = p_sys->GetParticleArray()->particles[i].timeleft;
     particles[i].velocity = p_sys->GetParticleArray()->particles[i].velocity;
+    particles[i].size = p_sys->GetParticleArray()->particles[i].size;
+    particles[i].startcolor = p_sys->GetParticleArray()->particles[i].startcolor;
+    particles[i].endcolor = p_sys->GetParticleArray()->particles[i].endcolor;
+    particles[i].color = p_sys->GetParticleArray()->particles[i].color;
+    particles[i].alive = p_sys->GetParticleArray()->particles[i].alive;
+    particles[i].padding = glm::vec3(1);
+
   }
   particleBuffer->UnMapBuffer();
   particleBuffer->BindBufferBase(0);
@@ -63,19 +72,29 @@ void ParticleRenderer::InitCompute(ParticleSystem* sys)
 
 void ParticleRenderer::ComputeRender()
 {
-  auto particleSize = sizeof(ComputeParticle);
-  particleBuffer = new SSBO(p_sys->GetMaxParticles() * particleSize, GL_DYNAMIC_DRAW);
-
-  auto* particles = particleBuffer->MapBufferRange <ComputeParticle>(0, p_sys->GetMaxParticles());
-  for (auto i = 0; i < p_sys->GetMaxParticles(); ++i)
+  if (firstPass)
   {
-    particles[i].position = p_sys->GetParticleArray()->particles[i].position;
-    particles[i].color = p_sys->GetParticleArray()->particles[i].color;
-    particles[i].velocity = p_sys->GetParticleArray()->particles[i].velocity;
-  }
-  particleBuffer->UnMapBuffer();
-  particleBuffer->BindBufferBase(0);
+    auto particleSize = sizeof(Particle);
+    particleBuffer = new SSBO(p_sys->GetMaxParticles() * particleSize, GL_DYNAMIC_DRAW);
 
+    auto* particles = particleBuffer->MapBufferRange <Particle>(0, p_sys->GetMaxParticles());
+    for (auto i = 0; i < p_sys->GetMaxParticles(); ++i)
+    {
+      particles[i].position = p_sys->GetParticleArray()->particles[i].position;
+      particles[i].timeleft = p_sys->GetParticleArray()->particles[i].timeleft;
+      particles[i].velocity = p_sys->GetParticleArray()->particles[i].velocity;
+      particles[i].size = p_sys->GetParticleArray()->particles[i].size;
+      particles[i].startcolor = p_sys->GetParticleArray()->particles[i].startcolor;
+      particles[i].endcolor = p_sys->GetParticleArray()->particles[i].endcolor;
+      particles[i].color = p_sys->GetParticleArray()->particles[i].color;
+      particles[i].alive = p_sys->GetParticleArray()->particles[i].alive;
+      particles[i].padding = glm::vec3(1);
+
+    }
+    particleBuffer->UnMapBuffer();
+    particleBuffer->BindBufferBase(0);
+    firstPass = false;
+  }
 
   particleBuffer->BindBufferBase(0);
 
@@ -101,15 +120,13 @@ void ParticleRenderer::ComputeRender()
 
     auto particleAttribute = glGetAttribLocation(ParticleProgram, "Position");
     glEnableVertexAttribArray(particleAttribute);
-    glVertexAttribPointer(particleAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(ComputeParticle), 0);
+    glVertexAttribPointer(particleAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), 0);
 
     glEnableVertexAttribArray(particleAttribute + 1);
-    glVertexAttribPointer(particleAttribute + 1, 4, GL_FLOAT, GL_FALSE, sizeof(ComputeParticle), (void*)(sizeof (glm::vec3)));
+    glVertexAttribPointer(particleAttribute + 1, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, color));
 
-    glEnableVertexAttribArray(particleAttribute + 2);
-    glVertexAttribPointer(particleAttribute + 2, 4, GL_FLOAT, GL_FALSE, sizeof(ComputeParticle), (void*)(2 * sizeof(glm::vec4)));
 
-    glEnable(GL_POINT_SPRITE);
+    //glEnable(GL_POINT_SPRITE);
     glEnable(GL_PROGRAM_POINT_SIZE);
     glPointSize(5);
     glDrawArrays(GL_POINTS, 0, p_sys->GetAlivePartCount());

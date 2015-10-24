@@ -17,7 +17,7 @@ struct Particle
   glm::vec4 startcolor;
   glm::vec4 endcolor;
   glm::vec4 color;
-  bool alive;
+  float alive;
 
   glm::vec3 padding;
 };
