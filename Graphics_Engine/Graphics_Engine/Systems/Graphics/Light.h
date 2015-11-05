@@ -16,6 +16,8 @@ struct Material
 
 void RotateLights(void);
 
+extern int TextureType;
+extern int NormOrDiff;
 extern int ShaderType;
 extern std::vector<Object*> LightObjects;
 extern int Lighttype[MAX_LIGHTS];

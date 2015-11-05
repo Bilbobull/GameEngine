@@ -37,7 +37,7 @@ void GraphicsSystem::Init(void)
   //Object* arrow = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f), " ", Arrow_Mesh );
   //Object* cube = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -10.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f));
   //modelFile = "Cube";
-  ironman = ObjectManager::CreateObject(glm::vec3(0.0f, 0.5f, -3.0f), glm::vec3(10.0f, 10.0f, 10.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "ironman");
+  ironman = ObjectManager::CreateObject(glm::vec3(0.0f, 0.5f, -3.0f), glm::vec3(10.0f, 10.0f, 10.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "cube");
   //Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f), "Ironman");
 
   effect = new CircleEffect(glm::vec3(0, 0, -3), 10000);
@@ -92,21 +92,21 @@ void GraphicsSystem::Update(double dt)
     ironman->rotAngle += 0.5f;
   }
 
-  //auto objectList = ObjectManager::GetObjectList();
-  //for (auto it : objectList)
-  //{
-  //  it->Draw();
-  //}
+  auto objectList = ObjectManager::GetObjectList();
+  for (auto it : objectList)
+  {
+    it->Draw();
+  }
 
-  //if (LightRotation)
-  //{
-  //  RotateLights();
-  //}
+  if (LightRotation)
+  {
+    RotateLights();
+  }
 
-  //for (auto it : LightObjects)
-  //{
-  //  it->Draw();
-  //}
+  for (auto it : LightObjects)
+  {
+    it->Draw();
+  }
 
 
   //ironman->Draw();

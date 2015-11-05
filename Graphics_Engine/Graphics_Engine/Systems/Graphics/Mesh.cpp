@@ -46,6 +46,9 @@ GLuint FragPhongFarPlaneLocation;
 GLuint FragPhongAtmosphericAttBoolUniform;
 GLuint FragPhongAtmosphericAttIntesityUniform;
 
+GLuint FragPhongTextureTypeUniform;
+GLuint FragPhongNormOrDiffUniform;
+
 #pragma endregion
 
 
@@ -177,6 +180,8 @@ void Mesh::Init_Mesh_Shader(void)
   FragPhongAtmosphericAttIntesityUniform = glGetUniformLocation(FragPhongModelProgram, "AtmosphericIntensity");
   FragPhongTexturesUniform = glGetUniformLocation(FragPhongModelProgram, "Textures");
 
+  FragPhongTextureTypeUniform = glGetUniformLocation(FragPhongModelProgram, "TextureType");
+  FragPhongNormOrDiffUniform = glGetUniformLocation(FragPhongModelProgram, "NormOrDiff");
 #pragma endregion
 
 #pragma region PerVertex
@@ -265,9 +270,6 @@ void Mesh::Init_Mesh_Shader(void)
 
 void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToProjection, glm::mat4 scale)
 {
-
-
-
   glm::mat4 fullmatrix = ViewToProjection  * WorldToView * ModelToWorld;
 
   switch (type)
@@ -330,6 +332,10 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
         glUniform4fv(FragPhongGlobalAmbientUniform, 1, glm::value_ptr(GlobalAmbient));
 
         glUniform1i(FragPhongTexturesUniform, Textures);
+
+        glUniform1i(FragPhongTextureTypeUniform, TextureType);
+        glUniform1i(FragPhongNormOrDiffUniform, NormOrDiff);
+        
 
         glUniformMatrix4fv(FragPhongModelModelToWorldUniform, 1, GL_FALSE, &ModelToWorld[0][0]);
         glUniformMatrix4fv(FragPhongModelWorldToViewUniform, 1, GL_FALSE, &WorldToView[0][0]);
@@ -471,6 +477,7 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
     vao->Bind();
     glUniformMatrix4fv(SimpleMatUniform, 1, GL_FALSE, &fullmatrix[0][0]);
     glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, 0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   }
 
 }
@@ -527,4 +534,5 @@ void Mesh::Debug_Draw(glm::mat4 matrix)
       glEnd();
     }
   }
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }

@@ -275,6 +275,14 @@ void ImGuiImpl::UpdateGuiButtons(void)
       "Fragment Phong", "Vertex Phong", "Frag Blinn" };
     ImGui::Combo("Light Model", &ShaderType, shadertypeStrings.data(), 3);
 
+    std::vector<char const *> texturetypeStrings = {
+      "Cylindrical Mapping", "Spherical Mapping", "Cube Mapping" };
+    ImGui::Combo("Texture Map Type", &TextureType, texturetypeStrings.data(), 3);
+
+    std::vector<char const *> DifforNormStrings = {
+      "Texture", "Normal Texture"};
+    ImGui::Combo("Texture Type", &NormOrDiff, DifforNormStrings.data(), 2);
+
 
 
     if (ImGui::Button("Reload Shaders"))
@@ -587,13 +595,13 @@ void ImGuiImpl::UpdateGuiButtons(void)
     }
   }
 
-  ImGui::Separator();
-  {
-    if (ImGui::Button("Particles"))
-    {
-      g_GraphicsSys->Particle_Draw();
-    }
-  }
+  //ImGui::Separator();
+  //{
+  //  if (ImGui::Button("Particles"))
+  //  {
+  //    g_GraphicsSys->Particle_Draw();
+  //  }
+  //}
 
   ImGui::Separator();
   {

@@ -6,6 +6,8 @@
 //  glm::vec4 const &_diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)) : direction(_direction), ambient(_ambient), diffuse(_diffuse)
 //{}
 
+int TextureType = 0;
+int NormOrDiff = 0;
 int ShaderType = 0;
 std::vector<Object*> LightObjects;
 int Lighttype[MAX_LIGHTS];
@@ -27,7 +29,7 @@ int AtmosphericAtt = 1;
 glm::vec4 AtmosphericIntensity = glm::vec4(0.3f, 0.3f, 0.3f, 1.0f);
 float NearPlane = 10;
 float FarPlane = 20;
-int Textures = 0;
+int Textures = 1;
 glm::vec4 GlobalAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1);
 
 void RotateLights(void)
