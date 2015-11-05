@@ -48,6 +48,7 @@ GLuint FragPhongAtmosphericAttIntesityUniform;
 
 GLuint FragPhongTextureTypeUniform;
 GLuint FragPhongNormOrDiffUniform;
+GLuint FragPhongNormalsUniform;
 
 #pragma endregion
 
@@ -182,6 +183,7 @@ void Mesh::Init_Mesh_Shader(void)
 
   FragPhongTextureTypeUniform = glGetUniformLocation(FragPhongModelProgram, "TextureType");
   FragPhongNormOrDiffUniform = glGetUniformLocation(FragPhongModelProgram, "NormOrDiff");
+  FragPhongNormalsUniform = glGetUniformLocation(FragPhongModelProgram, "NormalYesorNo");
 #pragma endregion
 
 #pragma region PerVertex
@@ -335,6 +337,8 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
 
         glUniform1i(FragPhongTextureTypeUniform, TextureType);
         glUniform1i(FragPhongNormOrDiffUniform, NormOrDiff);
+
+        glUniform1i(FragPhongNormalsUniform, NormalYesOrNo);
         
 
         glUniformMatrix4fv(FragPhongModelModelToWorldUniform, 1, GL_FALSE, &ModelToWorld[0][0]);

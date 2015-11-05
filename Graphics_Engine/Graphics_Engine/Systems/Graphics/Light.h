@@ -16,6 +16,7 @@ struct Material
 
 void RotateLights(void);
 
+extern int NormalYesOrNo;
 extern int TextureType;
 extern int NormOrDiff;
 extern int ShaderType;

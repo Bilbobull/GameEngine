@@ -283,7 +283,9 @@ void ImGuiImpl::UpdateGuiButtons(void)
       "Texture", "Normal Texture"};
     ImGui::Combo("Texture Type", &NormOrDiff, DifforNormStrings.data(), 2);
 
-
+    std::vector<char const *> NormalorNoStrings = {
+      "Normal Map", "No Normal Map" };
+    ImGui::Combo("Normals", &NormalYesOrNo, NormalorNoStrings.data(), 2);
 
     if (ImGui::Button("Reload Shaders"))
     {

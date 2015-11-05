@@ -54,6 +54,7 @@ uniform int TextureType;
 uniform int NormOrDiff;
 
 uniform int Textures;
+uniform int NormalYesorNo;
 
 uniform sampler2D Texture;
 uniform sampler2D normalTexture;
@@ -272,7 +273,19 @@ vec2 ComputeTexcoords(vec4 pos)
 
 void main()
 {
-    vec4 worldNorm = normalize( WorldToViewMatrix * ModelToWorldMatrix * vec4(Normal, 0.0));
+  vec4 worldNorm;
+
+  if (NormalYesorNo == 0)
+  {
+    vec3 tempnorm = texture2D (normalTexture, Texcoord).rgb;
+    tempnorm.r -= 0.5;
+    tempnorm.g -= 0.5;
+    tempnorm.b = -1.0;
+    worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(tempnorm, 0.0));
+  } 
+  else
+    worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(Normal, 0.0));
+
     vec4 v = vec4(Position, 1.0);
     vec4 pos = normalize(v);
     vec2 text = ComputeTexcoords(pos);
