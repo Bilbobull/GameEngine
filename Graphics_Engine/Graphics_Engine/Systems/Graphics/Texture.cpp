@@ -65,6 +65,10 @@ void Texture::unBind(void)
   glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+std::string Texture::GetTexName(void)
+{
+  return TexFile;
+}
 
 void Texture::createGLTexture()
 {

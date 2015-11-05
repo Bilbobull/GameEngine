@@ -50,6 +50,7 @@ GLuint FragPhongTextureTypeUniform;
 GLuint FragPhongNormOrDiffUniform;
 GLuint FragPhongNormalsUniform;
 
+GLuint FragPhongCubeTextureUniform;
 #pragma endregion
 
 
@@ -139,6 +140,8 @@ GLuint FragBlinnAtmosphericAttIntesityUniform;
 
 #pragma endregion
 
+int CubeOrNot;
+
 void Mesh::Init_Mesh_Shader(void)
 {
   SimpleProgram = LoadShaders("SimpleVertexShader.glsl", "SimpleFragmentShader.glsl");
@@ -184,6 +187,8 @@ void Mesh::Init_Mesh_Shader(void)
   FragPhongTextureTypeUniform = glGetUniformLocation(FragPhongModelProgram, "TextureType");
   FragPhongNormOrDiffUniform = glGetUniformLocation(FragPhongModelProgram, "NormOrDiff");
   FragPhongNormalsUniform = glGetUniformLocation(FragPhongModelProgram, "NormalYesorNo");
+
+  FragPhongCubeTextureUniform = glGetUniformLocation(FragPhongModelProgram, "CubeOrNot");
 #pragma endregion
 
 #pragma region PerVertex
@@ -340,6 +345,12 @@ void Mesh::Draw(glm::mat4 ModelToWorld, glm::mat4 WorldToView, glm::mat4 ViewToP
 
         glUniform1i(FragPhongNormalsUniform, NormalYesOrNo);
         
+        if (this->texture->GetTexName() == "Cube_Diffuse.png")
+          CubeOrNot = 1;
+        else
+          CubeOrNot = 0;
+
+        glUniform1i(FragPhongCubeTextureUniform, CubeOrNot);
 
         glUniformMatrix4fv(FragPhongModelModelToWorldUniform, 1, GL_FALSE, &ModelToWorld[0][0]);
         glUniformMatrix4fv(FragPhongModelWorldToViewUniform, 1, GL_FALSE, &WorldToView[0][0]);

@@ -9,7 +9,7 @@ public:
   void TexBind(void);
   void NorBind(void);
   void unBind(void);
-
+  std::string GetTexName(void);
   bool TextureYesorNo(void){ if (Texformat != NULL) return true;
                       else return false; }
 

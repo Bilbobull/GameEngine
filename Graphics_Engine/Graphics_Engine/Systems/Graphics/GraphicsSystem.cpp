@@ -37,7 +37,7 @@ void GraphicsSystem::Init(void)
   //Object* arrow = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f), " ", Arrow_Mesh );
   //Object* cube = ObjectManager::CreateObject(glm::vec3(-2.0f, 0.0f, -10.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f));
   //modelFile = "Cube";
-  ironman = ObjectManager::CreateObject(glm::vec3(0.0f, 0.5f, -3.0f), glm::vec3(10.0f, 10.0f, 10.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "cube");
+  ironman = ObjectManager::CreateObject(glm::vec3(0.0f, 0.5f, -3.0f), glm::vec3(10.0f, 10.0f, 10.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f), "Cube");
   //Object* pyro = ObjectManager::CreateObject(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(-2.0f, 0.0f, -3.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f), "Ironman");
 
   effect = new CircleEffect(glm::vec3(0, 0, -3), 10000);

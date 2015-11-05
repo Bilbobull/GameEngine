@@ -56,11 +56,12 @@ uniform int NormOrDiff;
 uniform int Textures;
 uniform int NormalYesorNo;
 
+uniform int CubeOrNot;
+
 uniform sampler2D Texture;
 uniform sampler2D normalTexture;
 
 layout (location = 0) out vec4 outColor;
-layout (location = 1) out vec4 outColorNormal;
 
 
 vec4 computeLightingTerm(in int lightIdx, in vec4 worldNormal)
@@ -275,31 +276,34 @@ void main()
 {
   vec4 worldNorm;
 
-  if (NormalYesorNo == 0)
-  {
-    vec3 tempnorm = texture2D (normalTexture, Texcoord).rgb;
-    tempnorm.r -= 0.5;
-    tempnorm.g -= 0.5;
-    tempnorm.b = -1.0;
-    worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(tempnorm, 0.0));
-  } 
-  else
-    worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(Normal, 0.0));
+
 
     vec4 v = vec4(Position, 1.0);
     vec4 pos = normalize(v);
     vec2 text = ComputeTexcoords(pos);
 
+
+    if (NormalYesorNo == 0)
+    {
+      vec3 tempnorm = texture2D (normalTexture, text).rgb;
+      worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(tempnorm, 0.0));
+    }
+    else
+      worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(Normal, 0.0));
+
     if (Textures == 1)
     {
       if (NormOrDiff == 0)
-        outColor = texture2D (Texture, text) *computeSurfaceColor(worldNorm);
+      {
+        if (CubeOrNot == 1)
+          outColor = texture2D (Texture, text) *computeSurfaceColor(worldNorm);
+        else
+          outColor = texture2D (Texture, Texcoord) *computeSurfaceColor(worldNorm);
+      }
       else
         outColor = texture2D (normalTexture, text) *computeSurfaceColor(worldNorm);
     }
 
   	else
 	    outColor = computeSurfaceColor(worldNorm);
-
-	outColorNormal = texture2D (Texture, Texcoord) * vec4(Color, 1.0); 
 }
