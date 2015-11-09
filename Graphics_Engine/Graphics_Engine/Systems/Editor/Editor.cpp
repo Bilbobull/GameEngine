@@ -272,8 +272,8 @@ void ImGuiImpl::UpdateGuiButtons(void)
 
 
     std::vector<char const *> shadertypeStrings = {
-      "Fragment Phong", "Vertex Phong", "Frag Blinn" };
-    ImGui::Combo("Light Model", &ShaderType, shadertypeStrings.data(), 3);
+      "Fragment Phong", "Frag Blinn" };
+    ImGui::Combo("Light Model", &ShaderType, shadertypeStrings.data(), 2);
 
     std::vector<char const *> texturetypeStrings = {
       "Cylindrical Mapping", "Spherical Mapping", "Cube Mapping" };

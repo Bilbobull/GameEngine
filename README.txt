@@ -20,6 +20,12 @@ Can't move object with GUI, instead, I implemented a Camera that you can move wi
    - Ironman
    - Pyro
    
+ Ligth Model : Shader Type
+ Texture Map Type : Select Cube, Cylindrical and Spherical map
+ Texture Type : Texture or Normal Texture
+ Normals: Activate or Disactivate Normals
+ 
+
  Debug Mode easy, select the option you want
  
  Camera position is not really camera movement, is more kind of an offset from where u are. So you can ]
@@ -38,9 +44,6 @@ Can't move object with GUI, instead, I implemented a Camera that you can move wi
  their tabs
  
  Rotate lights, sets lights in a circle and starts rotating them. You can stop movement by clicking again.
- 
- Particles, you can start a compute shader particle system thats controlled with the mouse by  clicking and
- desactivate it clicking again. You can do this as many times as wanted.
- 
+  
  Textures activates textures in object. Some objects may not have one and they'll just draw as debug draw instead
  Also, this features makes fog not work, so dont text fog with texturing enabled

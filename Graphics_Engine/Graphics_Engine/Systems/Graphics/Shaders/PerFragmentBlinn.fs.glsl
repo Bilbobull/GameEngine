@@ -1,4 +1,5 @@
 #version 330
+#define pi 3.1415926535897932384626433832795
 
 in vec3 Normal;
 in vec3 Color;
@@ -47,7 +48,14 @@ uniform float NearPlane;
 uniform float FarPlane;
 uniform int AtmosphericAttBool;
 uniform vec4 AtmosphericIntensity;
+
+uniform int TextureType;
+uniform int NormOrDiff;
+
 uniform int Textures;
+uniform int NormalYesorNo;
+
+uniform int CubeOrNot;
 
 uniform sampler2D Texture;
 uniform sampler2D normalTexture;
@@ -177,23 +185,154 @@ vec4 computeSurfaceColor(in vec4 worldNormal)
       color *= computeDistanceAttenuation(i);
   }
 
-  if(AtmosphericAttBool != 0)
-    color = computeAtmosphericAttenuation(color);
-
-  vec4 globalamb = globalAmbient * MaterialValues.ambient;
-  color += globalamb + MaterialValues.emisive;
-
   return color; // contribution from all lights onto surface
 }
 
+vec2 computeCilindrical(vec4 pos)
+{
+  vec2 coords;
+  float theta = atan(pos.y, pos.x);
+  if (theta < 0.0)
+    theta += 2.0 * pi;
+
+  coords.x = theta / (2 * pi);
+  coords.y = (pos.z - (-1.0)) / (1 - (-1));
+
+  return coords;
+}
+
+vec2 computeSpherical(vec4 pos)
+{
+  vec2 coords;
+  float theta = atan(pos.y, pos.x);
+  if (theta < 0.0)
+    theta += 2.0 * pi;
+
+  float gamma = sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+  float alpha = acos(pos.z / gamma);
+  if (alpha < 0.0)
+    alpha += 2.0 * pi;
+
+  coords.x = theta / (2 * pi);
+  coords.y = alpha / pi;
+
+  return coords;
+}
+
+vec2 computeCube(vec4 pos)
+{
+  vec2 coords;
+
+  vec4 newpos = abs(pos);
+  vec4 norm = vec4(0.5) + 0.5 * pos;
+
+  if (newpos.x >= newpos.y && newpos.x >= newpos.z)
+  {
+    coords.x = norm.z;
+    coords.y = norm.y;
+  }
+
+  else if (newpos.y >= newpos.x && newpos.y >= newpos.z)
+  {
+    coords.x = norm.x;
+    coords.y = norm.z;
+  }
+
+  else if (newpos.z >= newpos.x && newpos.z >= newpos.y)
+  {
+    coords.x = norm.x;
+    coords.y = norm.y;
+  }
+
+  return coords;
+}
+
+vec2 ComputeTexcoords(vec4 pos)
+{
+  if (TextureType == 0)
+    return computeCilindrical(pos);
+
+  if (TextureType == 1)
+    return computeSpherical(pos);
+
+  if (TextureType == 2)
+    return computeCube(pos);
+
+
+}
+
+
 void main()
 {
-    vec4 worldNorm = normalize( WorldToViewMatrix * ModelToWorldMatrix * vec4(Normal, 0.0));
-	if(Textures == 1)
-	  outColor = texture2D (Texture, Texcoord) * computeSurfaceColor(worldNorm);  //
+  vec4 worldNorm;
 
-	else
-	   outColor = computeSurfaceColor(worldNorm);
+  vec4 v = vec4(Position, 1.0);
+  vec4 pos = normalize(v);
+  vec2 text = ComputeTexcoords(pos);
 
-	outColorNormal = texture2D (Texture, Texcoord) * vec4(Color, 1.0); 
+  vec4 tempcol;
+
+
+  if (NormalYesorNo == 0)
+  {
+    vec3 tempnorm = texture2D (normalTexture, text).rgb;
+    worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(tempnorm, 0.0));
+  }
+  else
+    worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(Normal, 0.0));
+
+  if (Textures == 1)
+  {
+    if (NormOrDiff == 0)
+    {
+      if (CubeOrNot == 1)
+      {
+        tempcol = texture2D (Texture, text) * computeSurfaceColor(worldNorm);
+        if (AtmosphericAttBool != 0)
+          tempcol = computeAtmosphericAttenuation(tempcol);
+
+        vec4 globalamb = globalAmbient * MaterialValues.ambient;
+        tempcol += globalamb + MaterialValues.emisive;
+
+        outColor = tempcol;
+
+      }
+      else
+      {
+        tempcol = texture2D (Texture, Texcoord) * computeSurfaceColor(worldNorm);
+        if (AtmosphericAttBool != 0)
+          tempcol = computeAtmosphericAttenuation(tempcol);
+
+        vec4 globalamb = globalAmbient * MaterialValues.ambient;
+        tempcol += globalamb + MaterialValues.emisive;
+
+        outColor = tempcol;
+
+      }
+    }
+    else
+    {
+      tempcol = texture2D (normalTexture, text) * computeSurfaceColor(worldNorm);
+      if (AtmosphericAttBool != 0)
+        tempcol = computeAtmosphericAttenuation(tempcol);
+
+      vec4 globalamb = globalAmbient * MaterialValues.ambient;
+      tempcol += globalamb + MaterialValues.emisive;
+
+      outColor = tempcol;
+
+    }
+  }
+
+  else
+  {
+    tempcol = computeSurfaceColor(worldNorm);
+    if (AtmosphericAttBool != 0)
+      tempcol = computeAtmosphericAttenuation(tempcol);
+
+    vec4 globalamb = globalAmbient * MaterialValues.ambient;
+    tempcol += globalamb + MaterialValues.emisive;
+
+    outColor = tempcol;
+  }
 }

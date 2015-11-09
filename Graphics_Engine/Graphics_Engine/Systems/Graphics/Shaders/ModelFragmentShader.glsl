@@ -189,12 +189,6 @@ vec4 computeSurfaceColor(in vec4 worldNormal)
       color *= computeDistanceAttenuation(i);
   }
 
-  if(AtmosphericAttBool != 0)
-    color = computeAtmosphericAttenuation(color);
-
-  vec4 globalamb = globalAmbient * MaterialValues.ambient;
-  color += globalamb + MaterialValues.emisive;
-
   return color; // contribution from all lights onto surface
 }
 
@@ -276,34 +270,73 @@ void main()
 {
   vec4 worldNorm;
 
+  vec4 v = vec4(Position, 1.0);
+  vec4 pos = normalize(v);
+  vec2 text = ComputeTexcoords(pos);
+
+  vec4 tempcol;
 
 
-    vec4 v = vec4(Position, 1.0);
-    vec4 pos = normalize(v);
-    vec2 text = ComputeTexcoords(pos);
+  if (NormalYesorNo == 0)
+  {
+    vec3 tempnorm = texture2D (normalTexture, text).rgb;
+    worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(tempnorm, 0.0));
+  }
+  else
+    worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(Normal, 0.0));
 
-
-    if (NormalYesorNo == 0)
+  if (Textures == 1)
+  {
+    if (NormOrDiff == 0)
     {
-      vec3 tempnorm = texture2D (normalTexture, text).rgb;
-      worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(tempnorm, 0.0));
-    }
-    else
-      worldNorm = normalize(WorldToViewMatrix * ModelToWorldMatrix * vec4(Normal, 0.0));
-
-    if (Textures == 1)
-    {
-      if (NormOrDiff == 0)
+      if (CubeOrNot == 1)
       {
-        if (CubeOrNot == 1)
-          outColor = texture2D (Texture, text) *computeSurfaceColor(worldNorm);
-        else
-          outColor = texture2D (Texture, Texcoord) *computeSurfaceColor(worldNorm);
+        tempcol = texture2D (Texture, text) * computeSurfaceColor(worldNorm);
+        if (AtmosphericAttBool != 0)
+          tempcol = computeAtmosphericAttenuation(tempcol);
+
+        vec4 globalamb = globalAmbient * MaterialValues.ambient;
+        tempcol += globalamb + MaterialValues.emisive;
+
+        outColor = tempcol;
+
       }
       else
-        outColor = texture2D (normalTexture, text) *computeSurfaceColor(worldNorm);
-    }
+      {
+        tempcol = texture2D (Texture, Texcoord) * computeSurfaceColor(worldNorm);
+        if (AtmosphericAttBool != 0)
+          tempcol = computeAtmosphericAttenuation(tempcol);
 
-  	else
-	    outColor = computeSurfaceColor(worldNorm);
+        vec4 globalamb = globalAmbient * MaterialValues.ambient;
+        tempcol += globalamb + MaterialValues.emisive;
+
+        outColor = tempcol;
+
+      }
+    }
+    else
+    {
+      tempcol = texture2D (normalTexture, text) * computeSurfaceColor(worldNorm);
+      if (AtmosphericAttBool != 0)
+        tempcol = computeAtmosphericAttenuation(tempcol);
+
+      vec4 globalamb = globalAmbient * MaterialValues.ambient;
+      tempcol += globalamb + MaterialValues.emisive;
+
+      outColor = tempcol;
+
+    }
+  }
+
+  else
+  {
+    tempcol = computeSurfaceColor(worldNorm);
+    if (AtmosphericAttBool != 0)
+      tempcol = computeAtmosphericAttenuation(tempcol);
+
+    vec4 globalamb = globalAmbient * MaterialValues.ambient;
+    tempcol += globalamb + MaterialValues.emisive;
+
+    outColor = tempcol;
+  }
 }
